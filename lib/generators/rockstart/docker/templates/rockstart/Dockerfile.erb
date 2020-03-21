@@ -1,0 +1,45 @@
+FROM <%= @root_image %>
+
+# Install dependencies
+RUN apt-get update -qq \
+    && apt-get install -y build-essential \
+    && apt-get install -y libxml2-dev libxslt1-dev \
+<%- if @postgres -%>
+    && apt-get install -y libpq-dev \
+<%- end -%>
+<%- if @assets -%>
+    && curl -sL https://deb.nodesource.com/setup_10.x | bash - \
+    && curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - \
+    && echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list \
+    && apt-get update && apt-get install -y nodejs yarn \
+<%- end -%>
+    && apt-get clean
+
+ENV RACK_ENV=production \
+<%- if @assets -%>
+    NODE_ENV=production \
+<%- end -%>
+    RAILS_ENV=production
+
+RUN mkdir /<%= @app_home %>
+WORKDIR /<%= @app_home %>
+
+# Install gems
+ADD Gemfile* /<%= @app_home %>/
+RUN bundle config set deployment 'true' \
+    && bundle config set without 'development test' \
+    && bundle install
+
+# Install application
+ADD . /<%= @app_home %>
+
+# Perform post-installation tasks
+RUN bundle exec rake tmp:create \
+<%- if @assets -%>
+    && bundle exec rake assets:precompile \
+<%- end -%>
+    && bundle exec rake tmp:clear
+
+# Start the application server
+EXPOSE 3000
+CMD ["bundle", "exec", "rails", "server", "-p", "3000", "-b", "0.0.0.0"]

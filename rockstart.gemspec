@@ -11,7 +11,7 @@ Gem::Specification.new do |spec|
   spec.email       = ["bemo56@hotmail.com"]
   spec.homepage    = "https://github.com/bmorrall/rockstart"
   spec.summary     = "Generators for getting Rails Ready to Rock!"
-  spec.description = "A collection of generators to rapidly start and update ready to run Rails Apps."
+  spec.description = "A collection of generators to rapidly start and update ready-to-run Rails Applications."
   spec.license     = "MIT"
 
   spec.files = Dir["{app,config,db,lib}/**/*", "MIT-LICENSE", "Rakefile", "README.md"]

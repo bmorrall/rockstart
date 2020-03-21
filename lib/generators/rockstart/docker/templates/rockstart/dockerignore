@@ -1,0 +1,9 @@
+/.bundle
+/.git
+/log
+/node_modules
+/public/assets
+/spec
+/test
+/tmp
+/vendor/bundle

@@ -1,14 +1,23 @@
 # Rockstart
-Short description and motivation.
+A collection of generators to rapidly start and update ready-to-run Rails Applications.
 
 ## Usage
-How to use my plugin.
+Rockstart provides a number of generators that can be used as required.
+
+### Docker
+Rockstart can configure your Rails
+
+```bash
+bundle exec rails g rockstart:docker
+```
+
+It uses the current Ruby Version, your Rails configuration, along with the current Application Name, to generate a Dockerfile with sensible defaults.
 
 ## Installation
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'rockstart'
+gem 'rockstart', group: :development
 ```
 
 And then execute:
