@@ -1,0 +1,10 @@
+Description:
+    Adds code quality tools to a Rails project.
+
+Example:
+    rails generate quality
+
+    This will create:
+        .rubocop.yml # with common default values
+        .rubocop_todo.yml # a todo-list of all outstanding issues
+        lib/tasks/quality.rake # A Rake task for running code quality tools

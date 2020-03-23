@@ -1,0 +1,31 @@
+inherit_from: .rubocop_todo.yml
+
+AllCops:
+  Exclude:
+    # Exclude auto-generated files
+    - bin/*
+    - db/seeds.rb
+    - node_modules/**/*
+
+Layout/LineLength:
+  Max: 100 # Set line width to more sensible default
+  Exclude:
+    - config/environments/*
+    - config/initializers/*
+    - spec/**/*
+    - test/**/*
+
+Style/StringLiterals:
+  EnforcedStyle: double_quotes # prefer double quotes
+
+Style/FrozenStringLiteralComment:
+  EnforcedStyle: always_true # immutable code where possible
+
+Style/HashEachMethods:
+  Enabled: false # Skip unsafe rules
+
+Style/HashTransformKeys:
+  Enabled: false # Skip unsafe rules
+
+Style/HashTransformValues:
+  Enabled: false # Skip unsafe rules
