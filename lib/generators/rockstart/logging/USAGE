@@ -1,0 +1,8 @@
+Description:
+    Adds better logging to a rails application
+
+Example:
+    rails generate rockstart:logging
+
+    This will create:
+        - Adds and configures lograge
