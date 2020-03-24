@@ -30,6 +30,13 @@ class Rockstart::DockerGenerator < Rails::Generators::Base
     @app_home = options[:app_home]
     @postgres = options[:postgres]
     @assets = options[:assets]
-    template "rockstart/Dockerfile.erb", "Dockerfile"
+    template "rockstart/Dockerfile-app", "Dockerfile"
+  end
+
+  def create_nginx_image
+    @root_image = options[:root_image]
+    @app_home = options[:app_home]
+    template "rockstart/web/Dockerfile-web", "docker/web/Dockerfile"
+    template "rockstart/web/nginx.conf", "docker/web/nginx.conf"
   end
 end

@@ -19,6 +19,7 @@ ENV RACK_ENV=production \
 <%- if @assets -%>
     NODE_ENV=production \
 <%- end -%>
+    RAILS_LOG_TO_STDOUT=true \
     RAILS_ENV=production
 
 RUN mkdir /<%= @app_home %>
