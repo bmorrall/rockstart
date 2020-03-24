@@ -1,6 +1,7 @@
 /.bundle
 /.git
 /docker
+/docker-compose.yml
 /log
 /node_modules
 /public/assets

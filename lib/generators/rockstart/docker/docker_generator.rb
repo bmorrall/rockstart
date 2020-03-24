@@ -39,4 +39,9 @@ class Rockstart::DockerGenerator < Rails::Generators::Base
     template "rockstart/web/Dockerfile-web", "docker/web/Dockerfile"
     template "rockstart/web/nginx.conf", "docker/web/nginx.conf"
   end
+
+  def add_docker_compose
+    @app_home = options[:app_home]
+    template "rockstart/docker-compose.yml", "docker-compose.yml"
+  end
 end
