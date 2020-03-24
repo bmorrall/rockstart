@@ -1,4 +1,6 @@
-$:.push File.expand_path("lib", __dir__)
+# frozen_string_literal: true
+
+$LOAD_PATH.push File.expand_path("lib", __dir__)
 
 # Maintain your gem's version:
 require "rockstart/version"
@@ -18,5 +20,6 @@ Gem::Specification.new do |spec|
 
   spec.add_dependency "rails", "~> 6.0.2", ">= 6.0.2.2"
 
+  spec.add_development_dependency "rubocop"
   spec.add_development_dependency "sqlite3"
 end
