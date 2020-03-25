@@ -13,6 +13,14 @@ bundle exec rails g rockstart:docker
 
 It uses the current Ruby Version, your Rails configuration, along with the current Application Name, to generate a Dockerfile with sensible defaults.
 
+### RSpec
+
+Rockstart can pre-configure RSpec for your repository.
+
+```bash
+bundle exec rails g rockstart:rspec
+```
+
 ### Quality
 
 Rockstart can add tasks for maintaining the quality of your codebase.
