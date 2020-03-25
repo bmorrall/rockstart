@@ -6,6 +6,7 @@ AllCops:
     - bin/*
     - db/schema.rb
     - db/seeds.rb
+    - lib/templates/**/*
     - node_modules/**/*
 
 Layout/LineLength:
@@ -13,6 +14,11 @@ Layout/LineLength:
   Exclude:
     - config/environments/*
     - config/initializers/*
+    - spec/**/*
+    - test/**/*
+
+Metrics/BlockLength:
+  Exclude:
     - spec/**/*
     - test/**/*
 

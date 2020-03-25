@@ -1,0 +1,8 @@
+Description:
+    Installs RSpec with test libraries
+
+Example:
+    rails generate rockstart:rspec
+
+    This will create:
+        - installs rspec-rails
