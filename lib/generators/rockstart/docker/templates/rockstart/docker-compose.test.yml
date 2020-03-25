@@ -1,0 +1,7 @@
+version: '2.0'
+services:
+  sut:
+    build: .
+    command: bash -c "bundle exec rake db:migrate && bundle exec rake"
+    environment:
+      - RAILS_ENV=test
