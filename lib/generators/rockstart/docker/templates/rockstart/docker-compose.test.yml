@@ -3,5 +3,18 @@ services:
   sut:
     build: .
     command: bash -c "bundle exec rake db:migrate && bundle exec rake"
+<%- if postgres? -%>
+    depends_on:
+      - db
+<%- end -%>
     environment:
       - RAILS_ENV=test
+<%- if postgres? -%>
+      - DATABASE_HOST=db
+  db:
+    image: postgres
+    environment:
+      - POSTGRES_DB=<%= app_name %>_test
+      - POSTGRES_USER=<%= app_name %>
+      - POSTGRES_PASSWORD=<%= app_name %>_test
+<%- end -%>

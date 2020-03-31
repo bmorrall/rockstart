@@ -2,8 +2,24 @@ version: '2.0'
 services:
   app:
     build: .
+<%- if postgres? -%>
+    environment:
+      - DATABASE_URL=postgres://<%= app_name %>:<%= example_db_password %>@db/<%= app_name %>_production
+    depends_on:
+      - db
+<%- end -%>
     volumes:
     - static-assets:/<%= @app_home %>/public
+<%- if postgres? -%>
+  db:
+    image: postgres
+    environment:
+      - POSTGRES_DB=<%= app_name %>_production
+      - POSTGRES_USER=<%= app_name %>
+      - POSTGRES_PASSWORD=<%= example_db_password %>
+    volumes:
+      - ./tmp/db:/var/lib/postgresql/data
+<%- end -%>
   web:
     build:
       context: ./docker/web/

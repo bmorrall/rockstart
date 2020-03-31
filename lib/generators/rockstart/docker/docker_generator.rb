@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class Rockstart::DockerGenerator < Rails::Generators::Base
+  include Rails::Generators::AppName
+
   source_root File.expand_path("templates", __dir__)
 
   desc "This generator configures a Rails Application to work with Docker"
@@ -44,5 +46,17 @@ class Rockstart::DockerGenerator < Rails::Generators::Base
     @app_home = options[:app_home]
     template "rockstart/docker-compose.yml", "docker-compose.yml"
     template "rockstart/docker-compose.test.yml", "docker-compose.test.yml"
+  end
+
+  private
+
+  def postgres?
+    options[:postgres]
+  end
+
+  # Generates an example password
+  def example_db_password
+    require "base64"
+    Base64.urlsafe_encode64(Rails.application.engine_name)
   end
 end
