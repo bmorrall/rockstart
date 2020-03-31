@@ -1,0 +1,8 @@
+Description:
+    Configures a rails application to use postgres in Heroku and Docker
+
+Example:
+    rails generate rockstart:postgres
+
+    This will create:
+        A config/database.yml with known defaults
