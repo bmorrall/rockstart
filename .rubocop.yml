@@ -13,6 +13,14 @@ Layout/LineLength:
     - rockstart.gemspec
     - spec/**/*
 
+Style/ClassAndModuleChildren:
+  Exclude:
+    - lib/generators/**/*_generator.rb
+
+Style/Documentation:
+  Exclude:
+    - lib/generators/**/*_generator.rb
+
 Style/StringLiterals:
   EnforcedStyle: double_quotes # prefer double quotes
 
