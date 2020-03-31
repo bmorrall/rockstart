@@ -2,7 +2,13 @@
 A collection of generators to rapidly start and update ready-to-run Rails Applications.
 
 ## Usage
-Rockstart provides a number of generators that can be used as required.
+Most applications can be configured using the standard generator:
+
+```bash
+bundle exec rails g rockstart
+```
+
+For those wanting more control; Rockstart provides a number of generators that can be used as required.
 
 ### Postgres
 Rockstart creates a config/database.yml suitable for Heroku or Docker installations.

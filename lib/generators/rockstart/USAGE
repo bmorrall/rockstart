@@ -1,0 +1,12 @@
+Description:
+    Configures an application with the default rockstart setup
+
+Example:
+    rails generate rockstart
+
+    This will run the following generators:
+        rockstart:logging
+        rockstart:rspec
+        rockstart:quality
+        rockstart:postgres (depending on database)
+        rockstart:docker
