@@ -1,7 +1,9 @@
+# frozen_string_literal: true
+
 class Rockstart::TailwindcssGenerator < Rails::Generators::Base
   include Rails::Generators::AppName
 
-  source_root File.expand_path('templates', __dir__)
+  source_root File.expand_path("templates", __dir__)
 
   def install_tailwindcss
     run "yarn add tailwindcss"
