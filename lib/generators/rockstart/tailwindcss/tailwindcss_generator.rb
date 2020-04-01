@@ -5,15 +5,15 @@ class Rockstart::TailwindcssGenerator < Rails::Generators::Base
 
   def install_tailwindcss
     run "yarn add tailwindcss"
-
-    empty_directory "app/javascript/stylesheets"
     run "yarn tailwind init tailwind.config.js"
   end
 
+  def install_purge_css
+    run "yarn add @fullhuman/postcss-purgecss"
+  end
+
   def update_postcss_config
-    insert_into_file "postcss.config.js", after: /postcss-import.+/ do |match|
-      "\n    require('tailwindcss')('tailwind.config.js')," + "\n    require('autoprefixer'),"
-    end
+    template "postcss.config.js"
   end
 
   def update_application_layout
