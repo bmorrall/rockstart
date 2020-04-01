@@ -1,0 +1,8 @@
+Description:
+    Installs common helpers for Frontend UIs
+
+Example:
+    rails generate rockstart:frontend_helpers
+
+    This will create:
+        Install the titles gem

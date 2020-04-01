@@ -50,6 +50,14 @@ Provides a "quality" rake task, which runs all code quality tests on your Applic
 bundle exec rake quality
 ```
 
+### Frontend Helpers
+
+Installs helpers for easy developer of Frontend Interfaces:
+
+```
+bundle exec rails g rockstart:frontend_helpers
+```
+
 ### Tailwind CSS
 
 [Tailwind CSS](https://tailwindcss.com) is a CSS framework for rapidly prototyping applications.

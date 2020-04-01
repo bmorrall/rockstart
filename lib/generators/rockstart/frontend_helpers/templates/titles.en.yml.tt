@@ -1,0 +1,5 @@
+en:
+  titles:
+    # titles.application defaults to the sigficant portion of
+    # <%= Rails.application.class.name %>, which would be:
+    application: <%= default_title %>
