@@ -12,7 +12,7 @@ class RockstartGenerator < Rails::Generators::Base
   end
 
   def generate_rspec
-    generate "rockstart:logging"
+    generate "rockstart:rspec"
   end
 
   def generate_postgres
