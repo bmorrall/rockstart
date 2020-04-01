@@ -5,6 +5,7 @@ class Rockstart::RspecGenerator < Rails::Generators::Base
 
   def add_gems
     gem "factory_bot_rails", group: %i[development test]
+    gem "faker", group: %i[development test]
     gem "rspec-rails", "~> 4.0.0", group: %i[development test]
     gem "shoulda-matchers", group: :test
   end
