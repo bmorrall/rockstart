@@ -54,6 +54,8 @@ class Rockstart::RspecGenerator < Rails::Generators::Base
       end
 
     SIMPLECOV
+
+    append_file ".gitignore", "coverage/\n"
   end
 
   def update_generator_templates
