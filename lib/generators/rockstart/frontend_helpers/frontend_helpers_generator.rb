@@ -3,6 +3,15 @@
 class Rockstart::FrontendHelpersGenerator < Rails::Generators::Base
   source_root File.expand_path("templates", __dir__)
 
+  def install_simple_form
+    gem "simple_form"
+
+    Bundler.with_clean_env do
+      run "bundle install"
+      generate "simple_form:install"
+    end
+  end
+
   def install_titles
     gem "title", github: "calebthompson/title"
 
