@@ -8,6 +8,7 @@ class Rockstart::RspecGenerator < Rails::Generators::Base
     gem "faker", group: %i[development test]
     gem "rspec-rails", "~> 4.0.0", group: %i[development test]
     gem "shoulda-matchers", group: :test
+    gem "simplecov", group: :test
   end
 
   def install_rspec_rails
@@ -43,7 +44,19 @@ class Rockstart::RspecGenerator < Rails::Generators::Base
     SHOULDA
   end
 
-  def update_templates
+  def configure_simplecov
+    prepend_file "spec/spec_helper.rb", <<~SIMPLECOV
+      # frozen_string_literal: true
+
+      require "simplecov"
+      SimpleCov.start("rails") do
+        add_filter "/lib/templates"
+      end
+
+    SIMPLECOV
+  end
+
+  def update_generator_templates
     copy_file "rockstart/request_spec.erb", "lib/templates/rspec/scaffold/request_spec.rb"
     copy_file "rockstart/api_request_spec.erb", "lib/templates/rspec/scaffold/api_request_spec.rb"
     copy_file "rockstart/model_spec.erb", "lib/templates/rspec/model/model_spec.rb"
