@@ -1,0 +1,8 @@
+Description:
+    Installs Tailwind CSS (https://tailwindcss.com/)
+
+Example:
+    rails generate rockstart:tailwindcss
+
+    This will create:
+        Tailwind CSS through Webpacker, and adds it to the application pack.

@@ -50,6 +50,16 @@ Provides a "quality" rake task, which runs all code quality tests on your Applic
 bundle exec rake quality
 ```
 
+### Tailwind CSS
+
+[Tailwind CSS](https://tailwindcss.com) is a CSS framework for rapidly prototyping applications.
+
+Install it, via Webpacker, by running:
+
+```bash
+bundle exec rails g rockstart:tailwindcss
+```
+
 ## Installation
 Add this line to your application's Gemfile:
 
