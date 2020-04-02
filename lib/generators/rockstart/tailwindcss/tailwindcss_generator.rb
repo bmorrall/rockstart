@@ -24,6 +24,7 @@ class Rockstart::TailwindcssGenerator < Rails::Generators::Base
 
   def add_stylesheet_to_application_js
     template "application.css", "app/javascript/#{app_name}/application.css"
-    append_file "app/javascript/packs/application.js", "\nimport '../#{app_name}/application.css';\n"
+    append_file "app/javascript/packs/application.js",
+                "\nimport '../#{app_name}/application.css';\n"
   end
 end
