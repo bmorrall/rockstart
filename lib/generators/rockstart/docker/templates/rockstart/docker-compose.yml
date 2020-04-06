@@ -2,10 +2,15 @@ version: '2.0'
 services:
   app:
     build: .
-<%- if postgres? -%>
     environment:
+      - APP_HOST=localhost
+<%- if postgres? -%>
       - DATABASE_URL=postgres://<%= app_name %>:<%= example_db_password %>@db/<%= app_name %>_production
+<%- end -%>
+      - SMTP_SERVER=mailcatcher
+      - SMTP_PORT=1025
     depends_on:
+<%- if postgres? -%>
       - db
 <%- end -%>
     volumes:
@@ -20,6 +25,10 @@ services:
     volumes:
       - ./tmp/db:/var/lib/postgresql/data
 <%- end -%>
+  mailcatcher:
+    image: sj26/mailcatcher
+    ports:
+      - 1080:1080
   web:
     build:
       context: ./docker/web/

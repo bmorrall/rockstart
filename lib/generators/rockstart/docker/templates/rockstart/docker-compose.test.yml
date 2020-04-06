@@ -3,14 +3,19 @@ services:
   sut:
     build: .
     command: bash -c "bundle exec rake db:migrate && bundle exec rake"
-<%- if postgres? -%>
     depends_on:
+<%- if postgres? -%>
       - db
 <%- end -%>
+      - mailcatcher
     environment:
       - RAILS_ENV=test
 <%- if postgres? -%>
       - DATABASE_HOST=db
+<%- end -%>
+      - SMTP_SERVER=mailcatcher
+      - SMTP_PORT=1025
+<%- if postgres? -%>
   db:
     image: postgres
     environment:
@@ -18,3 +23,5 @@ services:
       - POSTGRES_USER=<%= app_name %>
       - POSTGRES_PASSWORD=<%= app_name %>_test
 <%- end -%>
+  mailcatcher:
+    image: sj26/mailcatcher

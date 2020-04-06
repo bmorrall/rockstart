@@ -1,0 +1,8 @@
+Description:
+    A Generator for pre-configuring a basic SMTP Mailer
+
+Example:
+    rails generate rockstart:smtp_mailer
+
+    This will create:
+        config/initializers/action_mailer.rb

@@ -9,4 +9,5 @@ Example:
         rockstart:rspec
         rockstart:quality
         rockstart:postgres (depending on database)
+        rockstart:smtp_mailer
         rockstart:docker
