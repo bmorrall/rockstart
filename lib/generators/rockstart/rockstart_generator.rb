@@ -25,6 +25,12 @@ class RockstartGenerator < Rails::Generators::Base
     generate "rockstart:smtp_mailer"
   end
 
+  def generate_devise
+    return unless options[:devise]
+
+    generate "rockstart:devise"
+  end
+
   def generate_docker
     generate "rockstart:docker", postgres_option
   end
