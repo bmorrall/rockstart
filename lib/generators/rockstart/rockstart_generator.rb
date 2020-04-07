@@ -26,10 +26,16 @@ class RockstartGenerator < Rails::Generators::Base
   end
 
   def generate_docker
-    generate "rockstart:docker"
+    generate "rockstart:docker", postgres_option
   end
 
   def generate_quality
     generate "rockstart:quality"
+  end
+
+  private
+
+  def postgres_option
+    options[:postgres] ? "--postgres" : "--no-postgres"
   end
 end
