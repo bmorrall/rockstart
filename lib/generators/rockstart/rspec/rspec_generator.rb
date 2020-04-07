@@ -29,10 +29,6 @@ class Rockstart::RspecGenerator < Rails::Generators::Base
     directory "support", "spec/support"
   end
 
-  def update_rspec_templates
-    directory "rspec_templates", "lib/templates/rspec"
-  end
-
   def add_coverage_to_gitignore
     append_file ".gitignore", "coverage/\n"
   end

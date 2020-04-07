@@ -1,0 +1,8 @@
+Description:
+    Overrides the default rails scaffold templates with pre-configured defaults
+
+Example:
+    rails generate rockstart:scaffold_templates
+
+    This will create:
+        Overrides rails scaffold_controller generator templates

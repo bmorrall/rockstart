@@ -8,6 +8,7 @@ AllCops:
     - spec/dummy/**/*
     # Exclude rspec templates
     - lib/generators/rockstart/rspec/templates/rspec_templates/**/*
+    - lib/generators/rockstart/scaffold_templates/templates/rspec/**/*
 
 Layout/LineLength:
   Max: 100 # Set line width to more sensible default

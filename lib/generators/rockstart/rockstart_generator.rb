@@ -3,6 +3,10 @@
 class RockstartGenerator < Rails::Generators::Base
   desc "The quickest way for getting Rails Ready to Rock!"
 
+  class_option :devise, type: :boolean,
+                        desc: "Include Devise support",
+                        default: true
+
   class_option :postgres, type: :boolean,
                           desc: "Include Postgres support",
                           default: Rockstart::Env.postgres_db?
@@ -25,6 +29,10 @@ class RockstartGenerator < Rails::Generators::Base
     generate "rockstart:smtp_mailer"
   end
 
+  def generate_scaffold_templates
+    generate "rockstart:scaffold_templates", devise_option
+  end
+
   def generate_devise
     return unless options[:devise]
 
@@ -40,6 +48,10 @@ class RockstartGenerator < Rails::Generators::Base
   end
 
   private
+
+  def devise_option
+    options[:devise] ? "--devise" : "--no-devise"
+  end
 
   def postgres_option
     options[:postgres] ? "--postgres" : "--no-postgres"
