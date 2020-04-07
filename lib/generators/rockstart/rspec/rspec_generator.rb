@@ -14,38 +14,44 @@ class Rockstart::RspecGenerator < Rails::Generators::Base
   def install_rspec_rails
     Bundler.with_clean_env do
       run "bundle install"
-      generate "rspec:install"
+
+      require "generators/rspec/install/install_generator"
+
+      Dir.mktmpdir do |dir|
+        generate_rspec_install(dir)
+        template File.join(dir, ".rspec"), ".rspec"
+        directory File.join(dir, "spec"), "spec"
+      end
     end
   end
 
-  def configure_rspec
-    append_file "spec/rails_helper.rb", <<~RSPEC
-
-      RSpec.configure do |config|
-        # Allow direct use of FactoryBot methods
-        config.include FactoryBot::Syntax::Methods
-
-        # Allow direct use of t() and l() in specs
-        config.include AbstractController::Translation
-      end
-    RSPEC
+  def add_rspec_support
+    directory "support", "spec/support"
   end
 
-  def configure_shoulda_matchers
-    append_file "spec/rails_helper.rb", <<~SHOULDA
-
-      # Configure shoulda-matchers
-      Shoulda::Matchers.configure do |config|
-        config.integrate do |with|
-          with.test_framework :rspec
-          with.library :rails
-        end
-      end
-    SHOULDA
+  def update_rspec_templates
+    directory "rspec_templates", "lib/templates/rspec"
   end
 
-  def configure_simplecov
-    prepend_file "spec/spec_helper.rb", <<~SIMPLECOV
+  def add_coverage_to_gitignore
+    append_file ".gitignore", "coverage/\n"
+  end
+
+  private
+
+  def generate_rspec_install(dir)
+    initializer = ::Rspec::Generators::InstallGenerator.new(
+      report_stream: StringIO.new
+    )
+    initializer.destination_root = dir
+    initializer.invoke_all
+
+    prepend_simplecov_start(dir)
+    enable_support_directory(dir)
+  end
+
+  def prepend_simplecov_start(dir)
+    prepend_file File.join(dir, "spec", "spec_helper.rb"), <<~SIMPLECOV
       # frozen_string_literal: true
 
       require "simplecov"
@@ -54,13 +60,9 @@ class Rockstart::RspecGenerator < Rails::Generators::Base
       end
 
     SIMPLECOV
-
-    append_file ".gitignore", "coverage/\n"
   end
 
-  def update_generator_templates
-    copy_file "rockstart/request_spec.erb", "lib/templates/rspec/scaffold/request_spec.rb"
-    copy_file "rockstart/api_request_spec.erb", "lib/templates/rspec/scaffold/api_request_spec.rb"
-    copy_file "rockstart/model_spec.erb", "lib/templates/rspec/model/model_spec.rb"
+  def enable_support_directory(dir)
+    uncomment_lines File.join(dir, "spec", "rails_helper.rb"), /Dir.+spec.+support.+\.rb/
   end
 end

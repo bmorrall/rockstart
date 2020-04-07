@@ -6,6 +6,8 @@ AllCops:
     # Exclude auto-generated files
     - bin/*
     - spec/dummy/**/*
+    # Exclude rspec templates
+    - lib/generators/rockstart/rspec/templates/rspec_templates/**/*
 
 Layout/LineLength:
   Max: 100 # Set line width to more sensible default
