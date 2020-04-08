@@ -1,0 +1,8 @@
+Description:
+    Adds authentication to a project with simple authentication needs
+
+Example:
+    rails generate rockstart:pundit
+
+    This will create:
+        Installs pundit gem

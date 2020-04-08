@@ -7,6 +7,10 @@ class Rockstart::ScaffoldTemplatesGenerator < Rails::Generators::Base
                         desc: "Include Devise support",
                         default: true
 
+  class_option :pundit, type: :boolean,
+                        desc: "Include Pundit support",
+                        default: true
+
   def copy_scaffold_templates
     template "api_controller.rb.tt", "lib/templates/rails/scaffold_controller/api_controller.rb.tt"
     template "controller.rb.tt", "lib/templates/rails/scaffold_controller/controller.rb.tt"
@@ -23,6 +27,10 @@ class Rockstart::ScaffoldTemplatesGenerator < Rails::Generators::Base
 
   def devise?
     options[:devise]
+  end
+
+  def pundit?
+    options[:pundit]
   end
 
   def rspec_templates_dir

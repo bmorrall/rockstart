@@ -11,6 +11,10 @@ class RockstartGenerator < Rails::Generators::Base
                           desc: "Include Postgres support",
                           default: Rockstart::Env.postgres_db?
 
+  class_option :pundit, type: :boolean,
+                        desc: "Include Pundit support",
+                        default: true
+
   def generate_logging
     generate "rockstart:logging"
   end
@@ -41,6 +45,12 @@ class RockstartGenerator < Rails::Generators::Base
     return unless options[:devise]
 
     generate "rockstart:devise"
+  end
+
+  def generate_pundit
+    return unless options[:pundit]
+
+    generate "rockstart:pundit"
   end
 
   def generate_docker

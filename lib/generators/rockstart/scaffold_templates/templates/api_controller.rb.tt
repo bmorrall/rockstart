@@ -8,6 +8,10 @@ class <%%= controller_class_name %>Controller < ApplicationController
   before_action :authenticate_user!
 <%- end -%>
   before_action :set_<%%= singular_table_name %>, only: [:show, :update, :destroy]
+<%- if pundit? -%>
+  after_action :verify_authorized, except: :index
+  after_action :verify_policy_scoped, only: :index
+<%- end -%>
 
   # GET <%%= route_url %>
   def index
@@ -54,11 +58,15 @@ class <%%= controller_class_name %>Controller < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def <%%= "#{singular_table_name}_params" %>
+<%- if pundit? -%>
+      permitted_attributes(@<%%= singular_table_name %> || <%%= class_name %>.new)
+<%- else -%>
       <%%- if attributes_names.empty? -%>
       params.fetch(:<%%= singular_table_name %>, {})
       <%%- else -%>
       params.require(:<%%= singular_table_name %>).permit(<%%= permitted_params %>)
       <%%- end -%>
+<%- end -%>
     end
 end
 <%% end -%>

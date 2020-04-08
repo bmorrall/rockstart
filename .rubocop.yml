@@ -6,6 +6,8 @@ AllCops:
     # Exclude auto-generated files
     - bin/*
     - spec/dummy/**/*
+    # Exclude pundit templates
+    - lib/generators/rockstart/pundit_simple/templates/lib/templates/**/*
     # Exclude rspec templates
     - lib/generators/rockstart/rspec/templates/rspec_templates/**/*
     - lib/generators/rockstart/scaffold_templates/templates/rspec/**/*
