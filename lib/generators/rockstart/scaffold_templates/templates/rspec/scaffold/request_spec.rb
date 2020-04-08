@@ -1,4 +1,5 @@
 <%- resource_path = name.underscore.pluralize -%>
+<%- permitted_params = attributes.map { |a| ":#{a.name}" }.join(", ") -%>
 # frozen_string_literal: true
 
 require "rails_helper"
@@ -96,7 +97,11 @@ RSpec.describe "<%= controller_class_name %>", <%= type_metatag(:request) %> do
   describe "POST /<%= resource_path %>" do
     context "with valid parameters" do
       let(:valid_attributes) do
+        <%- if attributes.any? -%>
+        attributes_for(:<%= ns_file_name %>).slice(<%= permitted_params %>)
+        <%- else -%>
         skip("Add a hash of attributes valid for your model")
+        <%- end -%>
       end
 
       context "with an authorized user" do
@@ -110,6 +115,15 @@ RSpec.describe "<%= controller_class_name %>", <%= type_metatag(:request) %> do
           expect do
             post <%= index_helper %>_url, params: { <%= ns_file_name %>: valid_attributes }
           end.to change(<%= class_name %>, :count).by(1)
+
+          <%= file_name %> = <%= class_name %>.last
+          <%- if attributes.any? -%>
+          <%- attributes.each do |attribute| -%>
+          expect(<%= file_name %>.<%= attribute.name %>).to eq(new_attributes[:<%= attribute.name %>])
+           <%- end -%>
+          <%- else -%>
+          skip("Add assertions for created state")
+          <%- end -%>
         end
 
         it "redirects to the created <%= ns_file_name %>" do
@@ -145,7 +159,11 @@ RSpec.describe "<%= controller_class_name %>", <%= type_metatag(:request) %> do
   describe "PATCH /<%= resource_path %>/:id" do
     context "with valid parameters" do
       let(:new_attributes) do
+        <%- if attributes.any? -%>
+        attributes_for(:<%= ns_file_name %>).slice(<%= permitted_params %>)
+        <%- else -%>
         skip("Add a hash of attributes valid for your model")
+        <%- end -%>
       end
 
       context "with an authorized user" do
@@ -158,8 +176,15 @@ RSpec.describe "<%= controller_class_name %>", <%= type_metatag(:request) %> do
         it "updates the requested <%= ns_file_name %>" do
           <%= file_name %> = create(:<%= file_name %>)
           patch <%= show_helper.tr('@', '') %>, params: { <%= singular_table_name %>: new_attributes }
+
           <%= file_name %>.reload
+          <%- if attributes.any? -%>
+          <%- attributes.each do |attribute| -%>
+          expect(<%= file_name %>.<%= attribute.name %>).to eq(new_attributes[:<%= attribute.name %>])
+           <%- end -%>
+          <%- else -%>
           skip("Add assertions for updated state")
+          <%- end -%>
         end
 
         it "redirects to the <%= ns_file_name %>" do
