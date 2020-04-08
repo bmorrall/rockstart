@@ -11,10 +11,7 @@ development:
 
 test:
   <<: *default
-  database: <%= app_name %>_test
-  username: <%= app_name %>
-  password: <%= app_name %>_test
-  host: <%%= ENV.fetch('DATABASE_HOST', 'localhost') %>
+  url: <%%= ENV.fetch('TEST_DATABASE_URL', "postgres://localhost/<%= app_name %>_test") %>
 
 production:
   <<: *default

@@ -11,7 +11,7 @@ services:
     environment:
       - RAILS_ENV=test
 <%- if postgres? -%>
-      - DATABASE_HOST=db
+      - TEST_DATABASE_URL=postgres://<%= app_name %>:<%= app_name %>_test@db/<%= app_name %>_test
 <%- end -%>
       - SMTP_SERVER=mailcatcher
       - SMTP_PORT=1025
