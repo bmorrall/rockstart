@@ -34,7 +34,7 @@ class RockstartGenerator < Rails::Generators::Base
   end
 
   def generate_scaffold_templates
-    generate "rockstart:scaffold_templates", devise_option
+    generate "rockstart:scaffold_templates", devise_option, pundit_option
   end
 
   def generate_basic_user
@@ -69,5 +69,9 @@ class RockstartGenerator < Rails::Generators::Base
 
   def postgres_option
     options[:postgres] ? "--postgres" : "--no-postgres"
+  end
+
+  def pundit_option
+    options[:pundit] ? "--pundit" : "--no-pundit"
   end
 end

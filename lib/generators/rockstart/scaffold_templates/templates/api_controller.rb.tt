@@ -7,27 +7,39 @@ class <%%= controller_class_name %>Controller < ApplicationController
 <%- if devise? -%>
   before_action :authenticate_user!
 <%- end -%>
-  before_action :set_<%%= singular_table_name %>, only: [:show, :update, :destroy]
+  before_action :assign_<%%= singular_table_name %>, only: [:show, :update, :destroy]
 <%- if pundit? -%>
-  after_action :verify_authorized, except: :index
-  after_action :verify_policy_scoped, only: :index
+  after_action :verify_authorized
+  after_action :verify_policy_scoped, except: [:new, :create]
 <%- end -%>
 
   # GET <%%= route_url %>
   def index
+<%- if pundit? -%>
+    authorize <%%= class_name %>
+    @<%%= plural_table_name %> = policy_scope(<%%= class_name %>)
+<%- else -%>
     @<%%= plural_table_name %> = <%%= orm_class.all(class_name) %>
+<%- end -%>
 
     render json: <%%= "@#{plural_table_name}" %>
   end
 
   # GET <%%= route_url %>/1
   def show
+<%- if pundit? -%>
+    authorize @<%%= singular_table_name %>
+
+<%- end -%>
     render json: <%%= "@#{singular_table_name}" %>
   end
 
   # POST <%%= route_url %>
   def create
     @<%%= singular_table_name %> = <%%= orm_class.build(class_name, "#{singular_table_name}_params") %>
+<%- if pundit? -%>
+    authorize @<%%= singular_table_name %>
+<%- end -%>
 
     if @<%%= orm_instance.save %>
       render json: <%%= "@#{singular_table_name}" %>, status: :created, location: <%%= "@#{singular_table_name}" %>
@@ -38,6 +50,10 @@ class <%%= controller_class_name %>Controller < ApplicationController
 
   # PATCH/PUT <%%= route_url %>/1
   def update
+<%- if pundit? -%>
+    authorize @<%%= singular_table_name %>
+
+<%- end -%>
     if @<%%= orm_instance.update("#{singular_table_name}_params") %>
       render json: <%%= "@#{singular_table_name}" %>
     else
@@ -47,19 +63,27 @@ class <%%= controller_class_name %>Controller < ApplicationController
 
   # DELETE <%%= route_url %>/1
   def destroy
+<%- if pundit? -%>
+    authorize @<%%= singular_table_name %>
+
+<%- end -%>
     @<%%= orm_instance.destroy %>
   end
 
   private
     # Use callbacks to share common setup or constraints between actions.
-    def set_<%%= singular_table_name %>
+    def assign_<%%= singular_table_name %>
+<%- if pundit? -%>
+      @<%%= singular_table_name %> = <%%= orm_class.find("policy_scope(#{class_name})", "params[:id]") %>
+<%- else -%>
       @<%%= singular_table_name %> = <%%= orm_class.find(class_name, "params[:id]") %>
+<%- end -%>
     end
 
     # Only allow a trusted parameter "white list" through.
     def <%%= "#{singular_table_name}_params" %>
 <%- if pundit? -%>
-      permitted_attributes(@<%%= singular_table_name %> || <%%= class_name %>.new)
+      permitted_attributes(@<%%= singular_table_name %> || <%%= class_name %>)
 <%- else -%>
       <%%- if attributes_names.empty? -%>
       params.fetch(:<%%= singular_table_name %>, {})
