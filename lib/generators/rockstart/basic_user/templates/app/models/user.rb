@@ -2,8 +2,8 @@
 
 # User model used to represent registered User
 class User < ApplicationRecord
-  devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :validatable
+  # name:string
+  # admin:boolean
 
   delegate :given, :family, to: :namae
 
