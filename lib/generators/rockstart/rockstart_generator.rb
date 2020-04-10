@@ -33,6 +33,10 @@ class RockstartGenerator < Rails::Generators::Base
     generate "rockstart:scaffold_templates", devise_option
   end
 
+  def generate_basic_user
+    generate "rockstart:basic_user"
+  end
+
   def generate_devise
     return unless options[:devise]
 

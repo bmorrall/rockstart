@@ -1,0 +1,13 @@
+Description:
+    Generates a basic user model with a name and optional admin toggle.
+
+    Does not generate include any fields useful for authentication,
+    see rockstart:devise for more
+
+Example:
+    rails generate rockstart:basic_user
+
+    This will create:
+        app/models/user.rb
+        spec/models/user_spec.rb
+        spec/factories/user.rb

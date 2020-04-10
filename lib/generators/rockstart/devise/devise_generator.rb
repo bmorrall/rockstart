@@ -21,4 +21,13 @@ class Rockstart::DeviseGenerator < Rails::Generators::Base
   def add_rspec_coverage
     directory "spec"
   end
+
+  def update_users_factory
+    inject_into_file "spec/factories/users.rb", after: "factory :user do\n" do
+      <<~'FACTORY'.gsub(/([^\n]*)\n/, "    \\1\n")
+        email { Faker::Internet.email }
+        password { Faker::Lorem.words(number: 3).join }
+      FACTORY
+    end
+  end
 end

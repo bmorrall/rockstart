@@ -16,6 +16,10 @@ Layout/LineLength:
     - rockstart.gemspec
     - spec/**/*
 
+Metrics/BlockLength:
+  Exclude:
+    - lib/generators/**/templates/**/*_spec.rb
+
 Style/ClassAndModuleChildren:
   Exclude:
     - lib/generators/**/*_generator.rb
