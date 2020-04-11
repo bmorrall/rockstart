@@ -53,17 +53,30 @@ class Rockstart::DeviseGenerator < Rails::Generators::Base
     initializer.invoke_all
 
     update_initializer(dir)
+    make_devise_paranoid(dir)
   end
 
   def update_initializer(dir)
-    gsub_file File.join(dir, "config", "initializers", "devise.rb"),
+    gsub_file temp_devise_initializer(dir),
               /config\.mailer_sender = ['"][^'"]+['']/,
-              'config.mailer_sender = ENV.fetch("DEVISE_MAILER_SENDER", Rails.application.credentials.devise_mailer_sender)'
-    gsub_file File.join(dir, "config", "initializers", "devise.rb"),
+              'config.mailer_sender = ENV.fetch("DEVISE_MAILER_SENDER",' \
+              " Rails.application.credentials.devise_mailer_sender)"
+    gsub_file temp_devise_initializer(dir),
               /config\.secret_key = ['"][^'"]+['']/,
               'config.secret_key = ENV.fetch("DEVISE_SECRET_KEY")'
-    gsub_file File.join(dir, "config", "initializers", "devise.rb"),
+    gsub_file temp_devise_initializer(dir),
               /config\.pepper = ['"][^'"]+['']/,
               'config.pepper = ENV.fetch("DEVISE_PEPPER")'
+  end
+
+  def make_devise_paranoid(dir)
+    gsub_file temp_devise_initializer(dir),
+              /config\.paranoid = (true|false)/,
+              "config.paranoid = true"
+    uncomment_lines temp_devise_initializer(dir), /config\.paranoid = true/
+  end
+
+  def temp_devise_initializer(dir)
+    File.join(dir, "config", "initializers", "devise.rb")
   end
 end
