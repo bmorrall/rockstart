@@ -36,15 +36,18 @@ class Rockstart::DeviseGenerator < Rails::Generators::Base
         generate_devise_controllers(dir)
       end
 
-      controller_templates = devise_controllers.map do |controller|
-        "  #{controller}: \"users/#{controller}\""
-      end.join(",\n")
-
       inject_into_file "config/routes.rb", after: /devise_for :users/ do
-        template_partial = [", controllers: {", controller_templates, "}"].join("\n")
+        template_partial = build_controllers_inject_string
         template_partial.gsub(/([^\n]*)\n/, "  \\1\n").gsub(/\A\s*/, "") # Prepend newlines
       end
     end
+  end
+
+  def build_controllers_inject_string
+    controller_templates = devise_controllers.map do |controller|
+      "  #{controller}: \"users/#{controller}\""
+    end.join(",\n")
+    [", controllers: {", controller_templates, "}"].join("\n")
   end
 
   def generate_user_model
@@ -115,10 +118,7 @@ class Rockstart::DeviseGenerator < Rails::Generators::Base
   def generate_devise_controllers(dir)
     require "generators/devise/controllers_generator"
 
-    initializer = ::Devise::Generators::ControllersGenerator.new(
-      report_stream: StringIO.new
-    )
-    initializer.destination_root = dir
+    initializer = build_devise_controllers_generator(dir)
     initializer.scope = "users"
     initializer.invoke_all
 
@@ -128,9 +128,18 @@ class Rockstart::DeviseGenerator < Rails::Generators::Base
     end
   end
 
+  def build_devise_controllers_generator(dir)
+    initializer = ::Devise::Generators::ControllersGenerator.new(
+      report_stream: StringIO.new
+    )
+    initializer.destination_root = dir
+    initializer.source_paths.insert(1, File.join(self.class.source_root, "controllers"))
+    initializer
+  end
+
   def add_layout_to_controller(dir, controller)
     inject_into_file File.join(dir, controller_path(controller)), after: /< Devise::.*$/ do
-      "\n  layout :#{options[:devise_layout]}\n"
+      "\n  layout \"#{options[:devise_layout]}\"\n"
     end
   end
 
@@ -139,6 +148,6 @@ class Rockstart::DeviseGenerator < Rails::Generators::Base
   end
 
   def devise_controllers
-    %w(sessions passwords registrations)
+    %w[sessions passwords registrations]
   end
 end

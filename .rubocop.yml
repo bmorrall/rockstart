@@ -17,14 +17,22 @@ Layout/LineLength:
   Exclude:
     - rockstart.gemspec
     - spec/**/*
+    # Exclude devise templates
+    - lib/generators/rockstart/devise/templates/**/*_spec.rb
 
 Metrics/BlockLength:
   Exclude:
     - lib/generators/**/templates/**/*_spec.rb
 
+Metrics/ClassLength:
+  Exclude:
+    - lib/generators/**/*_generator.rb
+
 Style/ClassAndModuleChildren:
   Exclude:
     - lib/generators/**/*_generator.rb
+    # Exclude devise templates
+    - lib/generators/rockstart/devise/templates/controllers/*
 
 Style/Documentation:
   Exclude:
