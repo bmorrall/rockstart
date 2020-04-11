@@ -41,6 +41,11 @@ class Rockstart::DeviseGenerator < Rails::Generators::Base
     end
   end
 
+  def add_testing_variables
+    append_file ".env.development", "DEVISE_MAILER_SENDER=devise-mailer@localhost\n"
+    append_file ".env.test", "DEVISE_MAILER_SENDER=devise-mailer@example.com\n"
+  end
+
   private
 
   def generate_devise_install(dir)

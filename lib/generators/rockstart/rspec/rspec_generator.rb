@@ -4,6 +4,7 @@ class Rockstart::RspecGenerator < Rails::Generators::Base
   source_root File.expand_path("templates", __dir__)
 
   def add_gems
+    gem "dotenv-rails", groups: %i[development test]
     gem "factory_bot_rails", group: %i[development test]
     gem "faker", group: %i[development test]
     gem "rspec-rails", "~> 4.0.0", group: %i[development test]
@@ -21,6 +22,11 @@ class Rockstart::RspecGenerator < Rails::Generators::Base
         directory File.join(dir, "spec"), "spec"
       end
     end
+  end
+
+  def add_dotenv_files
+    copy_file "dotenv.development", ".env.development"
+    copy_file "dotenv.test", ".env.test"
   end
 
   def add_rspec_support
