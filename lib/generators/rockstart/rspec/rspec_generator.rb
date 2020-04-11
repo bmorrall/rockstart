@@ -13,7 +13,7 @@ class Rockstart::RspecGenerator < Rails::Generators::Base
 
   def install_rspec_rails
     Bundler.with_clean_env do
-      run "bundle install"
+      run "bundle install --quiet"
 
       Dir.mktmpdir do |dir|
         generate_rspec_install(dir)

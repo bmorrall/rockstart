@@ -21,6 +21,6 @@ class Rockstart::QualityGenerator < Rails::Generators::Base
     return unless options[:rebuild_todo]
 
     # Rebuild .rubocop_todo.yml, ensuring only existing code is excluded
-    run "bundle install && bundle exec rubocop --auto-gen-config --exclude-limit 100"
+    run "bundle install --quiet && bundle exec rubocop --auto-gen-config --exclude-limit 100"
   end
 end

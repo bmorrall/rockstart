@@ -7,7 +7,8 @@ class Rockstart::FrontendHelpersGenerator < Rails::Generators::Base
     gem "simple_form"
 
     Bundler.with_clean_env do
-      run "bundle install"
+      run "bundle install --quiet"
+
       generate "simple_form:install"
     end
   end
