@@ -15,8 +15,6 @@ class Rockstart::RspecGenerator < Rails::Generators::Base
     Bundler.with_clean_env do
       run "bundle install"
 
-      require "generators/rspec/install/install_generator"
-
       Dir.mktmpdir do |dir|
         generate_rspec_install(dir)
         template File.join(dir, ".rspec"), ".rspec"
@@ -36,6 +34,8 @@ class Rockstart::RspecGenerator < Rails::Generators::Base
   private
 
   def generate_rspec_install(dir)
+    require "generators/rspec/install/install_generator"
+
     initializer = ::Rspec::Generators::InstallGenerator.new(
       report_stream: StringIO.new
     )
