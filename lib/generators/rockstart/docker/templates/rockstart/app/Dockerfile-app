@@ -27,7 +27,8 @@ WORKDIR /<%= @app_home %>
 
 # Install gems
 ADD Gemfile* /<%= @app_home %>/
-RUN bundle config set deployment 'true' \
+RUN gem install bundler:2.1.4 \
+    && bundle config set deployment 'true' \
     && bundle config set without 'development' \
     && bundle install
 
