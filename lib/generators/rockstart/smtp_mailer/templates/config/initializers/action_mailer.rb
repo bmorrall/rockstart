@@ -8,4 +8,3 @@ ActionMailer::Base.smtp_settings = {
   domain: ENV["APP_HOST"],
   authentication: :plain
 }
-ActionMailer::Base.delivery_method = :smtp
