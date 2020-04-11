@@ -14,8 +14,15 @@ Layout/LineLength:
   Exclude:
     - config/environments/*
     - config/initializers/*
+    - db/migrate/*
     - spec/**/*
     - test/**/*
+
+Lint/RaiseException:
+  Enabled: true
+
+Lint/StructNewOverride:
+  Enabled: true
 
 Metrics/BlockLength:
   Exclude:
