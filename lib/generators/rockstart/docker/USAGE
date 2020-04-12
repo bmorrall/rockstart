@@ -1,8 +1,10 @@
 Description:
-    Explain the generator
+    Configures a Rails app to run in Docker
 
 Example:
-    rails generate docker Thing
+    rails generate rockstart:docker
 
     This will create:
-        what/will/it/create
+        A Dockerfile containing the app and test suite
+        A docker-compose.yml with all required resources
+        A docker-compose.test.yml which will run the full test suite

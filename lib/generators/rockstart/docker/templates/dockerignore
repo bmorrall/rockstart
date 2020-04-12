@@ -1,5 +1,7 @@
 /.bundle
 /.git
+/.env
+/.env.*
 /docker
 /docker-compose.yml
 /docker-compose.test.yml

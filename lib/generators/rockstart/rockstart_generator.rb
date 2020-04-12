@@ -54,7 +54,7 @@ class RockstartGenerator < Rails::Generators::Base
   end
 
   def generate_docker
-    generate "rockstart:docker", postgres_option
+    generate "rockstart:docker", postgres_option, devise_option
   end
 
   def generate_quality

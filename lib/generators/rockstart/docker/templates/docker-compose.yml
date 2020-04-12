@@ -3,12 +3,13 @@ services:
   app:
     build: .
     environment:
-      - APP_HOST=localhost
 <%- if postgres? -%>
       - DATABASE_URL=postgres://<%= app_name %>:<%= example_db_password %>@db/<%= app_name %>_production
 <%- end -%>
       - SMTP_SERVER=mailcatcher
       - SMTP_PORT=1025
+    env_file:
+      - ./.env.docker
     depends_on:
 <%- if postgres? -%>
       - db
