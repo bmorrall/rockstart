@@ -141,6 +141,9 @@ class Rockstart::DeviseGenerator < Rails::Generators::Base
     inject_into_file File.join(dir, controller_path(controller)), after: /< Devise::.*$/ do
       "\n  layout \"#{options[:devise_layout]}\"\n"
     end
+
+    # Replace Generic resource routes with users
+    gsub_file File.join(dir, controller_path(controller)), "/resource", "/users"
   end
 
   def controller_path(controller)
