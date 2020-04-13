@@ -2,7 +2,7 @@
 
 require "rails_helper"
 
-RSpec.describe "Users::Password", type: :request do
+RSpec.describe "Users::Passwords", type: :request do
   describe "GET /users/password/new" do
     context "as a guest" do
       it "renders a successful response" do
