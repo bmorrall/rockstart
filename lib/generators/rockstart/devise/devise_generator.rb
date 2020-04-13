@@ -3,6 +3,14 @@
 class Rockstart::DeviseGenerator < Rails::Generators::Base
   source_root File.expand_path("templates", __dir__)
 
+  class_option :devise_layout, type: :string,
+                               desc: "Custom layout used by all devise controllers",
+                               default: "application"
+
+  class_option :skip_controllers, type: :boolean,
+                                  desc: "Skip Generating custom Devise Controllers",
+                                  default: false
+
   class_option :skip_model, type: :boolean,
                             desc: "Skip model generation",
                             default: false
@@ -16,6 +24,25 @@ class Rockstart::DeviseGenerator < Rails::Generators::Base
       Dir.mktmpdir do |dir|
         generate_devise_install(dir)
         directory File.join(dir, "config"), "config"
+      end
+    end
+  end
+
+  def add_devise_controllers
+    return if options[:skip_controllers]
+
+    Bundler.with_clean_env do
+      Dir.mktmpdir do |dir|
+        generate_devise_controllers(dir)
+      end
+
+      controller_templates = devise_controllers.map do |controller|
+        "  #{controller}: \"users/#{controller}\""
+      end.join(",\n")
+
+      inject_into_file "config/routes.rb", after: /devise_for :users/ do
+        template_partial = [", controllers: {", controller_templates, "}"].join("\n")
+        template_partial.gsub(/([^\n]*)\n/, "  \\1\n").gsub(/\A\s*/, "") # Prepend newlines
       end
     end
   end
@@ -83,5 +110,35 @@ class Rockstart::DeviseGenerator < Rails::Generators::Base
 
   def temp_devise_initializer(dir)
     File.join(dir, "config", "initializers", "devise.rb")
+  end
+
+  def generate_devise_controllers(dir)
+    require "generators/devise/controllers_generator"
+
+    initializer = ::Devise::Generators::ControllersGenerator.new(
+      report_stream: StringIO.new
+    )
+    initializer.destination_root = dir
+    initializer.scope = "users"
+    initializer.invoke_all
+
+    devise_controllers.each do |controller|
+      add_layout_to_controller(dir, controller)
+      copy_file File.join(dir, controller_path(controller)), controller_path(controller)
+    end
+  end
+
+  def add_layout_to_controller(dir, controller)
+    inject_into_file File.join(dir, controller_path(controller)), after: /< Devise::.*$/ do
+      "\n  layout :#{options[:devise_layout]}\n"
+    end
+  end
+
+  def controller_path(controller)
+    File.join("app", "controllers", "users", "#{controller}_controller.rb")
+  end
+
+  def devise_controllers
+    %w(sessions passwords registrations)
   end
 end
