@@ -44,7 +44,7 @@ class RockstartGenerator < Rails::Generators::Base
   def generate_devise
     return unless options[:devise]
 
-    generate "rockstart:devise"
+    generate "rockstart:devise", pundit_option
   end
 
   def generate_pundit

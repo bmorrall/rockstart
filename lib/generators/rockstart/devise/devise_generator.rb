@@ -7,6 +7,10 @@ class Rockstart::DeviseGenerator < Rails::Generators::Base
                                desc: "Custom layout used by all devise controllers",
                                default: "application"
 
+  class_option :pundit, type: :boolean,
+                        desc: "Include Pundit support",
+                        default: true
+
   class_option :skip_controllers, type: :boolean,
                                   desc: "Skip Generating custom Devise Controllers",
                                   default: false
@@ -34,12 +38,20 @@ class Rockstart::DeviseGenerator < Rails::Generators::Base
     Bundler.with_clean_env do
       Dir.mktmpdir do |dir|
         generate_devise_controllers(dir)
+        add_pundit_support(dir) if options[:pundit]
+        devise_controllers.each do |controller|
+          copy_file File.join(dir, controller_path(controller)), controller_path(controller)
+        end
       end
+    end
+  end
 
-      inject_into_file "config/routes.rb", after: /devise_for :users/ do
-        template_partial = build_controllers_inject_string
-        template_partial.gsub(/([^\n]*)\n/, "  \\1\n").gsub(/\A\s*/, "") # Prepend newlines
-      end
+  def inject_routes
+    return if options[:skip_controllers]
+
+    inject_into_file "config/routes.rb", after: /devise_for :users/ do
+      template_partial = build_controllers_inject_string
+      template_partial.gsub(/([^\n]*)\n/, "  \\1\n").gsub(/\A\s*/, "") # Prepend newlines
     end
   end
 
@@ -92,26 +104,26 @@ class Rockstart::DeviseGenerator < Rails::Generators::Base
   end
 
   def update_initializer(dir)
-    gsub_file temp_devise_initializer(dir),
+    gsub_file devise_initializer(dir),
               /config\.mailer_sender = ['"][^'"]+['']/,
               'config.mailer_sender = ENV.fetch("DEVISE_MAILER_SENDER",' \
               " Rails.application.credentials.devise_mailer_sender)"
-    gsub_file temp_devise_initializer(dir),
+    gsub_file devise_initializer(dir),
               /config\.secret_key = ['"][^'"]+['']/,
               'config.secret_key = ENV.fetch("DEVISE_SECRET_KEY")'
-    gsub_file temp_devise_initializer(dir),
+    gsub_file devise_initializer(dir),
               /config\.pepper = ['"][^'"]+['']/,
               'config.pepper = ENV.fetch("DEVISE_PEPPER")'
   end
 
   def make_devise_paranoid(dir)
-    gsub_file temp_devise_initializer(dir),
+    gsub_file devise_initializer(dir),
               /config\.paranoid = (true|false)/,
               "config.paranoid = true"
-    uncomment_lines temp_devise_initializer(dir), /config\.paranoid = true/
+    uncomment_lines devise_initializer(dir), /config\.paranoid = true/
   end
 
-  def temp_devise_initializer(dir)
+  def devise_initializer(dir)
     File.join(dir, "config", "initializers", "devise.rb")
   end
 
@@ -124,7 +136,6 @@ class Rockstart::DeviseGenerator < Rails::Generators::Base
 
     devise_controllers.each do |controller|
       add_layout_to_controller(dir, controller)
-      copy_file File.join(dir, controller_path(controller)), controller_path(controller)
     end
   end
 
@@ -144,6 +155,36 @@ class Rockstart::DeviseGenerator < Rails::Generators::Base
 
     # Replace Generic resource routes with users
     gsub_file File.join(dir, controller_path(controller)), "/resource", "/users"
+  end
+
+  def add_pundit_support(dir)
+    use_pundit_for_update_user_details(dir)
+    add_pudit_authorize_current_user_method(dir)
+    add_pudit_authorize_current_user_callback(dir)
+  end
+
+  def use_pundit_for_update_user_details(dir)
+    gsub_file File.join(dir, controller_path("registrations")),
+              /\.permit\(:account_update.*\)/,
+              ".permit(:account_update, keys: policy(current_user).permitted_attributes_for_update)"
+  end
+
+  def add_pudit_authorize_current_user_method(dir)
+    inject_into_file File.join(dir, controller_path("registrations")), after: "protected\n" do
+      "\n" + <<~'METHOD'.gsub(/([^\n]*)\n/, "  \\1\n")
+        # Ensure the logged in user is able to update or destroy their account
+        def authorize_current_user
+          authorize current_user
+        end
+      METHOD
+    end
+  end
+
+  def add_pudit_authorize_current_user_callback(dir)
+    inject_into_file File.join(dir, controller_path("registrations")),
+                     after: /before_action :configure_account_update_params.*$/ do
+      "\n  before_action :authorize_current_user, only: %i[edit update destroy]"
+    end
   end
 
   def controller_path(controller)

@@ -18,7 +18,7 @@ RSpec.describe "Users::Registrations", type: :request do
         sign_in(authenticated_user)
       end
 
-      it "directs to the dashboard with a warning" do
+      it "redirects to the dashboard with a warning" do
         get new_user_registration_path
         expect(response).to redirect_to(root_url)
 
@@ -97,6 +97,70 @@ RSpec.describe "Users::Registrations", type: :request do
         expect(response).to be_successful
 
         expect(response.body).to have_content("Email has already been taken")
+      end
+    end
+  end
+
+  describe "GET /users/edit" do
+    context "as an authenticated user" do
+      let(:authenticated_user) { create(:user) }
+
+      before do
+        sign_in(authenticated_user)
+      end
+
+      it "renders the edit user form" do
+        get edit_user_registration_path
+        expect(response).to be_successful
+      end
+    end
+
+    context "as a guest" do
+      it "redirects to the new user session path" do
+        get edit_user_registration_path
+        expect(response).to redirect_to(new_user_session_path)
+
+        follow_redirect!
+        expect(response.body).to have_selector(".alert-alert", text: t("devise.failure.unauthenticated"))
+      end
+    end
+  end
+
+  describe "PUT /users" do
+    context "with update user details params" do
+      let(:existing_email) { Faker::Internet.email }
+      let(:updated_name) { Faker::Name.name }
+      let(:update_user_details_params) do
+        {
+          user: {
+            email: existing_email,
+            name: updated_name
+          }
+        }
+      end
+
+      context "as an authenticated user" do
+        let(:authenticated_user) { create(:user, email: existing_email) }
+
+        before do
+          sign_in(authenticated_user)
+        end
+
+        it "redirects to the dashboard with a notice" do
+          put user_registration_path, params: update_user_details_params
+          expect(response).to redirect_to(root_url)
+
+          follow_redirect!
+          expect(response.body).to have_selector(".alert-notice", text: t("devise.registrations.updated"))
+        end
+
+        it "updates the personal details of the user " do
+          put user_registration_path, params: update_user_details_params
+
+          authenticated_user.reload
+          expect(authenticated_user.email).to eq existing_email
+          expect(authenticated_user.name).to eq updated_name
+        end
       end
     end
   end
