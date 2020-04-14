@@ -183,6 +183,109 @@ RSpec.describe "Users::Registrations", type: :request do
       end
     end
 
+    context "with update password params" do
+      let(:current_password) { Faker::Internet.password }
+      let(:updated_password) { Faker::Internet.password }
+      let(:update_user_password_params) do
+        {
+          user: {
+            current_password: current_password,
+            password: updated_password,
+            password_confirmation: updated_password
+          }
+        }
+      end
+
+      context "as an authenticated user" do
+        let(:authenticated_user) { create(:user, password: current_password) }
+
+        before do
+          sign_in(authenticated_user)
+        end
+
+        it "redirects to the dashboard with a notice" do
+          put user_registration_path, params: update_user_password_params
+          expect(response).to redirect_to(root_url)
+
+          follow_redirect!
+          expect(response.body).to have_selector(".alert-notice", text: t("devise.registrations.updated"))
+        end
+
+        it "updates the password of the user" do
+          put user_registration_path, params: update_user_password_params
+
+          authenticated_user.reload
+          expect(authenticated_user.valid_password?(updated_password)).to be(true)
+        end
+
+        it "sends a password changed notification to the previous email" do
+          expect do
+            put user_registration_path, params: update_user_password_params
+          end.to change(ActionMailer::Base.deliveries, :count).by(1)
+
+          delivery = ActionMailer::Base.deliveries.last
+          expect(delivery.to).to eq [authenticated_user.email]
+          expect(delivery.subject).to eq t("devise.mailer.password_change.subject")
+        end
+      end
+    end
+
+    context "with incorrect current password password params" do
+      let(:updated_password) { Faker::Internet.password }
+      let(:invalid_current_password_params) do
+        {
+          user: {
+            current_password: Faker::Internet.password,
+            password: updated_password,
+            password_confirmation: updated_password
+          }
+        }
+      end
+
+      context "as an authenticated user" do
+        let(:authenticated_user) { create(:user) }
+
+        before do
+          sign_in(authenticated_user)
+        end
+
+        it "renders the form with an error" do
+          put user_registration_path, params: invalid_current_password_params
+          expect(response).to be_successful
+
+          expect(response.body).to have_content("Current password is invalid")
+        end
+      end
+    end
+
+    context "with incorrect password confirmation params" do
+      let(:current_password) { Faker::Internet.password }
+      let(:invalid_password_confirmation_params) do
+        {
+          user: {
+            current_password: current_password,
+            password: Faker::Internet.password,
+            password_confirmation: Faker::Internet.password
+          }
+        }
+      end
+
+      context "as an authenticated user" do
+        let(:authenticated_user) { create(:user, password: current_password) }
+
+        before do
+          sign_in(authenticated_user)
+        end
+
+        it "renders the form with an error" do
+          put user_registration_path, params: invalid_password_confirmation_params
+          expect(response).to be_successful
+
+          expect(response.body).to have_content("Password confirmation doesn't match Password")
+        end
+      end
+    end
+
     context "with update user details params" do
       let(:existing_email) { Faker::Internet.email }
       let(:updated_name) { Faker::Name.name }

@@ -102,6 +102,7 @@ class Rockstart::DeviseGenerator < Rails::Generators::Base
     update_initializer(dir)
     make_devise_paranoid(dir)
     send_email_on_email_change(dir)
+    send_email_on_password_change(dir)
   end
 
   def update_initializer(dir)
@@ -125,10 +126,17 @@ class Rockstart::DeviseGenerator < Rails::Generators::Base
   end
 
   def send_email_on_email_change(dir)
-    gsub_file temp_devise_initializer(dir),
+    gsub_file devise_initializer(dir),
               /config\.send_email_changed_notification = (true|false)/,
               "config.send_email_changed_notification = true"
-    uncomment_lines temp_devise_initializer(dir), /config\.send_email_changed_notification = true/
+    uncomment_lines devise_initializer(dir), /config\.send_email_changed_notification = true/
+  end
+
+  def send_email_on_password_change(dir)
+    gsub_file devise_initializer(dir),
+              /config\.send_password_change_notification = (true|false)/,
+              "config.send_password_change_notification = true"
+    uncomment_lines devise_initializer(dir), /config\.send_password_change_notification = true/
   end
 
   def devise_initializer(dir)
