@@ -4,8 +4,24 @@
 class User < ApplicationRecord
   # name:string
   # admin:boolean
+  # deleted_at:datetime
 
   delegate :given, :family, to: :namae
+
+  # instead of deleting users, mark them as soft deleted
+  def soft_delete
+    update_attribute(:deleted_at, Time.current)
+  end
+
+  # [devise] ensure user account is active
+  def active_for_authentication?
+    super && !deleted_at?
+  end
+
+  # [devise] provide a custom message for a soft-deleted account
+  def inactive_message
+    !deleted_at? ? super : :deleted_account
+  end
 
   def to_s
     # Use the stored name value for labels

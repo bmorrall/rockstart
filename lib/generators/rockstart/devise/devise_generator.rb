@@ -46,27 +46,23 @@ class Rockstart::DeviseGenerator < Rails::Generators::Base
     end
   end
 
-  def inject_routes
-    return if options[:skip_controllers]
-
-    inject_into_file "config/routes.rb", after: /devise_for :users/ do
-      template_partial = build_controllers_inject_string
-      template_partial.gsub(/([^\n]*)\n/, "  \\1\n").gsub(/\A\s*/, "") # Prepend newlines
-    end
-  end
-
-  def build_controllers_inject_string
-    controller_templates = devise_controllers.map do |controller|
-      "  #{controller}: \"users/#{controller}\""
-    end.join(",\n")
-    [", controllers: {", controller_templates, "}"].join("\n")
-  end
-
   def generate_user_model
     return if options[:skip_model]
 
     Bundler.with_clean_env do
-      generate "devise", "User", "--primary-key-type=uuid"
+      generate "devise", "User"
+    end
+  end
+
+  def inject_routes
+    return if options[:skip_controllers]
+
+    controller_templates = devise_controllers.map do |controller|
+      "    #{controller}: \"users/#{controller}\""
+    end.join(",\n")
+
+    gsub_file "config/routes.rb", /devise_for :users.*$$/ do
+      ["devise_for :users, controllers: {", controller_templates, "  }"].join("\n")
     end
   end
 
@@ -91,18 +87,24 @@ class Rockstart::DeviseGenerator < Rails::Generators::Base
   private
 
   def generate_devise_install(dir)
-    require "generators/devise/install_generator"
-
-    initializer = ::Devise::Generators::InstallGenerator.new(
-      report_stream: StringIO.new
-    )
-    initializer.destination_root = dir
+    initializer = build_devise_install_generator(dir)
     initializer.invoke_all
 
     update_initializer(dir)
     make_devise_paranoid(dir)
     send_email_on_email_change(dir)
     send_email_on_password_change(dir)
+    add_translations(dir)
+  end
+
+  def build_devise_install_generator(dir)
+    require "generators/devise/install_generator"
+
+    initializer = ::Devise::Generators::InstallGenerator.new(
+      report_stream: StringIO.new
+    )
+    initializer.destination_root = dir
+    initializer
   end
 
   def update_initializer(dir)
@@ -137,6 +139,13 @@ class Rockstart::DeviseGenerator < Rails::Generators::Base
               /config\.send_password_change_notification = (true|false)/,
               "config.send_password_change_notification = true"
     uncomment_lines devise_initializer(dir), /config\.send_password_change_notification = true/
+  end
+
+  def add_translations(dir)
+    inject_into_file File.join(dir, "config/locales/devise.en.yml"), after: /failure:$/ do
+      "\n      deleted_account: " \
+        "\"You've deleted your account. Please contact support if you want to recover it!\""
+    end
   end
 
   def devise_initializer(dir)
@@ -177,6 +186,7 @@ class Rockstart::DeviseGenerator < Rails::Generators::Base
     use_pundit_for_update_user_details(dir)
     add_pudit_authorize_current_user_method(dir)
     add_pudit_authorize_current_user_callback(dir)
+    add_pudit_error_handling_concern(dir)
   end
 
   def use_pundit_for_update_user_details(dir)
@@ -200,6 +210,12 @@ class Rockstart::DeviseGenerator < Rails::Generators::Base
     inject_into_file File.join(dir, controller_path("registrations")),
                      after: /before_action :configure_account_update_params.*$/ do
       "\n  before_action :authorize_current_user, only: %i[edit update destroy]"
+    end
+  end
+
+  def add_pudit_error_handling_concern(dir)
+    inject_into_file File.join(dir, controller_path("registrations")), after: /< Devise::.*$/ do
+      "\n  include PunditErrorHandling\n"
     end
   end
 

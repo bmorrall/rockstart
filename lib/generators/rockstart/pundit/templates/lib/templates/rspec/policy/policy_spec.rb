@@ -3,11 +3,11 @@
 require "rails_helper"
 
 RSpec.describe <%= class_name %>Policy, type: :policy do
-  subject { described_class.new(user, <%= file_name %>) }
+  subject { described_class.new(user, <%= file_name %>_record) }
 
   let(:resolved_scope) { described_class::Scope.new(user, <%= class_name %>.all).resolve }
 
-  let(:<%= file_name %>) { <%= class_name %>.new }
+  let(:<%= file_name %>_record) { <%= class_name %>.new }
 
   context "with a guest" do
     let(:user) { nil }

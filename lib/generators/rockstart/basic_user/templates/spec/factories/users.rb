@@ -7,5 +7,9 @@ FactoryBot.define do
     trait :admin do
       admin { true }
     end
+
+    trait :soft_deleted do
+      deleted_at { Time.zone.now }
+    end
   end
 end

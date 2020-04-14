@@ -8,6 +8,8 @@ RSpec.describe User, type: :model do
   it { is_expected.not_to validate_presence_of(:name) }
   # admin:boolean
   it { is_expected.to have_db_column(:admin).with_options(default: false) }
+  # deleted_at:datetime
+  it { is_expected.to have_db_column(:deleted_at).of_type(:datetime) }
 
   describe "#given" do
     it "returns the given name from the name" do

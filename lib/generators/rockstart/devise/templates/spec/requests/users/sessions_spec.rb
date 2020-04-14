@@ -23,6 +23,22 @@ RSpec.describe "Users::Passwords", type: :request do
         expect(response).to redirect_to(root_url)
       end
     end
+
+    context "with a soft deleted user" do
+      let(:soft_deleted_user) { create(:user, :soft_deleted) }
+
+      before do
+        sign_in soft_deleted_user
+      end
+
+      it "redirects back to the landing page" do
+        get new_user_session_path
+        expect(response).to redirect_to(new_user_session_path)
+
+        follow_redirect!
+        expect(response.body).to have_selector(".alert-alert", text: t("devise.failure.deleted_account"))
+      end
+    end
   end
 
   describe "POST /users/sign_in" do

@@ -26,9 +26,13 @@ class Users::RegistrationsController < Devise::RegistrationsController
   # end
 
   # DELETE /users
-  # def destroy
-  #   super
-  # end
+  def destroy
+    resource.soft_delete
+    Devise.sign_out_all_scopes ? sign_out : sign_out(resource_name)
+    set_flash_message :notice, :destroyed
+    yield resource if block_given?
+    respond_with_navigational(resource) { redirect_to after_sign_out_path_for(resource_name) }
+  end
 
   # GET /users/cancel
   # Forces the session data which is usually expired after sign
@@ -49,6 +53,11 @@ class Users::RegistrationsController < Devise::RegistrationsController
   # If you have extra params to permit, append them to the sanitizer.
   def configure_account_update_params
     devise_parameter_sanitizer.permit(:account_update, keys: %i[name])
+  end
+
+  # The path used after deleting account
+  def after_sign_out_path_for(_resource)
+    new_user_registration_path
   end
 
   # The path used after sign up.

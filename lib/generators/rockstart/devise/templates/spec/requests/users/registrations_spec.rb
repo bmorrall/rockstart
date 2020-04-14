@@ -356,4 +356,58 @@ RSpec.describe "Users::Registrations", type: :request do
       end
     end
   end
+
+  describe "DELETE /users" do
+    context "with an authenticated user" do
+      let(:authenticated_user) { create(:user) }
+
+      before do
+        sign_in(authenticated_user)
+      end
+
+      it "redirects to the registration page with a notice" do
+        delete user_registration_path
+        expect(response).to redirect_to(new_user_registration_path)
+
+        follow_redirect!
+        expect(response.body).to have_selector(".alert-notice", text: t("devise.registrations.destroyed"))
+      end
+
+      it "soft deletes the User" do
+        expect do
+          delete user_registration_path
+        end.not_to change(User, :count)
+
+        authenticated_user.reload
+        expect(authenticated_user).to be_deleted_at
+        expect(authenticated_user).not_to be_active_for_authentication
+      end
+    end
+  end
+
+  context "with an authenticated admin" do
+    let(:authenticated_admin) { create(:user, :admin) }
+
+    before do
+      sign_in(authenticated_admin)
+    end
+
+    it "redirects to the dashboard page with an error" do
+      delete user_registration_path
+      expect(response).to redirect_to(root_url)
+
+      follow_redirect!
+      expect(response.body).to have_selector(".alert-error", text: t("pundit.user_policy.destroy?", default: t("pundit.default")))
+    end
+
+    it "does not soft delete the user" do
+      expect do
+        delete user_registration_path
+      end.not_to change(User, :count)
+
+      authenticated_admin.reload
+      expect(authenticated_admin).to be_active_for_authentication
+      expect(authenticated_admin).not_to be_deleted_at
+    end
+  end
 end

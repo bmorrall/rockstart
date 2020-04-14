@@ -1,0 +1,4 @@
+en:
+  devise:
+    failure:
+      deleted_account: "You've deleted your account. Please contact support if you want to recover it!"
