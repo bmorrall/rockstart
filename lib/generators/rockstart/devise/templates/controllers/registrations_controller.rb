@@ -69,4 +69,11 @@ class Users::RegistrationsController < Devise::RegistrationsController
       super
     end
   end
+
+  def account_update_params
+    super.tap do |params|
+      # Ensure password confirmation is included with password
+      params[:password_confirmation] ||= "" if params[:password].present?
+    end
+  end
 end

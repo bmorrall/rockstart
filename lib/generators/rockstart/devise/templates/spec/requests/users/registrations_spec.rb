@@ -286,6 +286,33 @@ RSpec.describe "Users::Registrations", type: :request do
       end
     end
 
+    context "with no password confirmation param" do
+      let(:current_password) { Faker::Internet.password }
+      let(:no_password_confirmation_params) do
+        {
+          user: {
+            current_password: current_password,
+            password: Faker::Internet.password
+          }
+        }
+      end
+
+      context "as an authenticated user" do
+        let(:authenticated_user) { create(:user, password: current_password) }
+
+        before do
+          sign_in(authenticated_user)
+        end
+
+        it "renders the form with an error" do
+          put user_registration_path, params: no_password_confirmation_params
+          expect(response).to be_successful
+
+          expect(response.body).to have_content("Password confirmation doesn't match Password")
+        end
+      end
+    end
+
     context "with update user details params" do
       let(:existing_email) { Faker::Internet.email }
       let(:updated_name) { Faker::Name.name }
