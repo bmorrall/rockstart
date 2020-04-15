@@ -2,6 +2,7 @@
 
 SECURITY_TASKS = %w[
   bundle:audit
+  brakeman
 ].freeze
 
 desc "Run all security checks"

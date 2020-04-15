@@ -6,3 +6,4 @@ Example:
 
     This will create:
         Installs bundler-audit to safely check gems
+        Installs brakeman to check for any potential exploits
