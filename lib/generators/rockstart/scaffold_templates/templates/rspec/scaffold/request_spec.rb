@@ -103,7 +103,7 @@ RSpec.describe "<%= controller_class_name %>", <%= type_metatag(:request) %> do
 
       it "forbids access" do
         <%= file_name %> = create(:<%= file_name %>)
-        get <%= show_helper.tr('@', '') %>, headers: { "HTTP_REFERER" => <%= index_helper %>_url }
+        get <%= show_helper.tr('@', '') %>
         expect(response).to redirect_to(<%= index_helper %>_url)
 
         follow_redirect!
@@ -140,7 +140,7 @@ RSpec.describe "<%= controller_class_name %>", <%= type_metatag(:request) %> do
       end
 
       it "forbids access" do
-        get <%= new_helper %>, headers: { "HTTP_REFERER" => <%= index_helper %>_url }
+        get <%= new_helper %>
         expect(response).to redirect_to(<%= index_helper %>_url)
 
         follow_redirect!
@@ -178,7 +178,7 @@ RSpec.describe "<%= controller_class_name %>", <%= type_metatag(:request) %> do
 
       it "forbids access" do
         <%= file_name %> = create(:<%= file_name %>)
-        get <%= edit_helper.tr('@','') %>, headers: { "HTTP_REFERER" => <%= show_helper.tr('@', '') %> }
+        get <%= edit_helper.tr('@','') %>
         expect(response).to redirect_to(<%= show_helper.tr('@', '') %>)
 
         follow_redirect!
@@ -239,7 +239,7 @@ RSpec.describe "<%= controller_class_name %>", <%= type_metatag(:request) %> do
         end
 
         it "forbids access" do
-          post <%= index_helper %>_url, params: { <%= ns_file_name %>: valid_attributes }, headers: { "HTTP_REFERER" => <%= index_helper %>_url }
+          post <%= index_helper %>_url, params: { <%= ns_file_name %>: valid_attributes }
           expect(response).to redirect_to(<%= index_helper %>_url)
 
           follow_redirect!
@@ -325,7 +325,7 @@ RSpec.describe "<%= controller_class_name %>", <%= type_metatag(:request) %> do
 
         it "forbids access" do
           <%= file_name %> = create(:<%= file_name %>)
-          patch <%= show_helper.tr('@', '') %>, params: { <%= singular_table_name %>: new_attributes }, headers: { "HTTP_REFERER" => <%= show_helper.tr('@', '') %> }
+          patch <%= show_helper.tr('@', '') %>, params: { <%= singular_table_name %>: new_attributes }
           expect(response).to redirect_to(<%= show_helper.tr('@', '') %>)
 
           follow_redirect!
@@ -390,7 +390,7 @@ RSpec.describe "<%= controller_class_name %>", <%= type_metatag(:request) %> do
 
       it "forbids access" do
         <%= file_name %> = create(:<%= file_name %>)
-        delete <%= show_helper.tr('@', '') %>, headers: { "HTTP_REFERER" => <%= show_helper.tr('@', '') %> }
+        delete <%= show_helper.tr('@', '') %>
         expect(response).to redirect_to(<%= show_helper.tr('@', '') %>)
 
         follow_redirect!

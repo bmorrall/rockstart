@@ -86,6 +86,20 @@ class <%%= controller_class_name %>Controller < ApplicationController
     redirect_to <%%= index_helper %>_url, notice: <%%= "'#{human_name} was successfully destroyed.'" %>
   end
 
+<%- if pundit? -%>
+  protected
+
+  def authentication_failed_redirect_path_for(_resource)
+    if @<%%= singular_table_name %> && policy(@<%%= singular_table_name %>).show?
+      @<%%= singular_table_name %>
+    elsif policy(<%%= class_name %>).index?
+      <%%= index_helper %>_url
+    else
+      super
+    end
+  end
+
+<%- end -%>
   private
     # Use callbacks to share common setup or constraints between actions.
     def assign_<%%= singular_table_name %>

@@ -8,6 +8,13 @@ module PunditErrorHandling
     rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
   end
 
+  protected
+
+  # redirect path for failed authentication attempts
+  def authentication_failed_redirect_path_for(_resource)
+    after_sign_in_path_for(current_user)
+  end
+
   private
 
   def user_not_authorized(exception)
@@ -17,6 +24,6 @@ module PunditErrorHandling
     flash[:error] = t "#{policy_name}.#{exception.query}", scope: "pundit", default: :default
 
     # redirect to the either the previous page or the default sign in page
-    redirect_to(request.referrer || after_sign_in_path_for(current_user))
+    redirect_to authentication_failed_redirect_path_for(exception.record)
   end
 end
