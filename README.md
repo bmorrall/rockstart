@@ -34,6 +34,14 @@ Rockstart can pre-configure RSpec for your repository.
 bundle exec rails g rockstart:rspec
 ```
 
+### Security
+
+Rockstart can install a rake task for checking the security of your app
+
+```
+bundle exec rails g rockstart:security
+```
+
 ### Quality
 
 Rockstart can add tasks for maintaining the quality of your codebase.

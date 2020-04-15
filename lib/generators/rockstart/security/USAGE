@@ -1,0 +1,8 @@
+Description:
+    Adds security checks and middleware to a Rails app
+
+Example:
+    rails generate rockstart:security
+
+    This will create:
+        Installs bundler-audit to safely check gems
