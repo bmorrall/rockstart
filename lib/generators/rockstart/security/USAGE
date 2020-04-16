@@ -8,4 +8,5 @@ Example:
         Installs bundler-audit to safely check gems
         Installs brakeman to check for any potential exploits
         Adds rack_attack with a simple policy to block most attacks
+        Configures a minimalist Content Security Policy with supporting test coverage
         Ensures test (and unconfigured) environments are using an in-memory cache

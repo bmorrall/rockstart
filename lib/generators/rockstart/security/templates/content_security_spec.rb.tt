@@ -1,0 +1,83 @@
+# frozen_string_literal: true
+
+require "rails_helper"
+
+RSpec.describe "ContentSecurity", type: :request do
+  describe "HTTP Headers" do
+    context "after sign in" do
+      before do
+        user = create(:user)
+        post user_session_path params: { user: { email: user.email, password: user.password } }
+      end
+
+      it "includes all expected secure headers", :aggregate_failures do
+        # Cookies
+        session_cookie = cookies.get_cookie("<%= session_name %>")
+        expect(session_cookie).to be_http_only
+        expect(session_cookie.to_h["SameSite"]).to eq("Lax")
+
+        follow_redirect!
+
+        # Security Headers
+        expect(response.headers["X-Frame-Options"]).to eq "SAMEORIGIN"
+        expect(response.headers["X-XSS-Protection"]).to eq "1; mode=block"
+        expect(response.headers["X-Content-Type-Options"]).to eq "nosniff"
+        expect(response.headers["X-Download-Options"]).to eq "noopen"
+        expect(response.headers["X-Permitted-Cross-Domain-Policies"]).to eq "none"
+        expect(response.headers["Referrer-Policy"]).to eq "strict-origin-when-cross-origin"
+
+        # Content Security Policy
+        content_security_policy = response.headers["Content-Security-Policy"]
+        expect(content_security_policy).to have_content("default-src 'none'")
+        expect(content_security_policy).to have_content("connect-src 'self'")
+        expect(content_security_policy).to have_content("font-src 'self'<% if font_hosts.any? %> <%= font_hosts.join(' ') %><% end %>")
+        expect(content_security_policy).to have_content("img-src 'self' data:<% if image_hosts.any? %> <%= image_hosts.join(' ') %><% end %>")
+        expect(content_security_policy).to have_content("object-src 'none'")
+        expect(content_security_policy).to have_content("script-src 'self'<% if script_hosts.any? %> <%= script_hosts.join(' ') %><% end %>")
+        expect(content_security_policy).to have_content("style-src 'self'<% if style_hosts.any? %> <%= style_hosts.join(' ') %><% end %>")
+        expect(content_security_policy).to have_content("block-all-mixed-content")
+        expect(content_security_policy).to have_content("upgrade-insecure-requests")
+        expect(content_security_policy).to have_content("report-uri /csp_violations")
+
+        # Content Security Policy should not require any unsafe exceptions
+        expect(content_security_policy).not_to have_content("unsafe")
+      end
+    end
+  end
+
+  describe "POST /csp_violations" do
+    context "with a csp violations" do
+      let(:csp_violation) do
+        {
+          "csp-report": {
+            "document-uri": "http://example.com/signup.html",
+            "referrer": "",
+            "blocked-uri": "http://example.com/css/style.css",
+            "violated-directive": "style-src cdn.example.com",
+            "original-policy": "default-src 'none'; style-src cdn.example.com; report-uri /csp_violations"
+          }
+        }.to_json
+      end
+
+      it "responds with ok" do
+        post "/csp_violations", params: csp_violation, headers: { "CONTENT_TYPE" => "application/json" }
+
+        expect(response).to have_http_status(:ok)
+        expect(response.body).to be_blank
+      end
+    end
+
+    context "with an invalid payload" do
+      let(:invalid_csp_violation) do
+        {}.to_json
+      end
+
+      it "responds with ok" do
+        post "/csp_violations", params: invalid_csp_violation, headers: { "CONTENT_TYPE" => "application/json" }
+
+        expect(response).to have_http_status(:ok)
+        expect(response.body).to be_blank
+      end
+    end
+  end
+end

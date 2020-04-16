@@ -21,6 +21,8 @@ Layout/LineLength:
     - lib/generators/rockstart/devise/templates/**/*_spec.rb
     # Exclude rack_attack initializer
     - lib/generators/rockstart/logging/templates/rockstart/lograge_initializer.rb
+    # Exclude content security policy initializer
+    - lib/generators/rockstart/security/templates/content_security_policy_initializer.rb
 
 Metrics/BlockLength:
   Exclude:
