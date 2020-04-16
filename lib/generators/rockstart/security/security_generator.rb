@@ -24,4 +24,21 @@ class Rockstart::SecurityGenerator < Rails::Generators::Base
   def add_security_rake_tasks
     copy_file "security.rake", "lib/tasks/security.rake"
   end
+
+  def install_rack_attack
+    gem "rack-attack"
+
+    Bundler.clean_system("bundle install --quiet")
+
+    copy_file "rack_attack.rb", "config/initializers/rack_attack.rb"
+    copy_file "cache_support.rb", "spec/support/cache.rb"
+
+    application do
+      <<~CACHE
+        # Use memory_store cache for testing and default configurations
+        config.cache_store = :memory_store
+      CACHE
+    end
+    comment_lines "config/environments/test.rb", "config.cache_store = "
+  end
 end

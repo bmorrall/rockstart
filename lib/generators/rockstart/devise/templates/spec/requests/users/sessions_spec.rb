@@ -41,7 +41,7 @@ RSpec.describe "Users::Passwords", type: :request do
     end
   end
 
-  describe "POST /users/sign_in" do
+  describe "POST /users/sign_in", :cache_testing do
     context "with known user credentials" do
       let(:valid_password) { Faker::Internet.password }
       let(:known_user) { create(:user, password: valid_password) }
@@ -101,6 +101,43 @@ RSpec.describe "Users::Passwords", type: :request do
 
         expect(response.body).to have_selector(".alert-alert", text: t("devise.failure.invalid", authentication_keys: "Email"))
       end
+    end
+
+    it "rate limits requests based off ip address" do
+      5.times do
+        post new_user_session_path, params: {
+          user: {
+            email: Faker::Internet.email,
+            password: Faker::Internet.password
+          }
+        }
+      end
+
+      post new_user_session_path, params: {
+        user: {
+          email: Faker::Internet.email,
+          password: Faker::Internet.password
+        }
+      }
+      expect(response).to have_http_status(:too_many_requests)
+    end
+
+    it "rate limits requests based off email address" do
+      valid_email_parameters = {
+        user: {
+          email: Faker::Internet.email,
+          password: Faker::Internet.password
+        }
+      }
+
+      5.times do |n|
+        post new_user_session_path, params: valid_email_parameters, headers: {
+          "REMOTE_ADDR" => format("120.0.1.%<n>d", n: n)
+        }
+      end
+
+      post new_user_session_path, params: valid_email_parameters
+      expect(response).to have_http_status(:too_many_requests)
     end
   end
 

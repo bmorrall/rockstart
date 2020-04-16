@@ -28,7 +28,7 @@ RSpec.describe "Users::Registrations", type: :request do
     end
   end
 
-  describe "POST /users" do
+  describe "POST /users", :cache_testing do
     context "with valid create user params" do
       let(:valid_password) { Faker::Internet.password }
       let(:valid_registration_params) do
@@ -99,6 +99,29 @@ RSpec.describe "Users::Registrations", type: :request do
         expect(response.body).to have_content("Email has already been taken")
       end
     end
+
+    it "rate limits requests based off ip address" do
+      valid_password = Faker::Internet.password
+
+      5.times do
+        post user_registration_path, params: {
+          user: {
+            email: Faker::Internet.email,
+            password: valid_password,
+            password_confirmation: valid_password
+          }
+        }
+      end
+
+      post user_registration_path, params: {
+        user: {
+          email: Faker::Internet.email,
+          password: valid_password,
+          password_confirmation: valid_password
+        }
+      }
+      expect(response).to have_http_status(:too_many_requests)
+    end
   end
 
   describe "GET /users/edit" do
@@ -126,7 +149,7 @@ RSpec.describe "Users::Registrations", type: :request do
     end
   end
 
-  describe "PUT /users" do
+  describe "PUT /users", :cache_testing do
     context "with update user email params" do
       let(:original_email) { Faker::Internet.email }
       let(:updated_email) { Faker::Internet.email }
@@ -169,6 +192,15 @@ RSpec.describe "Users::Registrations", type: :request do
           delivery = ActionMailer::Base.deliveries.last
           expect(delivery.to).to eq [original_email]
           expect(delivery.subject).to eq t("devise.mailer.email_changed.subject")
+        end
+
+        it "rate limits requests based off ip address" do
+          5.times do
+            put user_registration_path, params: update_user_email_params
+          end
+
+          put user_registration_path, params: update_user_email_params
+          expect(response).to have_http_status(:too_many_requests)
         end
       end
 
