@@ -77,6 +77,13 @@ class Rockstart::SecurityGenerator < Rails::Generators::Base
     template "content_security_spec.rb.tt", "spec/requests/content_security_spec.rb"
   end
 
+  def enforce_ssl
+    gsub_file "config/environments/production.rb",
+              /config.force_ssl = .+$/,
+              'config.force_ssl = ENV["ALLOW_INSECURE_HTTP"].to_i != 1'
+    uncomment_lines "config/environments/production.rb", /config.force_ssl =/
+  end
+
   private
 
   def font_hosts

@@ -1,4 +1,5 @@
 APP_HOST=localhost
+ALLOW_INSECURE_HTTP=1
 <%- if devise? -%>
 DEVISE_MAILER_SENDER=devise-mailer@<%= app_name %>
 <%- end -%>

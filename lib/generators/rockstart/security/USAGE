@@ -10,3 +10,4 @@ Example:
         Adds rack_attack with a simple policy to block most attacks
         Configures a minimalist Content Security Policy with supporting test coverage
         Ensures test (and unconfigured) environments are using an in-memory cache
+        Enforces secure HTTPS connections by defaults
