@@ -1,0 +1,27 @@
+#!/bin/bash
+
+set -o errexit
+set -o pipefail
+set -o nounset
+
+echo "=== Creating Certification Authority for localhost ==="
+
+openssl req -x509 -nodes -new -sha256 -days 1024 -newkey rsa:2048 \
+  -keyout localhostCA.key \
+  -out localhostCA.pem \
+  -subj "/C=US/CN=Example-Root-CA"
+
+openssl x509 -outform pem -in localhostCA.pem -out localhostCA.crt
+
+echo "=== Generating Domain Name Certificate ==="
+
+openssl req -new -nodes -newkey rsa:2048 \
+  -keyout docker/certs/web/<%= app_name %>.key \
+  -out docker/certs/web/<%= app_name %>.csr \
+  -subj "/C=US/ST=YourState/L=YourCity/O=Example-Certificates/CN=<%= app_name %>.local"
+
+openssl x509 -req -sha256 -days 1024 \
+  -in docker/certs/web/<%= app_name %>.csr \
+  -CA localhostCA.pem -CAkey localhostCA.key \
+  -CAcreateserial -extfile docker/certs/<%= app_name %>_localhost.ext \
+  -out docker/certs/web/<%= app_name %>.crt

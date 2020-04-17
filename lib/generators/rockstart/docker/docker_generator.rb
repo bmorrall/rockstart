@@ -52,8 +52,20 @@ class Rockstart::DockerGenerator < Rails::Generators::Base
     template "docker-compose.test.yml", "docker-compose.test.yml"
   end
 
+  def create_certs_directory
+    FileUtils.mkdir_p(Rails.root.join("docker", "certs", "web"))
+    append_file ".gitignore", "\n# Docker Configuration\ndocker/certs\n"
+  end
+
   def create_dotenv
     template "dotenv.docker.tt", ".env.docker"
+  end
+
+  def create_localhost_certificates
+    template "localhost_domains.ext.tt", "docker/certs/web/#{app_name}_localhost.ext"
+    template "setup-localhost.tt", "bin/setup-localhost"
+    File.chmod(0755, Rails.root.join("bin", "setup-localhost"))
+    append_file ".gitignore", "\n# localhost certificate authority\nlocalhostCA.*\n"
   end
 
   private

@@ -10,3 +10,7 @@
 /public/assets
 /tmp
 /vendor/bundle
+
+# Development Scripts
+bin/setup-localhost
+localhostCA.*
