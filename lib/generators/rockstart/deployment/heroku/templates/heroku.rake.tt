@@ -2,6 +2,11 @@
 
 namespace :heroku do
   ENV_VARIABLES = %w[
+<%- if auth0? -%>
+    AUTH0_CLIENT_ID
+    AUTH0_CLIENT_SECRET
+    AUTH0_DOMAIN
+<%- end -%>
 <%- if rollbar? -%>
     ROLLBAR_ACCESS_TOKEN
 <%- end -%>

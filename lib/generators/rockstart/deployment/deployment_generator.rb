@@ -9,6 +9,7 @@ class Rockstart::DeploymentGenerator < Rails::Generators::Base
 
   source_root File.expand_path("templates", __dir__)
 
+  auth0_class_option
   devise_class_option
   frontend_class_option
   memcached_class_option
@@ -26,6 +27,7 @@ class Rockstart::DeploymentGenerator < Rails::Generators::Base
 
   def generate_heroku
     generate "rockstart:deployment:heroku",
+             auth0_option,
              memcached_option,
              postgres_option,
              rollbar_option

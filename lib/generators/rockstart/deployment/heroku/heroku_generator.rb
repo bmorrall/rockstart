@@ -11,6 +11,7 @@ module Rockstart::Deployment
 
     source_root File.expand_path("templates", __dir__)
 
+    auth0_class_option
     memcached_class_option
     postgres_class_option
     rollbar_class_option

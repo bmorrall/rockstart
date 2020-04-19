@@ -15,6 +15,13 @@ class Rockstart::GemsetGenerator < Rails::Generators::Base
     gem "namae"
   end
 
+  def install_auth0_gems
+    return unless auth0?
+
+    gem "omniauth-auth0", "~> 2.2"
+    gem "omniauth-rails_csrf_protection", "~> 0.1"
+  end
+
   def install_devise_gems
     return unless devise?
 

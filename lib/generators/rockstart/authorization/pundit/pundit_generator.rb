@@ -1,8 +1,14 @@
 # frozen_string_literal: true
 
+require "rockstart/generators/class_option_helpers"
+
 module Rockstart::Authorization
   class PunditGenerator < Rails::Generators::Base
+    include Rockstart::Generators::ClassOptionHelpers
+
     source_root File.expand_path("templates", __dir__)
+
+    auth0_class_option
 
     def add_pundit_exception_handling
       application <<~PUNDIT

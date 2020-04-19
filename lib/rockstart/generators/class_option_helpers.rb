@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# rubocop:disable Metrics/ModuleLength
 module Rockstart
   module Generators
     # Adds helpers for common class options used by rockstart
@@ -9,12 +10,19 @@ module Rockstart
       # rubocop:disable Metrics/BlockLength
       class_methods do
         def all_class_options
+          auth0_class_option
           devise_class_option
           frontend_class_option
           memcached_class_option
           postgres_class_option
           pundit_class_option
           rollbar_class_option
+        end
+
+        def auth0_class_option
+          class_option :auth0, type: :boolean,
+                               desc: "Include Auth0 support",
+                               default: false
         end
 
         def devise_class_option
@@ -59,6 +67,7 @@ module Rockstart
 
       def all_class_options
         [
+          auth0_option,
           devise_option,
           frontend_option,
           memcached_option,
@@ -66,6 +75,14 @@ module Rockstart
           pundit_option,
           rollbar_option
         ]
+      end
+
+      def auth0?
+        options.fetch(:auth0)
+      end
+
+      def auth0_option
+        auth0? ? "--auth0" : "--no-auth0"
       end
 
       def devise?
@@ -118,3 +135,4 @@ module Rockstart
     end
   end
 end
+# rubocop:enable Metrics/ModuleLength

@@ -1,6 +1,14 @@
 {
   "name": "<%= app_name %>",
   "addons": [
+<%- if auth0? -%>
+    {
+      "plan": "auth0:free",
+      "options": {
+        "type": "rails"
+      }
+    },
+<%- end -%>
 <%- if postgres? -%>
     "heroku-postgresql:hobby-dev",
 <%- end -%>
@@ -28,5 +36,5 @@
   "stack": "heroku-18",
   "scripts": {
     "postdeploy": "./bin/setup-deployment"
-  }
+  },
 }

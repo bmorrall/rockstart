@@ -9,6 +9,7 @@ module Rockstart::Testing
     source_root File.expand_path("templates", __dir__)
 
     devise_class_option
+    auth0_class_option
 
     def add_dotenv_files
       template "dotenv.test.tt", ".env.test"

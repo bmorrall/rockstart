@@ -14,6 +14,8 @@ Layout/LineLength:
   Exclude:
     - rockstart.gemspec
     - spec/**/*
+    # Exclude auth0 spec templates
+    - lib/generators/rockstart/auth0/templates/**/*_spec.rb
     # Exclude devise templates
     - lib/generators/rockstart/devise/templates/**/*_spec.rb
     # Exclude content security policy initializer

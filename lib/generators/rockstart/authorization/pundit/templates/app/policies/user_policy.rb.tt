@@ -41,7 +41,11 @@ class UserPolicy < ApplicationPolicy
   # Safe scope for User
   class Scope < Scope
     def resolve
+<%- if auth0? -%>
+      raise Pundit::NotDefinedError, "Cannot scope Users"
+<%- else -%>
       user.persisted? ? scope.where(id: user.id) : scope.none
+<%- end -%>
     end
   end
 end

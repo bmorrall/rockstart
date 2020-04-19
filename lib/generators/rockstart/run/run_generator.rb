@@ -14,7 +14,7 @@ class Rockstart::RunGenerator < Rails::Generators::Base
   end
 
   def generate_testing
-    generate "rockstart:testing", devise_option
+    generate "rockstart:testing", auth0_option, devise_option
   end
 
   def generate_storage
@@ -32,7 +32,7 @@ class Rockstart::RunGenerator < Rails::Generators::Base
   end
 
   def generate_authorization
-    generate "rockstart:authorization", devise_option, pundit_option
+    generate "rockstart:authorization", auth0_option, devise_option, pundit_option
   end
 
   def generate_monitoring
@@ -45,6 +45,7 @@ class Rockstart::RunGenerator < Rails::Generators::Base
 
   def generate_deployment
     generate "rockstart:deployment",
+             auth0_option,
              devise_option,
              frontend_option,
              memcached_option,

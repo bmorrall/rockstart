@@ -1,0 +1,5 @@
+en:
+  auth0:
+    omniauth_error:
+      unauthorized: "Your account has been blocked."
+      generic: "An unexpected error has occured, please try again!!!"

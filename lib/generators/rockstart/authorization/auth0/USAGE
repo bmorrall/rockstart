@@ -1,0 +1,10 @@
+Description:
+    Adds Auth0 authentication to a Ruby on Rails Application
+
+Example:
+    rails generate rockstart:authorization:auth0
+
+    This will create:
+        Installs omniauth-auth0 and configures it to run in rails
+        Adds an auth controller for handling session creation/deletion
+        Adds a PORO User model to represent a signed in user
