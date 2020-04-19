@@ -20,7 +20,7 @@ RSpec.describe "Users::Registrations", type: :request do
 
       it "redirects to the dashboard with a warning" do
         get new_user_registration_path
-        expect(response).to redirect_to(root_url)
+        expect(response).to redirect_to(url_for_user_dashboard)
 
         follow_redirect!
         expect(response.body).to have_selector(".alert-alert", text: t("devise.failure.already_authenticated"))
@@ -43,7 +43,7 @@ RSpec.describe "Users::Registrations", type: :request do
 
       it "redirects to the dashboard with a notice" do
         post user_registration_path, params: valid_registration_params
-        expect(response).to redirect_to(root_url)
+        expect(response).to redirect_to(url_for_user_dashboard)
 
         follow_redirect!
         expect(response.body).to have_selector(".alert-notice", text: t("devise.registrations.signed_up"))
@@ -53,7 +53,7 @@ RSpec.describe "Users::Registrations", type: :request do
         sign_in create(:user)
 
         post user_registration_path, params: valid_registration_params
-        expect(response).to redirect_to(root_url)
+        expect(response).to redirect_to(url_for_user_dashboard)
 
         follow_redirect!
         expect(response.body).to have_selector(".alert-alert", text: t("devise.failure.already_authenticated"))
@@ -171,7 +171,7 @@ RSpec.describe "Users::Registrations", type: :request do
 
         it "redirects to the dashboard with a notice" do
           put user_registration_path, params: update_user_email_params
-          expect(response).to redirect_to(root_url)
+          expect(response).to redirect_to(url_for_user_dashboard)
 
           follow_redirect!
           expect(response.body).to have_selector(".alert-notice", text: t("devise.registrations.updated"))
@@ -237,7 +237,7 @@ RSpec.describe "Users::Registrations", type: :request do
 
         it "redirects to the dashboard with a notice" do
           put user_registration_path, params: update_user_password_params
-          expect(response).to redirect_to(root_url)
+          expect(response).to redirect_to(url_for_user_dashboard)
 
           follow_redirect!
           expect(response.body).to have_selector(".alert-notice", text: t("devise.registrations.updated"))
@@ -366,7 +366,7 @@ RSpec.describe "Users::Registrations", type: :request do
 
         it "redirects to the dashboard with a notice" do
           put user_registration_path, params: update_user_details_params
-          expect(response).to redirect_to(root_url)
+          expect(response).to redirect_to(url_for_user_dashboard)
 
           follow_redirect!
           expect(response.body).to have_selector(".alert-notice", text: t("devise.registrations.updated"))
@@ -426,7 +426,7 @@ RSpec.describe "Users::Registrations", type: :request do
 
     it "redirects to the dashboard page with an error" do
       delete user_registration_path
-      expect(response).to redirect_to(root_url)
+      expect(response).to redirect_to(url_for_user_dashboard)
 
       follow_redirect!
       expect(response.body).to have_selector(".alert-error", text: t("pundit.user_policy.destroy?", default: t("pundit.default")))

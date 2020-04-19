@@ -18,9 +18,9 @@ RSpec.describe "Users::Passwords", type: :request do
         sign_in authenticated_user
       end
 
-      it "redirects back to the landing page" do
+      it "redirects back to the user dashboard" do
         get new_user_session_path
-        expect(response).to redirect_to(root_url)
+        expect(response).to redirect_to(url_for_user_dashboard)
       end
     end
 
@@ -33,7 +33,7 @@ RSpec.describe "Users::Passwords", type: :request do
 
       it "redirects back to the landing page" do
         get new_user_session_path
-        expect(response).to redirect_to(new_user_session_path)
+        expect(response).to redirect_to(url_for_authentication)
 
         follow_redirect!
         expect(response.body).to have_selector(".alert-alert", text: t("devise.failure.deleted_account"))
@@ -57,7 +57,7 @@ RSpec.describe "Users::Passwords", type: :request do
 
       it "redirects to the dashboard" do
         post new_user_session_path, params: valid_sign_in_params
-        expect(response).to redirect_to(root_url)
+        expect(response).to redirect_to(url_for_user_dashboard)
 
         follow_redirect!
         expect(controller.current_user).to eq known_user.reload
@@ -151,7 +151,7 @@ RSpec.describe "Users::Passwords", type: :request do
 
       it "redirects to the login page with a notice" do
         delete destroy_user_session_path
-        expect(response).to redirect_to(new_user_session_path)
+        expect(response).to redirect_to(url_for_authentication)
 
         follow_redirect!
         expect(response.body).to have_selector(".alert-notice", text: t("devise.sessions.signed_out"))
@@ -159,9 +159,9 @@ RSpec.describe "Users::Passwords", type: :request do
     end
 
     context "with a guest" do
-      it "redirects to the landing page" do
+      it "redirects to the login page with a notice" do
         delete destroy_user_session_path
-        expect(response).to redirect_to(new_user_session_path)
+        expect(response).to redirect_to(url_for_authentication)
 
         follow_redirect!
         expect(response.body).to have_selector(".alert-notice", text: t("devise.sessions.signed_out"))

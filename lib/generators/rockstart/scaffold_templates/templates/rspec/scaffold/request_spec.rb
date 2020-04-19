@@ -48,7 +48,7 @@ RSpec.describe "<%= controller_class_name %>", <%= type_metatag(:request) %> do
       it "forbids access" do
         create(:<%= file_name %>)
         get <%= index_helper %>_url
-        expect(response).to redirect_to(root_url)
+        expect(response).to redirect_to(url_for_user_dashboard)
 
         follow_redirect!
         expect(response.body).to have_selector(".alert-error", text: t("pundit.example_policy.index?", default: t("pundit.default")))
@@ -58,7 +58,7 @@ RSpec.describe "<%= controller_class_name %>", <%= type_metatag(:request) %> do
     it "does not allow access to guests" do
       create(:<%= file_name %>)
       get <%= index_helper %>_url
-      expect(response).to redirect_to(new_user_session_path)
+      expect(response).to redirect_to(url_for_authentication)
     end
   end
 <% end -%>
@@ -114,7 +114,7 @@ RSpec.describe "<%= controller_class_name %>", <%= type_metatag(:request) %> do
     it "does not allow access to guests" do
       <%= file_name %> = create(:<%= file_name %>)
       get <%= show_helper.tr('@', '') %>
-      expect(response).to redirect_to(new_user_session_path)
+      expect(response).to redirect_to(url_for_authentication)
     end
   end
 
@@ -150,7 +150,7 @@ RSpec.describe "<%= controller_class_name %>", <%= type_metatag(:request) %> do
 
     it "does not allow access to guests" do
       get <%= new_helper %>
-      expect(response).to redirect_to(new_user_session_path)
+      expect(response).to redirect_to(url_for_authentication)
     end
   end
 
@@ -189,7 +189,7 @@ RSpec.describe "<%= controller_class_name %>", <%= type_metatag(:request) %> do
     it "does not allow access to guests" do
       <%= file_name %> = create(:<%= file_name %>)
       get <%= edit_helper.tr('@','') %>
-      expect(response).to redirect_to(new_user_session_path)
+      expect(response).to redirect_to(url_for_authentication)
     end
   end
 
@@ -249,7 +249,7 @@ RSpec.describe "<%= controller_class_name %>", <%= type_metatag(:request) %> do
 
       it "does not allow access to guests" do
         post <%= index_helper %>_url, params: { <%= ns_file_name %>: valid_attributes }
-        expect(response).to redirect_to(new_user_session_path)
+        expect(response).to redirect_to(url_for_authentication)
       end
     end
 
@@ -336,7 +336,7 @@ RSpec.describe "<%= controller_class_name %>", <%= type_metatag(:request) %> do
       it "does not allow access to guests" do
         <%= file_name %> = create(:<%= file_name %>)
         patch <%= show_helper.tr('@', '') %>, params: { <%= singular_table_name %>: new_attributes }
-        expect(response).to redirect_to(new_user_session_path)
+        expect(response).to redirect_to(url_for_authentication)
       end
     end
 
@@ -401,7 +401,7 @@ RSpec.describe "<%= controller_class_name %>", <%= type_metatag(:request) %> do
     it "does not allow access to guests" do
       <%= file_name %> = create(:<%= file_name %>)
       delete <%= show_helper.tr('@', '') %>
-      expect(response).to redirect_to(new_user_session_path)
+      expect(response).to redirect_to(url_for_authentication)
     end
   end
 end

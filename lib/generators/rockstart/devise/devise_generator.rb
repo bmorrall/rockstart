@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
-class Rockstart::DeviseGenerator < Rails::Generators::Base
+require "rockstart/base_generator"
+
+class Rockstart::DeviseGenerator < Rockstart::BaseGenerator
   source_root File.expand_path("templates", __dir__)
 
   class_option :devise_layout, type: :string,
@@ -22,9 +24,7 @@ class Rockstart::DeviseGenerator < Rails::Generators::Base
   def install_devise
     gem "devise"
 
-    Bundler.clean_system("bundle install --quiet")
-
-    Bundler.with_clean_env do
+    bundle_install do
       Dir.mktmpdir do |dir|
         generate_devise_install(dir)
         directory File.join(dir, "config"), "config"
@@ -77,6 +77,10 @@ class Rockstart::DeviseGenerator < Rails::Generators::Base
         password { Faker::Lorem.words(number: 3).join }
       FACTORY
     end
+  end
+
+  def update_application_url_concerns
+    change_application_url("url_for_authentication", "new_user_session_path")
   end
 
   def add_testing_variables

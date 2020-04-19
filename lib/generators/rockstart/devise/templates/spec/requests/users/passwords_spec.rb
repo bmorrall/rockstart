@@ -56,7 +56,7 @@ RSpec.describe "Users::Passwords", type: :request do
 
       it "redirects the user to the login page" do
         post user_password_path, params: unknown_user_params
-        expect(response).to redirect_to(new_user_session_path)
+        expect(response).to redirect_to(url_for_authentication)
 
         follow_redirect!
         expect(response.body).to have_selector(".alert-notice", text: t("devise.passwords.send_paranoid_instructions"))
