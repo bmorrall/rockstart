@@ -3,6 +3,10 @@
 require "rails_helper"
 
 RSpec.describe User, type: :model do
+  # email:string
+  it { is_expected.to have_db_column(:email) }
+  # encrypted_password:string
+  it { is_expected.to have_db_column(:encrypted_password) }
   # name:string
   it { is_expected.to have_db_column(:name) }
   it { is_expected.not_to validate_presence_of(:name) }

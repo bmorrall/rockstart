@@ -3,6 +3,14 @@
 require "rockstart/base_generator"
 
 class Rockstart::DeviseGenerator < Rockstart::BaseGenerator
+  include Rails::Generators::Migration
+
+  # Implement the required interface for Rails::Generators::Migration.
+  def self.next_migration_number(dirname)
+    next_migration_number = current_migration_number(dirname) + 1
+    ActiveRecord::Migration.next_migration_number(next_migration_number)
+  end
+
   source_root File.expand_path("templates", __dir__)
 
   class_option :devise_layout, type: :string,
@@ -17,9 +25,27 @@ class Rockstart::DeviseGenerator < Rockstart::BaseGenerator
                                   desc: "Skip Generating custom Devise Controllers",
                                   default: false
 
+  class_option :skip_migration, type: :boolean,
+                                desc: "Skip create user model migration generation",
+                                default: false
+
   class_option :skip_model, type: :boolean,
                             desc: "Skip model generation",
                             default: false
+
+  def add_namae_gem
+    gem "namae"
+  end
+
+  def add_user_model
+    directory "models", "app/models"
+  end
+
+  def add_user_migration
+    return if options[:skip_migration]
+
+    migration_template "create_user_migration.rb.tt", "db/migrate/create_users.rb"
+  end
 
   def install_devise
     gem "devise"
@@ -70,15 +96,6 @@ class Rockstart::DeviseGenerator < Rockstart::BaseGenerator
     directory "spec"
   end
 
-  def update_users_factory
-    inject_into_file "spec/factories/users.rb", after: "factory :user do\n" do
-      <<~'FACTORY'.gsub(/([^\n]*)\n/, "    \\1\n")
-        email { Faker::Internet.email }
-        password { Faker::Lorem.words(number: 3).join }
-      FACTORY
-    end
-  end
-
   def update_application_url_concerns
     change_application_url("url_for_authentication", "new_user_session_path")
   end
@@ -89,6 +106,14 @@ class Rockstart::DeviseGenerator < Rockstart::BaseGenerator
   end
 
   private
+
+  def rails5_and_up?
+    Rails::VERSION::MAJOR >= 5
+  end
+
+  def migration_version
+    "[#{Rails::VERSION::MAJOR}.#{Rails::VERSION::MINOR}]" if rails5_and_up?
+  end
 
   def generate_devise_install(dir)
     initializer = build_devise_install_generator(dir)
