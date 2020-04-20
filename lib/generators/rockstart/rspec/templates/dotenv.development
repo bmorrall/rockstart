@@ -1,1 +1,1 @@
-APP_HOST=www.example.com
+APP_HOST=localhost:3000
