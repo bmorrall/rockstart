@@ -1,0 +1,4 @@
+APP_HOST=localhost:3000
+<%- if devise? -%>
+DEVISE_MAILER_SENDER=devise-mailer@localhost
+<%- end -%>

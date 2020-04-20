@@ -72,11 +72,6 @@ class Rockstart::DeviseGenerator < Rockstart::BaseGenerator
     change_application_url("url_for_authentication", "new_user_session_path")
   end
 
-  def add_testing_variables
-    append_file ".env.development", "DEVISE_MAILER_SENDER=devise-mailer@localhost\n"
-    append_file ".env.test", "DEVISE_MAILER_SENDER=devise-mailer@example.com\n"
-  end
-
   private
 
   def rails5_and_up?

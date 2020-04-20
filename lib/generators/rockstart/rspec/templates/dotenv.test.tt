@@ -1,0 +1,4 @@
+APP_HOST=www.example.com
+<%- if devise? -%>
+DEVISE_MAILER_SENDER=devise-mailer@example.com
+<%- end -%>

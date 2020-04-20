@@ -20,7 +20,7 @@ class RockstartGenerator < Rails::Generators::Base
   end
 
   def generate_rspec
-    generate "rockstart:rspec"
+    generate "rockstart:rspec", devise_option
   end
 
   def generate_postgres
