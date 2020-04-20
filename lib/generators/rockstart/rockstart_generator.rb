@@ -33,6 +33,10 @@ class RockstartGenerator < Rails::Generators::Base
     generate "rockstart:smtp_mailer"
   end
 
+  def generate_frontend_helpers
+    generate "rockstart:frontend_helpers"
+  end
+
   def generate_scaffold_templates
     generate "rockstart:scaffold_templates", devise_option, pundit_option
   end

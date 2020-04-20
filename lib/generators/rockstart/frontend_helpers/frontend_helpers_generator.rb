@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
-class Rockstart::FrontendHelpersGenerator < Rails::Generators::Base
+require "rockstart/base_generator"
+
+class Rockstart::FrontendHelpersGenerator < Rockstart::BaseGenerator
   source_root File.expand_path("templates", __dir__)
 
   class_option :force_url_helpers, type: :boolean,
@@ -10,9 +12,7 @@ class Rockstart::FrontendHelpersGenerator < Rails::Generators::Base
   def install_simple_form
     gem "simple_form"
 
-    Bundler.with_clean_env do
-      run "bundle install --quiet"
-
+    bundle_install do
       generate "simple_form:install"
     end
   end
