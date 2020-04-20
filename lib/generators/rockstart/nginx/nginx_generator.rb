@@ -9,7 +9,7 @@ class Rockstart::NginxGenerator < Rails::Generators::Base
     inject_into_file "config/environments/production.rb", after: SENDFILE_REGEX do
       <<~'SENDFILE'.split("\n").map { |line| "  #{line}".rstrip }.join("\n")
 
-        unless config.public_file_server.enabled?
+        unless ENV['RAILS_SERVE_STATIC_FILES'].present?
           config.action_dispatch.x_sendfile_header = "X-Accel-Redirect" # for NGINX
         end
       SENDFILE
