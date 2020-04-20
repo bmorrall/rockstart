@@ -11,7 +11,7 @@ module Rockstart
     end
 
     def gem(name, *args)
-      gsub_file "Gemfile", /^  gem ['"]#{name}['"].+$/, ""
+      uncomment_lines "Gemfile", /^  gem ['"]#{name}['"]/
       super
     end
 
