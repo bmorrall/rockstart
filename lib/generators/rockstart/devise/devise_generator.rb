@@ -21,30 +21,14 @@ class Rockstart::DeviseGenerator < Rockstart::BaseGenerator
                         desc: "Include Pundit support",
                         default: true
 
-  class_option :skip_controllers, type: :boolean,
-                                  desc: "Skip Generating custom Devise Controllers",
-                                  default: false
-
-  class_option :skip_migration, type: :boolean,
-                                desc: "Skip create user model migration generation",
-                                default: false
-
-  class_option :skip_model, type: :boolean,
-                            desc: "Skip model generation",
-                            default: false
-
   def add_namae_gem
     gem "namae"
   end
 
   def add_user_model
     directory "models", "app/models"
-  end
-
-  def add_user_migration
-    return if options[:skip_migration]
-
     migration_template "create_user_migration.rb.tt", "db/migrate/create_users.rb"
+    migration_template "add_devise_to_users_migration.rb.tt", "db/migrate/add_devise_to_users.rb"
   end
 
   def install_devise
@@ -59,8 +43,6 @@ class Rockstart::DeviseGenerator < Rockstart::BaseGenerator
   end
 
   def add_devise_controllers
-    return if options[:skip_controllers]
-
     Bundler.with_clean_env do
       Dir.mktmpdir do |dir|
         generate_devise_controllers(dir)
@@ -72,24 +54,14 @@ class Rockstart::DeviseGenerator < Rockstart::BaseGenerator
     end
   end
 
-  def generate_user_model
-    return if options[:skip_model]
-
-    Bundler.with_clean_env do
-      generate "devise", "User"
-    end
-  end
-
-  def inject_routes
-    return if options[:skip_controllers]
-
-    controller_templates = devise_controllers.map do |controller|
-      "    #{controller}: \"users/#{controller}\""
-    end.join(",\n")
-
-    gsub_file "config/routes.rb", /devise_for :users.*$$/ do
-      ["devise_for :users, controllers: {", controller_templates, "  }"].join("\n")
-    end
+  def generate_routes
+    route <<~USER_ROUTE
+      devise_for :users, controllers: {
+        sessions: "users/sessions",
+        passwords: "users/passwords",
+        registrations: "users/registrations"
+      }
+    USER_ROUTE
   end
 
   def add_rspec_coverage
