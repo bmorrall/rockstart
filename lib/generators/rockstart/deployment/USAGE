@@ -1,0 +1,8 @@
+Description:
+    Setups up a Rails application for Continuous Integration, Delivery and Deployment (CI/CD)
+
+Example:
+    rails generate rockstart:deployment
+
+    This will create:
+        bin/deployment script for fresh deployments

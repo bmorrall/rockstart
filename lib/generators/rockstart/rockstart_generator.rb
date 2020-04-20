@@ -53,6 +53,10 @@ class RockstartGenerator < Rails::Generators::Base
     generate "rockstart:security"
   end
 
+  def generate_deployment
+    generate "rockstart:deployment"
+  end
+
   def generate_nginx
     generate "rockstart:nginx"
   end
