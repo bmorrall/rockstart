@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
-class Rockstart::SecurityGenerator < Rails::Generators::Base
+require "rockstart/base_generator"
+
+class Rockstart::SecurityGenerator < Rockstart::BaseGenerator
   include Rails::Generators::AppName
   source_root File.expand_path("templates", __dir__)
 
@@ -24,19 +26,19 @@ class Rockstart::SecurityGenerator < Rails::Generators::Base
                               desc: "Name used for Rails Sessions",
                               default: Rockstart::Env.default_session_name
 
-  def install_bundler_audit
+  def install_gems
     gem "bundler-audit", github: "rubysec/bundler-audit"
+    gem "brakeman", group: %i[development test]
+    gem "rack-attack"
 
-    Bundler.clean_system("bundle install --quiet")
+    bundle_install
+  end
 
+  def configure_bundler_audit
     copy_file "bundler_audit.rake", "lib/tasks/bundler_audit.rake"
   end
 
-  def install_brakeman
-    gem "brakeman", group: %i[development test]
-
-    Bundler.clean_system("bundle install --quiet")
-
+  def configure_brakeman
     copy_file "brakeman.rake", "lib/tasks/brakeman.rake"
 
     append_to_file ".gitignore", "brakeman\n"
@@ -46,11 +48,7 @@ class Rockstart::SecurityGenerator < Rails::Generators::Base
     copy_file "security.rake", "lib/tasks/security.rake"
   end
 
-  def install_rack_attack
-    gem "rack-attack"
-
-    Bundler.clean_system("bundle install --quiet")
-
+  def configure_rack_attack
     copy_file "rack_attack.rb", "config/initializers/rack_attack.rb"
     copy_file "cache_support.rb", "spec/support/cache.rb"
 
