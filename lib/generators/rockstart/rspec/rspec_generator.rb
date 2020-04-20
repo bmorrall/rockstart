@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
-class Rockstart::RspecGenerator < Rails::Generators::Base
+require "rockstart/base_generator"
+
+class Rockstart::RspecGenerator < Rockstart::BaseGenerator
   source_root File.expand_path("templates", __dir__)
 
   class_option :devise, type: :boolean,
@@ -8,6 +10,7 @@ class Rockstart::RspecGenerator < Rails::Generators::Base
                         default: true
 
   def add_gems
+    gem "capybara", ">= 2.15", group: :test
     gem "dotenv-rails", groups: %i[development test]
     gem "factory_bot_rails", group: %i[development test]
     gem "faker", group: %i[development test]
@@ -17,9 +20,7 @@ class Rockstart::RspecGenerator < Rails::Generators::Base
   end
 
   def install_rspec_rails
-    Bundler.with_clean_env do
-      run "bundle install --quiet"
-
+    bundle_install do
       Dir.mktmpdir do |dir|
         generate_rspec_install(dir)
         template File.join(dir, ".rspec"), ".rspec"

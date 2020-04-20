@@ -10,6 +10,11 @@ module Rockstart
       Bundler.with_clean_env(&block) if block_given?
     end
 
+    def gem(name, *args)
+      gsub_file "Gemfile", /^  gem ['"]#{name}['"].+$/, ""
+      super
+    end
+
     def gsub_method(file, method_name, replacement_code = null)
       existing_method_regex = /  def #{method_name}...+?end$/m.freeze
       replacement_code = yield if block_given?
