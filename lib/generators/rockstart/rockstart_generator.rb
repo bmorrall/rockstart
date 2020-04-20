@@ -65,6 +65,10 @@ class RockstartGenerator < Rails::Generators::Base
     generate "rockstart:docker", postgres_option, devise_option
   end
 
+  def generate_heroku
+    generate "rockstart:heroku", postgres_option
+  end
+
   def generate_quality
     generate "rockstart:quality"
   end

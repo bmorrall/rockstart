@@ -1,0 +1,8 @@
+Description:
+    Configures a Rails app for quick deployment on Heroku
+
+Example:
+    rails generate rockstart:heroku
+
+    This will create:
+        A Procfile that runs the bin/deployment script

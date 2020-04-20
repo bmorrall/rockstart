@@ -1,0 +1,15 @@
+{
+  "name": "<%= app_name %>",
+  "addons": [
+<%- if postgres? -%>
+    "heroku-postgresql:hobby-dev"
+<%- end -%>
+  ],
+  "env": {
+    "RAILS_ENV": "production"
+  },
+  "stack": "heroku-18",
+  "scripts": {
+    "postdeploy": "./bin/setup-deployment"
+  }
+}

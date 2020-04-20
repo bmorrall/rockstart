@@ -1,0 +1,2 @@
+release: ./bin/deployment
+web: bundle exec puma -C config/puma.rb
