@@ -3,5 +3,4 @@
 # Use Cookies as the session store, and lock them down to the current domain
 Rails.application.config.session_store :cookie_store, key: "<%= session_name %>",
                                                       http_only: true,
-                                                      same_site: :lax,
-                                                      secure: Rails.application.config.force_ssl
+                                                      same_site: :lax
