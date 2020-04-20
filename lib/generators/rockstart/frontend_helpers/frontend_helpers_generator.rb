@@ -20,6 +20,8 @@ class Rockstart::FrontendHelpersGenerator < Rockstart::BaseGenerator
   def install_titles
     gem "title", github: "calebthompson/title"
 
+    bundle_install
+
     template "titles.en.yml.tt", "config/locales/titles.en.yml"
 
     gsub_file "app/views/layouts/application.html.erb", %r{\<title(.+)\</title},
