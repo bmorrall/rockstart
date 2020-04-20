@@ -9,14 +9,16 @@ class Rockstart::QualityGenerator < Rails::Generators::Base
                               desc: "Bundle installs rubocop and regenerates .rubocop_todo.yml",
                               default: true
 
-  def add_rake_task
-    copy_file "rockstart/quality.rake", "lib/tasks/quality.rake"
+  def add_quality_rake_task
+    copy_file "quality.rake", "lib/tasks/quality.rake"
   end
 
   def install_rubocop
-    copy_file "rockstart/rubocop.yml", ".rubocop.yml"
+    copy_file "rubocop.yml", ".rubocop.yml"
 
     gem "rubocop-rails", require: false
+
+    copy_file "rubocop.rake", "lib/tasks/rubocop.rake"
 
     return unless options[:rebuild_todo]
 
