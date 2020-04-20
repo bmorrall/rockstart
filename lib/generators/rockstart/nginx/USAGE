@@ -1,0 +1,8 @@
+Description:
+    Configures a Rails app to work with NGINX
+
+Example:
+    rails generate rockstart:nginx
+
+    This will create:
+        Configure sendfile parameters in environments/production.rb
