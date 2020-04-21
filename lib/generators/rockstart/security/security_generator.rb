@@ -26,6 +26,10 @@ class Rockstart::SecurityGenerator < Rockstart::BaseGenerator
                               desc: "Name used for Rails Sessions",
                               default: Rockstart::Env.default_session_name
 
+  def remove_tzinfo
+    comment_lines "Gemfile", /gem ['"]tzinfo-data['"]/
+  end
+
   def install_gems
     gem "bundler-audit", github: "rubysec/bundler-audit"
     gem "brakeman", group: %i[development test]
