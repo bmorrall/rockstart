@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
-class Rockstart::QualityGenerator < Rails::Generators::Base
+require "rockstart/base_generator"
+
+class Rockstart::QualityGenerator < Rockstart::BaseGenerator
   source_root File.expand_path("templates", __dir__)
 
   desc "This generator configures code quality rules"
@@ -23,6 +25,8 @@ class Rockstart::QualityGenerator < Rails::Generators::Base
     return unless options[:rebuild_todo]
 
     # Rebuild .rubocop_todo.yml, ensuring only existing code is excluded
-    run "bundle install --quiet && bundle exec rubocop --auto-gen-config --exclude-limit 100"
+    bundle_install do
+      run "bundle exec rake rubocop:auto_gen_config"
+    end
   end
 end
