@@ -19,7 +19,7 @@ Rails.application.configure do
       host: controller.request.host,
       remote_ip: controller.request.remote_ip,
       request_id: controller.request.request_id,
-      user_id: (controller.respond_to?(:current_user) && controller.current_user.try(:id)) || :guest
+      user_id: (controller.respond_to?(:current_user) && controller.current_user&.uid) || :guest
     }
   end
 end
