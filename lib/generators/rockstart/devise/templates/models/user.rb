@@ -12,7 +12,24 @@ class User < ApplicationRecord
   # admin:boolean
   # deleted_at:datetime
 
-  delegate :given, :family, to: :namae
+  # Unique user identifier
+  def uid
+    id
+  end
+
+  # Short display name for user
+  def first_name
+    namae.given
+  end
+
+  # Display image for user
+  def image
+    return unless email?
+
+    require "digest/md5"
+    hash = Digest::MD5.hexdigest(email.downcase)
+    "https://s.gravatar.com/avatar/#{hash}?s=480"
+  end
 
   # instead of deleting users, mark them as soft deleted
   def soft_delete
@@ -31,7 +48,7 @@ class User < ApplicationRecord
 
   def to_s
     # Use the stored name value for labels
-    (name_changed? ? name_was : name) || (id? ? "User ##{id}" : "Guest User")
+    (name_changed? ? name_was : name) || super
   end
 
   private

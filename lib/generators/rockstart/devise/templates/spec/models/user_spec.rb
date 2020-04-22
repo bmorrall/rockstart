@@ -15,27 +15,30 @@ RSpec.describe User, type: :model do
   # deleted_at:datetime
   it { is_expected.to have_db_column(:deleted_at).of_type(:datetime) }
 
-  describe "#given" do
-    it "returns the given name from the name" do
-      user = User.new(name: "John Smith")
-      expect(user.given).to eq "John"
-    end
-
-    it "handles nil name valeus" do
-      user = User.new(name: nil)
-      expect(user.given).to be_nil
+  describe "#uid" do
+    it "returns the id of the User" do
+      user = build_stubbed(:user, name: nil)
+      allow(user).to receive(:id).and_return("1234")
+      expect(user.uid).to eq "1234"
     end
   end
 
-  describe "#family" do
-    it "returns the family name from the name" do
+  describe "#first_name" do
+    it "returns the given name from the name" do
       user = User.new(name: "John Smith")
-      expect(user.family).to eq "Smith"
+      expect(user.first_name).to eq "John"
     end
 
     it "handles nil name valeus" do
       user = User.new(name: nil)
-      expect(user.family).to be_nil
+      expect(user.first_name).to be_nil
+    end
+  end
+
+  describe "#image" do
+    it "returns a gravatar image based off the email address" do
+      user = User.new(email: "test@example.com")
+      expect(user.image).to eq "https://s.gravatar.com/avatar/55502f40dc8b7c769880b10874abc9d0?s=480"
     end
   end
 
@@ -49,16 +52,9 @@ RSpec.describe User, type: :model do
       expect(user.to_s).to eq "John Smith"
     end
 
-    it "falls back to a generic label when name is not present" do
+    it "falls back to a generic label" do
       user = build_stubbed(:user, name: nil)
-      allow(user).to receive(:id?).and_return(true)
-      allow(user).to receive(:id).and_return(1234)
-      expect(user.to_s).to eq "User #1234"
-    end
-
-    it "returns a generic label when user is not persisted" do
-      user = User.new(name: nil)
-      expect(user.to_s).to eq "Guest User"
+      expect(user.to_s).to start_with "#<User:"
     end
   end
 end
