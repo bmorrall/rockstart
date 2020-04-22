@@ -16,7 +16,7 @@ class Rockstart::QualityGenerator < Rails::Generators::Base
   def install_rubocop
     copy_file "rubocop.yml", ".rubocop.yml"
 
-    gem "rubocop-rails", require: false
+    gem "rubocop-rails", require: false, group: %i[development test]
 
     copy_file "rubocop.rake", "lib/tasks/rubocop.rake"
 
