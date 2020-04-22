@@ -1,17 +1,19 @@
 # frozen_string_literal: true
 
-class Rockstart::TailwindcssGenerator < Rails::Generators::Base
+require "rockstart/base_generator"
+
+class Rockstart::TailwindcssGenerator < Rockstart::BaseGenerator
   include Rails::Generators::AppName
 
   source_root File.expand_path("templates", __dir__)
 
   def install_tailwindcss
-    run "yarn add tailwindcss"
-    run "yarn tailwind init tailwind.config.js"
+    system! "yarn add tailwindcss"
+    system! "yarn tailwind init tailwind.config.js"
   end
 
   def install_purge_css
-    run "yarn add @fullhuman/postcss-purgecss"
+    system! "yarn add @fullhuman/postcss-purgecss"
   end
 
   def update_postcss_config

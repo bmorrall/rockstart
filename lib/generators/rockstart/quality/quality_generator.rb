@@ -26,7 +26,7 @@ class Rockstart::QualityGenerator < Rockstart::BaseGenerator
 
     # Rebuild .rubocop_todo.yml, ensuring only existing code is excluded
     bundle_install do
-      run "bundle exec rake rubocop:auto_gen_config"
+      system! "bundle exec rake rubocop:auto_gen_config"
     end
   end
 end
