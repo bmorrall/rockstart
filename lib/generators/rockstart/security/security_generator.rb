@@ -31,7 +31,7 @@ class Rockstart::SecurityGenerator < Rockstart::BaseGenerator
   end
 
   def install_gems
-    gem "bundler-audit", github: "rubysec/bundler-audit"
+    gem "bundler-audit", github: "rubysec/bundler-audit", group: %i[development test]
     gem "brakeman", group: %i[development test]
     gem "rack-attack"
 
