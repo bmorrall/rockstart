@@ -6,17 +6,16 @@ RSpec.describe "ContentSecurity", type: :request do
   describe "HTTP Headers" do
     context "after sign in" do
       before do
-        user = create(:user)
-        post user_session_path params: { user: { email: user.email, password: user.password } }
+        sign_in create(:user)
       end
 
       it "includes all expected secure headers", :aggregate_failures do
+        get url_for_user_dashboard
+
         # Cookies
         session_cookie = cookies.get_cookie("<%= session_name %>")
         expect(session_cookie).to be_http_only
         expect(session_cookie.to_h["SameSite"]).to eq("Lax")
-
-        follow_redirect!
 
         # Security Headers
         expect(response.headers["X-Frame-Options"]).to eq "SAMEORIGIN"
