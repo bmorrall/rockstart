@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# rubocop:disable Layout/LineLength
 Rails.application.configure do
   config.lograge.enabled = true
   config.lograge.formatter = Lograge::Formatters::Logstash.new
@@ -48,3 +49,4 @@ ActiveSupport::Notifications.subscribe("throttle.rack_attack") do |_name, start,
   logger = Lograge.logger.presence || Rails.logger
   logger.public_send(Lograge.log_level, formatted_message)
 end
+# rubocop:enable Layout/LineLength

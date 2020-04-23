@@ -11,12 +11,12 @@ class RockstartGenerator < Rails::Generators::Base
   postgres_class_option
   pundit_class_option
 
-  def generate_logging
-    generate "rockstart:logging"
-  end
-
   def setup_development_environment
     generate "rockstart:development", devise_option, pundit_option
+  end
+
+  def generate_monitoring
+    generate "rockstart:monitoring"
   end
 
   def generate_rspec

@@ -2,7 +2,7 @@ Description:
     Adds better logging to a rails application
 
 Example:
-    rails generate rockstart:logging
+    rails generate rockstart:monitoring:lograge
 
     This will create:
         - Adds and configures lograge

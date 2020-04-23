@@ -1,0 +1,8 @@
+Description:
+    Keeps an eye on your App while it's Rocking
+
+Example:
+    rails generate rockstart:monitoring
+
+    This will create:
+        Format controller logs using Lograge
