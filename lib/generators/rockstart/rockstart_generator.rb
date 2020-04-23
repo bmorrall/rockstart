@@ -42,7 +42,7 @@ class RockstartGenerator < Rails::Generators::Base
   end
 
   def generate_testing
-    generate "rockstart:testing"
+    generate "rockstart:testing", devise_option
   end
 
   def generate_deployment
