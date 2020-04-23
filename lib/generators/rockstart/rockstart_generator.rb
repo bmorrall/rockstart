@@ -19,8 +19,8 @@ class RockstartGenerator < Rails::Generators::Base
     generate "rockstart:database", postgres_option
   end
 
-  def generate_smtp_mailer
-    generate "rockstart:smtp_mailer"
+  def generate_mailers
+    generate "rockstart:mailers"
   end
 
   def generate_frontend_app

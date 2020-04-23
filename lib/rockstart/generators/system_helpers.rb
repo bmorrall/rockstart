@@ -4,7 +4,6 @@ module Rockstart
   module Generators
     # Adds helpers for installing gems and interacting with the current system
     module SystemHelpers
-
       protected
 
       def system!(*args)

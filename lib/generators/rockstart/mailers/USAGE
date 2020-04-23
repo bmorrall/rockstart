@@ -1,0 +1,8 @@
+Description:
+    Gets your Emails ready to Rock
+
+Example:
+    rails generate rockstart:mailers
+
+    This will create:
+        SMTP Mailers
