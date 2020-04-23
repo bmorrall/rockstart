@@ -28,7 +28,6 @@ class Rockstart::RspecGenerator < Rockstart::BaseGenerator
   end
 
   def add_dotenv_files
-    template "dotenv.development.tt", ".env.development"
     template "dotenv.test.tt", ".env.test"
   end
 

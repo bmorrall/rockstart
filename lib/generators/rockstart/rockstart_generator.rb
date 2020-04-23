@@ -15,6 +15,10 @@ class RockstartGenerator < Rails::Generators::Base
     generate "rockstart:logging"
   end
 
+  def setup_development_environment
+    generate "rockstart:development", devise_option, pundit_option
+  end
+
   def generate_rspec
     generate "rockstart:rspec", devise_option
   end
@@ -31,10 +35,6 @@ class RockstartGenerator < Rails::Generators::Base
 
   def generate_frontend_helpers
     generate "rockstart:frontend_helpers"
-  end
-
-  def generate_scaffold_templates
-    generate "rockstart:scaffold_templates", pundit_option
   end
 
   def generate_devise
@@ -71,19 +71,5 @@ class RockstartGenerator < Rails::Generators::Base
 
   def generate_quality
     generate "rockstart:quality"
-  end
-
-  private
-
-  def devise_option
-    devise? ? "--devise" : "--no-devise"
-  end
-
-  def postgres_option
-    postgres? ? "--postgres" : "--no-postgres"
-  end
-
-  def pundit_option
-    pundit? ? "--pundit" : "--no-pundit"
   end
 end

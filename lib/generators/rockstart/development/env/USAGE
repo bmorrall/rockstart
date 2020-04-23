@@ -1,0 +1,8 @@
+Description:
+    Generates useful dotfiles for development
+
+Example:
+    rails generate rockstart:development:env
+
+    This will create:
+        Creates a dotfile with common configuration values

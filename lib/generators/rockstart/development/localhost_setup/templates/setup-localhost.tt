@@ -16,12 +16,12 @@ openssl x509 -outform pem -in localhostCA.pem -out localhostCA.crt
 echo "=== Generating Domain Name Certificate ==="
 
 openssl req -new -nodes -newkey rsa:2048 \
-  -keyout docker/certs/web/<%= app_name %>.key \
-  -out docker/certs/web/<%= app_name %>.csr \
+  -keyout certs/localhost/<%= app_name %>.key \
+  -out certs/localhost/<%= app_name %>.csr \
   -subj "/C=US/ST=YourState/L=YourCity/O=Example-Certificates/CN=<%= app_name %>.local"
 
 openssl x509 -req -sha256 -days 1024 \
-  -in docker/certs/web/<%= app_name %>.csr \
+  -in certs/localhost/<%= app_name %>.csr \
   -CA localhostCA.pem -CAkey localhostCA.key \
-  -CAcreateserial -extfile docker/certs/<%= app_name %>_localhost.ext \
-  -out docker/certs/web/<%= app_name %>.crt
+  -CAcreateserial -extfile <%= app_name %>_localhost.ext \
+  -out certs/localhost/<%= app_name %>.crt

@@ -39,7 +39,7 @@ services:
       - 80:80
       - 443:443
     volumes:
-      - ./docker/certs/web:/<%= @app_home %>/certs
+      - ./certs/localhost:/<%= @app_home %>/certs
       - static-assets:/<%= @app_home %>/public
       - web-logs:/<%= @app_home %>/log
 volumes:

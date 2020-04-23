@@ -57,13 +57,6 @@ class Rockstart::DockerGenerator < Rockstart::BaseGenerator
     template "dotenv.docker.tt", ".env.docker"
   end
 
-  def create_localhost_certificates
-    template "localhost_domains.ext.tt", "docker/certs/web/#{app_name}_localhost.ext"
-    template "setup-localhost.tt", "bin/setup-localhost"
-    File.chmod(0o755, Rails.root.join("bin", "setup-localhost"))
-    append_file ".gitignore", "\n# localhost certificate authority\nlocalhostCA.*\n"
-  end
-
   private
 
   # Generates an example password

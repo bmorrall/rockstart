@@ -1,0 +1,8 @@
+Description:
+    Adds scripts for generating SSL Certificates for localhost development
+
+Example:
+    rails generate rockstart:development:localhost_setup
+
+    This will create:
+        bin/setup-localhost which will generate SSL certificates for localhost

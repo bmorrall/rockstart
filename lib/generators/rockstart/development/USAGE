@@ -1,0 +1,10 @@
+Description:
+    Runs all rockstart generators used for development
+
+Example:
+    rails generate rockstart:development
+
+    This will generate:
+        Convenient dotfiles for development
+        Useful Rails generator template overrides
+        Setup scripts for using SSL for localhost servers

@@ -32,12 +32,24 @@ module Rockstart
         options.fetch(:devise)
       end
 
+      def devise_option
+        devise? ? "--devise" : "--no-devise"
+      end
+
       def postgres?
         options.fetch(:postgres)
       end
 
+      def postgres_option
+        postgres? ? "--postgres" : "--no-postgres"
+      end
+
       def pundit?
         options.fetch(:pundit)
+      end
+
+      def pundit_option
+        pundit? ? "--pundit" : "--no-pundit"
       end
     end
   end
