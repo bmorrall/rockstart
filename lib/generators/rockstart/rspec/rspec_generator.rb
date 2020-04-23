@@ -5,9 +5,7 @@ require "rockstart/base_generator"
 class Rockstart::RspecGenerator < Rockstart::BaseGenerator
   source_root File.expand_path("templates", __dir__)
 
-  class_option :devise, type: :boolean,
-                        desc: "Include Devise support",
-                        default: true
+  devise_class_option
 
   def add_gems
     gem "capybara", ">= 2.15", group: :test
@@ -43,10 +41,6 @@ class Rockstart::RspecGenerator < Rockstart::BaseGenerator
   end
 
   private
-
-  def devise?
-    options[:devise]
-  end
 
   def generate_rspec_install(dir)
     require "generators/rspec/install/install_generator"

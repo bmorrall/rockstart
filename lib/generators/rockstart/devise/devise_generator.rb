@@ -17,9 +17,7 @@ class Rockstart::DeviseGenerator < Rockstart::BaseGenerator
                                desc: "Custom layout used by all devise controllers",
                                default: "application"
 
-  class_option :pundit, type: :boolean,
-                        desc: "Include Pundit support",
-                        default: true
+  pundit_class_option
 
   def add_namae_gem
     gem "namae"
@@ -46,7 +44,7 @@ class Rockstart::DeviseGenerator < Rockstart::BaseGenerator
     Bundler.with_clean_env do
       Dir.mktmpdir do |dir|
         generate_devise_controllers(dir)
-        add_pundit_support(dir) if options[:pundit]
+        add_pundit_support(dir) if pundit?
         devise_controllers.each do |controller|
           copy_file File.join(dir, controller_path(controller)), controller_path(controller)
         end

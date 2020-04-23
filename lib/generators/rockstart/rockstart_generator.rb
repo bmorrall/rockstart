@@ -1,19 +1,15 @@
 # frozen_string_literal: true
 
+require "rockstart/generators/class_option_helpers"
+
 class RockstartGenerator < Rails::Generators::Base
+  include Rockstart::Generators::ClassOptionHelpers
+
   desc "The quickest way for getting Rails Ready to Rock!"
 
-  class_option :devise, type: :boolean,
-                        desc: "Include Devise support",
-                        default: true
-
-  class_option :postgres, type: :boolean,
-                          desc: "Include Postgres support",
-                          default: Rockstart::Env.postgres_db?
-
-  class_option :pundit, type: :boolean,
-                        desc: "Include Pundit support",
-                        default: true
+  devise_class_option
+  postgres_class_option
+  pundit_class_option
 
   def generate_logging
     generate "rockstart:logging"
@@ -24,7 +20,7 @@ class RockstartGenerator < Rails::Generators::Base
   end
 
   def generate_postgres
-    return unless options[:postgres]
+    return unless postgres?
 
     generate "rockstart:postgres"
   end
@@ -42,13 +38,13 @@ class RockstartGenerator < Rails::Generators::Base
   end
 
   def generate_devise
-    return unless options[:devise]
+    return unless devise?
 
     generate "rockstart:devise", pundit_option
   end
 
   def generate_pundit
-    return unless options[:pundit]
+    return unless pundit?
 
     generate "rockstart:pundit"
   end
@@ -80,14 +76,14 @@ class RockstartGenerator < Rails::Generators::Base
   private
 
   def devise_option
-    options[:devise] ? "--devise" : "--no-devise"
+    devise? ? "--devise" : "--no-devise"
   end
 
   def postgres_option
-    options[:postgres] ? "--postgres" : "--no-postgres"
+    postgres? ? "--postgres" : "--no-postgres"
   end
 
   def pundit_option
-    options[:pundit] ? "--pundit" : "--no-pundit"
+    pundit? ? "--pundit" : "--no-pundit"
   end
 end

@@ -1,13 +1,13 @@
 # frozen_string_literal: true
 
-class Rockstart::HerokuGenerator < Rails::Generators::Base
+require "rockstart/base_generator"
+
+class Rockstart::HerokuGenerator < Rockstart::BaseGenerator
   include Rails::Generators::AppName
 
   source_root File.expand_path("templates", __dir__)
 
-  class_option :postgres, type: :boolean,
-                          desc: "Include Postgres support",
-                          default: Rockstart::Env.postgres_db?
+  postgres_class_option
 
   def create_procfile
     template "Procfile"
@@ -15,11 +15,5 @@ class Rockstart::HerokuGenerator < Rails::Generators::Base
 
   def create_app_json
     template "app.json"
-  end
-
-  private
-
-  def postgres?
-    options[:postgres]
   end
 end

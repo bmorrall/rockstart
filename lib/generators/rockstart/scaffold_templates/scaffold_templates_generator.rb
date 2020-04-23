@@ -1,13 +1,11 @@
 # frozen_string_literal: true
 
-include "rockstart/base_generator"
+require "rockstart/base_generator"
 
 class Rockstart::ScaffoldTemplatesGenerator < Rockstart::BaseGenerator
   source_root File.expand_path("templates", __dir__)
 
-  class_option :pundit, type: :boolean,
-                        desc: "Include Pundit support",
-                        default: true
+  pundit_class_option
 
   def copy_scaffold_templates
     template "api_controller.rb.tt", "lib/templates/rails/scaffold_controller/api_controller.rb.tt"
@@ -22,10 +20,6 @@ class Rockstart::ScaffoldTemplatesGenerator < Rockstart::BaseGenerator
   end
 
   private
-
-  def pundit?
-    options[:pundit]
-  end
 
   def rspec_templates_dir
     @rspec_templates_dir ||= "lib/templates/rspec"

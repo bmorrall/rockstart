@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
-class Rockstart::DockerGenerator < Rails::Generators::Base
+require "rockstart/base_generator"
+
+class Rockstart::DockerGenerator < Rockstart::BaseGenerator
   include Rails::Generators::AppName
 
   source_root File.expand_path("templates", __dir__)
@@ -19,13 +21,8 @@ class Rockstart::DockerGenerator < Rails::Generators::Base
                         desc: "Include frontend assets support (node|yarn)",
                         default: true
 
-  class_option :devise, type: :boolean,
-                        desc: "Include Devise support",
-                        default: true
-
-  class_option :postgres, type: :boolean,
-                          desc: "Include Postgres support",
-                          default: Rockstart::Env.postgres_db?
+  devise_class_option
+  postgres_class_option
 
   def create_dockerignore
     copy_file "dockerignore", ".dockerignore"
@@ -34,7 +31,6 @@ class Rockstart::DockerGenerator < Rails::Generators::Base
   def create_dockerfile
     @root_image = options[:root_image]
     @app_home = options[:app_home]
-    @postgres = options[:postgres]
     @assets = options[:assets]
     template "app/Dockerfile-app", "Dockerfile"
   end
@@ -69,14 +65,6 @@ class Rockstart::DockerGenerator < Rails::Generators::Base
   end
 
   private
-
-  def devise?
-    options[:devise]
-  end
-
-  def postgres?
-    options[:postgres]
-  end
 
   # Generates an example password
   def example_db_password

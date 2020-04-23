@@ -4,7 +4,7 @@ FROM <%= @root_image %>
 RUN apt-get update -qq \
     && apt-get install -y build-essential \
     && apt-get install -y libxml2-dev libxslt1-dev \
-<%- if @postgres -%>
+<%- if postgres? -%>
     && apt-get install -y libpq-dev \
 <%- end -%>
 <%- if @assets -%>
