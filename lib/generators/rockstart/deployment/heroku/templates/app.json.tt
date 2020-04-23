@@ -2,7 +2,10 @@
   "name": "<%= app_name %>",
   "addons": [
 <%- if postgres? -%>
-    "heroku-postgresql:hobby-dev"
+    "heroku-postgresql:hobby-dev",
+<%- end -%>
+<%- if rollbar? -%>
+    "rollbar:free",
 <%- end -%>
   ],
   "env": {

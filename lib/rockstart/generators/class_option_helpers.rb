@@ -24,6 +24,12 @@ module Rockstart
                                 desc: "Include Pundit support",
                                 default: true
         end
+
+        def rollbar_class_option
+          class_option :rollbar, type: :boolean,
+                                 desc: "Include Rollbar support",
+                                 default: true
+        end
       end
 
       protected
@@ -50,6 +56,14 @@ module Rockstart
 
       def pundit_option
         pundit? ? "--pundit" : "--no-pundit"
+      end
+
+      def rollbar?
+        options.fetch(:rollbar)
+      end
+
+      def rollbar_option
+        rollbar? ? "--rollbar" : "--no-rollbar"
       end
     end
   end

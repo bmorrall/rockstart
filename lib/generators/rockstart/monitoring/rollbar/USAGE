@@ -1,0 +1,8 @@
+Description:
+    Adds Rollback for exception reporting
+
+Example:
+    rails generate rockstart:monitoring:rollbar
+
+    This will create:
+        Installs rollbar gem

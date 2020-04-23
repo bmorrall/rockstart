@@ -12,6 +12,7 @@ module Rockstart::Deployment
     source_root File.expand_path("templates", __dir__)
 
     postgres_class_option
+    rollbar_class_option
 
     def create_procfile
       template "Procfile"

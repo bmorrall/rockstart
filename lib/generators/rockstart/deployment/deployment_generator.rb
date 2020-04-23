@@ -11,6 +11,7 @@ class Rockstart::DeploymentGenerator < Rails::Generators::Base
 
   postgres_class_option
   devise_class_option
+  rollbar_class_option
 
   def create_deployment_scripts
     script_template "setup-deployment"
@@ -22,7 +23,7 @@ class Rockstart::DeploymentGenerator < Rails::Generators::Base
   end
 
   def generate_heroku
-    generate "rockstart:deployment:heroku", postgres_option
+    generate "rockstart:deployment:heroku", postgres_option, rollbar_option
   end
 
   def generate_docker

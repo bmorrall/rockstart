@@ -12,9 +12,10 @@ class RockstartGenerator < Rails::Generators::Base
   devise_class_option
   postgres_class_option
   pundit_class_option
+  rollbar_class_option
 
   def setup_development_environment
-    generate "rockstart:development", devise_option, pundit_option
+    generate "rockstart:development", devise_option, pundit_option, rollbar_option
   end
 
   def generate_storage
@@ -34,7 +35,7 @@ class RockstartGenerator < Rails::Generators::Base
   end
 
   def generate_monitoring
-    generate "rockstart:monitoring"
+    generate "rockstart:monitoring", rollbar_option
   end
 
   def generate_security
