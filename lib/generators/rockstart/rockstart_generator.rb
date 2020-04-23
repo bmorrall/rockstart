@@ -19,8 +19,8 @@ class RockstartGenerator < Rails::Generators::Base
     generate "rockstart:monitoring"
   end
 
-  def generate_rspec
-    generate "rockstart:rspec", devise_option
+  def generate_testing
+    generate "rockstart:testing"
   end
 
   def generate_postgres

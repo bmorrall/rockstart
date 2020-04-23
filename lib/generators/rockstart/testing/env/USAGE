@@ -1,0 +1,8 @@
+Description:
+    Generates useful dotfiles for testing
+
+Example:
+    rails generate rockstart:testing:env
+
+    This will create:
+        Creates a dotfile with common configuration values

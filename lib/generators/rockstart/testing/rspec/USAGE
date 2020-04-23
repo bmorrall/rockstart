@@ -2,7 +2,7 @@ Description:
     Installs RSpec with test libraries
 
 Example:
-    rails generate rockstart:rspec
+    rails generate rockstart:testing:rspec
 
     This will create:
         - installs rspec-rails

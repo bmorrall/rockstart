@@ -15,6 +15,11 @@ module Rockstart::Development
       template "controller.rb.tt", "#{scaffold_controller_dir}/controller.rb.tt"
     end
 
+    def copy_rspec_model_templates
+      copy_file "rspec/model/model_spec.rb.tt",
+                "#{rspec_templates_dir}/model/model_spec.rb"
+    end
+
     def copy_rspec_scaffold_templates
       copy_file "rspec/scaffold/api_request_spec.rb.tt",
                 "#{rspec_templates_dir}/scaffold/api_request_spec.rb"

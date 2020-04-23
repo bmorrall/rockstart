@@ -1,0 +1,9 @@
+Description:
+    Prepare your app for some testing before your Rock
+
+Example:
+    rails generate rockstart:testing
+
+    This will create:
+        Installs RSpec
+        Sets up SimpleCov for code quality coverage

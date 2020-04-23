@@ -1,0 +1,9 @@
+Description:
+    Installs SimpleCov for coverage metrics
+
+Example:
+    rails generate rockstart:testing:simple_cov
+
+    This will create:
+        Installs simple_cov
+        Updates rspec to require it first
