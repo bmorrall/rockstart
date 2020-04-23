@@ -4,9 +4,7 @@ require_dependency "<%%= namespaced_path %>/application_controller"
 <%% end -%>
 <%% module_namespacing do -%>
 class <%%= controller_class_name %>Controller < ApplicationController
-<%- if devise? -%>
   before_action :authenticate_user!
-<%- end -%>
   before_action :assign_<%%= singular_table_name %>, only: [:show, :update, :destroy]
 <%- if pundit? -%>
   after_action :verify_authorized

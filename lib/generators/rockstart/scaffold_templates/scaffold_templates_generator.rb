@@ -1,11 +1,9 @@
 # frozen_string_literal: true
 
-class Rockstart::ScaffoldTemplatesGenerator < Rails::Generators::Base
-  source_root File.expand_path("templates", __dir__)
+include "rockstart/base_generator"
 
-  class_option :devise, type: :boolean,
-                        desc: "Include Devise support",
-                        default: true
+class Rockstart::ScaffoldTemplatesGenerator < Rockstart::BaseGenerator
+  source_root File.expand_path("templates", __dir__)
 
   class_option :pundit, type: :boolean,
                         desc: "Include Pundit support",
@@ -24,10 +22,6 @@ class Rockstart::ScaffoldTemplatesGenerator < Rails::Generators::Base
   end
 
   private
-
-  def devise?
-    options[:devise]
-  end
 
   def pundit?
     options[:pundit]

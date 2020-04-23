@@ -8,9 +8,7 @@ class <%%= controller_class_name %>Controller < ApplicationController
   include PunditErrorHandling
 
 <%- end -%>
-<%- if devise? -%>
   before_action :authenticate_user!
-<%- end -%>
   before_action :assign_<%%= singular_table_name %>, only: [:show, :edit, :update, :destroy]
 <%- if pundit? -%>
   after_action :verify_authorized

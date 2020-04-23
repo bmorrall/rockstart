@@ -38,7 +38,7 @@ class RockstartGenerator < Rails::Generators::Base
   end
 
   def generate_scaffold_templates
-    generate "rockstart:scaffold_templates", devise_option, pundit_option
+    generate "rockstart:scaffold_templates", pundit_option
   end
 
   def generate_devise
