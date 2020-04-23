@@ -1,0 +1,11 @@
+Description:
+    Installs rubocop with configured rules
+
+Example:
+    rails generate rockstart:quality:rubocop
+
+    This will create:
+        Installs rubocop
+        Adds a rake task for controlling rubocop
+        Generates a default configuration file
+        Builds a rubocop_todo.yml file based off any current violations
