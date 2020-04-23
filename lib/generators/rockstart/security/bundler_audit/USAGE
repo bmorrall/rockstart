@@ -1,0 +1,8 @@
+Description:
+    Adds bundler-audit for detecting gems with exploits
+
+Example:
+    rails generate rockstart:security:bundler_audit
+
+    This will create:
+        Adds a bundle:audit rake task

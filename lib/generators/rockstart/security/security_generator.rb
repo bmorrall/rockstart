@@ -26,22 +26,8 @@ class Rockstart::SecurityGenerator < Rockstart::BaseGenerator
                               desc: "Name used for Rails Sessions",
                               default: Rockstart::Env.default_session_name
 
-  def remove_tzinfo
-    comment_lines "Gemfile", /gem ['"]tzinfo-data['"]/
-  end
-
-  def install_gems
-    gem "bundler-audit", github: "rubysec/bundler-audit", group: %i[development test]
-
-    bundle_install
-  end
-
-  def configure_bundler_audit
-    copy_file "bundler_audit.rake", "lib/tasks/bundler_audit.rake"
-  end
-
-  def add_security_rake_tasks
-    copy_file "security.rake", "lib/tasks/security.rake"
+  def add_bundler_audit
+    generate "rockstart:security:bundler_audit"
   end
 
   def add_brakeman
@@ -52,8 +38,16 @@ class Rockstart::SecurityGenerator < Rockstart::BaseGenerator
     generate "rockstart:security:rack_attack"
   end
 
-  def add_session_initializer
+  def remove_tzinfo
+    comment_lines "Gemfile", /gem ['"]tzinfo-data['"]/
+  end
+
+  def configure_session_store
     template "session_store_initializer.rb.tt", "config/initializers/session_store.rb"
+  end
+
+  def add_security_rake_tasks
+    copy_file "security.rake", "lib/tasks/security.rake"
   end
 
   def add_content_security_policy
