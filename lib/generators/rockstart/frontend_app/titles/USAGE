@@ -1,0 +1,8 @@
+Description:
+    Adds a helper for adding titles to a Layout
+
+Example:
+    rails generate rockstart:frontend_app:titles
+
+    This will create:
+        Installs the titles gem

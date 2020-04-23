@@ -1,22 +1,15 @@
 # frozen_string_literal: true
 
 require "rockstart/generators/class_option_helpers"
+require "rockstart/generators/system_helpers"
 
 module Rockstart
   # Base class for defining rockstart generators
   class BaseGenerator < Rails::Generators::Base
     include Generators::ClassOptionHelpers
+    include Generators::SystemHelpers
 
     protected
-
-    def system!(*args)
-      system(*args) || abort("\n== Command #{args} failed ==")
-    end
-
-    def bundle_install(&block)
-      Bundler.clean_system("bundle install --quiet")
-      Bundler.with_clean_env(&block) if block_given?
-    end
 
     def gem(name, *args)
       uncomment_lines "Gemfile", /^  gem ['"]#{name}['"]/

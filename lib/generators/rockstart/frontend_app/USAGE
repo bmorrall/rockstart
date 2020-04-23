@@ -1,0 +1,10 @@
+Description:
+    Installs common helpers for Frontend Apps
+
+Example:
+    rails generate rockstart:frontend_app
+
+    This will create:
+        Installs simple_form
+        Installs the titles gem
+        Adds a common helper for application urls

@@ -1,0 +1,8 @@
+Description:
+    Setups up Simple Form for a Frontend App
+
+Example:
+    rails generate rockstart:frontend_app:simple_form
+
+    This will create:
+        Installs simple_form and overrides templates

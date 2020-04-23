@@ -23,8 +23,8 @@ class RockstartGenerator < Rails::Generators::Base
     generate "rockstart:smtp_mailer"
   end
 
-  def generate_frontend_helpers
-    generate "rockstart:frontend_helpers"
+  def generate_frontend_app
+    generate "rockstart:frontend_app"
   end
 
   def generate_authorization

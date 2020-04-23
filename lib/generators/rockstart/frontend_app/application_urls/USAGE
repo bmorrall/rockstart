@@ -1,0 +1,8 @@
+Description:
+    Builds a helper for managing application urls
+
+Example:
+    rails generate rockstart:frontend_app:application_urls
+
+    This will create:
+        An Application Urls file containing editable links
