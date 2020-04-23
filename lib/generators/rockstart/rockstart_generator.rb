@@ -1,9 +1,11 @@
 # frozen_string_literal: true
 
 require "rockstart/generators/class_option_helpers"
+require "rockstart/generators/content_security_options"
 
 class RockstartGenerator < Rails::Generators::Base
   include Rockstart::Generators::ClassOptionHelpers
+  include Rockstart::Generators::ContentSecurityOptions
 
   desc "The quickest way for getting Rails Ready to Rock!"
 
@@ -36,7 +38,7 @@ class RockstartGenerator < Rails::Generators::Base
   end
 
   def generate_security
-    generate "rockstart:security"
+    generate "rockstart:security", *content_security_options
   end
 
   def generate_testing
