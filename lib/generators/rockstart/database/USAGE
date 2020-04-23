@@ -1,0 +1,8 @@
+Description:
+    Configures solutions for storing your Rocking
+
+Example:
+    rails generate rockstart:database
+
+    This will create:
+        Installs Postgresql

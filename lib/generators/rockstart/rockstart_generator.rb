@@ -23,10 +23,8 @@ class RockstartGenerator < Rails::Generators::Base
     generate "rockstart:testing"
   end
 
-  def generate_postgres
-    return unless postgres?
-
-    generate "rockstart:postgres"
+  def generate_storage
+    generate "rockstart:database", postgres_option
   end
 
   def generate_smtp_mailer
