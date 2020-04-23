@@ -1,0 +1,8 @@
+Description:
+    Setups up background workers ready to Rock
+
+Example:
+    rails generate rockstart:workers
+
+    This will create:
+        Install sidekiq for background jobs

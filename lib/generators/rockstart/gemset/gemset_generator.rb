@@ -41,6 +41,12 @@ class Rockstart::GemsetGenerator < Rails::Generators::Base
     gem "zero_downtime_migrations"
   end
 
+  def install_sidekiq_gems
+    return unless sidekiq?
+
+    gem "sidekiq"
+  end
+
   def install_pundit_gems
     return unless pundit?
 

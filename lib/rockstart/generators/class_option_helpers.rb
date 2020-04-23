@@ -17,6 +17,7 @@ module Rockstart
           postgres_class_option
           pundit_class_option
           rollbar_class_option
+          sidekiq_class_option
         end
 
         def auth0_class_option
@@ -60,6 +61,12 @@ module Rockstart
                                  desc: "Include Rollbar support",
                                  default: true
         end
+
+        def sidekiq_class_option
+          class_option :sidekiq, type: :boolean,
+                                 desc: "Include Sidekiq support",
+                                 default: true
+        end
       end
       # rubocop:enable Metrics/BlockLength
 
@@ -73,7 +80,8 @@ module Rockstart
           memcached_option,
           postgres_option,
           pundit_option,
-          rollbar_option
+          rollbar_option,
+          sidekiq_option
         ]
       end
 
@@ -131,6 +139,14 @@ module Rockstart
 
       def rollbar_option
         rollbar? ? "--rollbar" : "--no-rollbar"
+      end
+
+      def sidekiq?
+        options.fetch(:sidekiq)
+      end
+
+      def sidekiq_option
+        sidekiq? ? "--sidekiq" : "--no-sidekiq"
       end
     end
   end

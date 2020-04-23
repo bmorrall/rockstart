@@ -1,0 +1,6 @@
+---
+:queues:
+- default
+<%- if rollbar? -%>
+- rollbar
+<%- end -%>

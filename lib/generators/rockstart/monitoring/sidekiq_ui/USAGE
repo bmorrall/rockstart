@@ -1,0 +1,8 @@
+Description:
+    Installs a UI for monitoring Sidekiq
+
+Example:
+    rails generate rockstart:monitoring:sidekiq_ui
+
+    This will create:
+        Adds Sidekiq UI to the list of known routes

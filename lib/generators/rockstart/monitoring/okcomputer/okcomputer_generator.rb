@@ -11,6 +11,8 @@ module Rockstart::Monitoring
     source_root File.expand_path("templates", __dir__)
 
     memcached_class_option
+    rollbar_class_option
+    sidekiq_class_option
 
     def add_initalizer
       initializer_template "okcomputer"

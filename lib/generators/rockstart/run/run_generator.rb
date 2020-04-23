@@ -25,6 +25,10 @@ class Rockstart::RunGenerator < Rails::Generators::Base
     generate "rockstart:mailers"
   end
 
+  def generate_workers
+    generate "rockstart:workers", devise_option, sidekiq_option
+  end
+
   def generate_frontend_app
     return unless frontend?
 
@@ -38,8 +42,10 @@ class Rockstart::RunGenerator < Rails::Generators::Base
   def generate_monitoring
     generate "rockstart:monitoring",
              auth0_option,
+             devise_option,
              memcached_option,
-             rollbar_option
+             rollbar_option,
+             sidekiq_option
   end
 
   def generate_security
@@ -53,7 +59,8 @@ class Rockstart::RunGenerator < Rails::Generators::Base
              frontend_option,
              memcached_option,
              postgres_option,
-             rollbar_option
+             rollbar_option,
+             sidekiq_option
   end
 
   def generate_quality

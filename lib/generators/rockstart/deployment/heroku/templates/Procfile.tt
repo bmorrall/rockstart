@@ -1,2 +1,5 @@
 release: ./bin/hooks-release
 web: ./bin/web
+<%- if sidekiq? -%>
+worker: ./bin/worker
+<%- end -%>

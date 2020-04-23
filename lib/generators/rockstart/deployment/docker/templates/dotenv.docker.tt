@@ -10,6 +10,9 @@ MEMCACHE_SERVERS=memcached
 <%- end -%>
 OKCOMPUTER_USERNAME=okcomputer
 OKCOMPUTER_PASSWORD=okcomputer
+<%- if sidekiq? -%>
+REDIS_URL=redis://redis
+<%- end -%>
 <%- if rollbar? -%>
 ROLLBAR_ENV=development-docker
 <%- end -%>

@@ -17,5 +17,13 @@ memcached_servers.split(",").each_with_index do |cache_server, index|
 end
 
 <%- end -%>
+<%- if sidekiq? -%>
+# Sidekiq
+OkComputer::Registry.register "sidekiq-default", OkComputer::SidekiqLatencyCheck.new("default")
+<%- if rollbar? -%>
+OkComputer::Registry.register "sidekiq-rollbar", OkComputer::SidekiqLatencyCheck.new("rollbar")
+<%- end -%>
+
+<%- end -%>
 # mount at /health
 OkComputer.mount_at = "health"

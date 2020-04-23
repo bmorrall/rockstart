@@ -11,6 +11,7 @@ module Rockstart::Monitoring
     source_root File.expand_path("templates", __dir__)
 
     auth0_class_option
+    sidekiq_class_option
 
     def add_initializer
       initializer_template "rollbar"

@@ -43,8 +43,14 @@ Rollbar.configure do |config|
   # You can also specify a callable, which will be called with the exception instance.
   # config.exception_level_filters.merge!('MyCriticalException' => lambda { |e| 'critical' })
 
+<%- if sidekiq? -%>
+  # Enable delayed reporting (using Sidekiq)
+  config.use_sidekiq "queue" => "rollbar"
+  config.failover_handlers = [Rollbar::Delay::Thread]
+<%- else -%>
   # Enable asynchronous reporting
   config.use_thread
+<%- end -%>
 
   # If your application runs behind a proxy server, you can set proxy parameters here.
   # If https_proxy is set in your environment, that will be used. Settings here have precedence.

@@ -1,0 +1,9 @@
+Description:
+    Installs and configure Sidekiq
+
+Example:
+    rails generate rockstart:workers:sidekiq
+
+    This will create:
+        Installs Sidekiq gem
+        Adds Sidekiq Web

@@ -12,6 +12,9 @@
 <%- if postgres? -%>
     "heroku-postgresql:hobby-dev",
 <%- end -%>
+<%- if sidekiq? -%>
+    "heroku-redis:hobby-dev",
+<%- end -%>
 <%- if memcached? -%>
     "memcachier:dev",
 <%- end -%>

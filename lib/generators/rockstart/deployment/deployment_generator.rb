@@ -15,9 +15,11 @@ class Rockstart::DeploymentGenerator < Rails::Generators::Base
   memcached_class_option
   postgres_class_option
   rollbar_class_option
+  sidekiq_class_option
 
   def create_run_scripts
     script_template "web"
+    script_template "worker" if sidekiq?
   end
 
   def create_deployment_scripts
@@ -34,7 +36,8 @@ class Rockstart::DeploymentGenerator < Rails::Generators::Base
              auth0_option,
              memcached_option,
              postgres_option,
-             rollbar_option
+             rollbar_option,
+             sidekiq_option
   end
 
   def generate_docker
@@ -43,6 +46,7 @@ class Rockstart::DeploymentGenerator < Rails::Generators::Base
              frontend_option,
              memcached_option,
              postgres_option,
-             rollbar_option
+             rollbar_option,
+             sidekiq_option
   end
 end

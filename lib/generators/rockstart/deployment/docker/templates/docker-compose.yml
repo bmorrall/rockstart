@@ -12,6 +12,9 @@ services:
 <%- if memcached? -%>
       - memcached
 <%- end -%>
+<%- if sidekiq? -%>
+      - redis
+<%- end -%>
     volumes:
     - static-assets:/<%= @app_home %>/public
 <%- if postgres? -%>
@@ -29,6 +32,26 @@ services:
 <%- if memcached? -%>
   memcached:
     image: memcached:alpine
+<%- end -%>
+<%- if sidekiq? -%>
+  redis:
+    image: redis:alpine
+<%- end -%>
+<%- if sidekiq? -%>
+  worker:
+    build: .
+    command: ./bin/worker
+    env_file:
+      - ./.env
+      - ./.env.docker
+    depends_on:
+<%- if postgres? -%>
+      - db
+<%- end -%>
+<%- if memcached? -%>
+      - memcached
+<%- end -%>
+      - redis
 <%- end -%>
   web-nginx:
     build:
