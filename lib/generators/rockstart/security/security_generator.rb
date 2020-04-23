@@ -32,7 +32,6 @@ class Rockstart::SecurityGenerator < Rockstart::BaseGenerator
 
   def install_gems
     gem "bundler-audit", github: "rubysec/bundler-audit", group: %i[development test]
-    gem "brakeman", group: %i[development test]
 
     bundle_install
   end
@@ -41,14 +40,12 @@ class Rockstart::SecurityGenerator < Rockstart::BaseGenerator
     copy_file "bundler_audit.rake", "lib/tasks/bundler_audit.rake"
   end
 
-  def configure_brakeman
-    copy_file "brakeman.rake", "lib/tasks/brakeman.rake"
-
-    append_to_file ".gitignore", "brakeman\n"
-  end
-
   def add_security_rake_tasks
     copy_file "security.rake", "lib/tasks/security.rake"
+  end
+
+  def add_brakeman
+    generate "rockstart:security:brakeman"
   end
 
   def add_rack_attack

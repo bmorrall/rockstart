@@ -1,0 +1,9 @@
+Description:
+    Installs Brakeman for monitoring potential exploits
+
+Example:
+    rails generate rockstart:security:brakeman Thing
+
+    This will create:
+        The brakeman gem
+        A rake task for generating a brakeman report
