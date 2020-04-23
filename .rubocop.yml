@@ -6,8 +6,6 @@ AllCops:
     # Exclude auto-generated files
     - bin/*
     - spec/dummy/**/*
-    # Exclude pundit templates
-    - lib/generators/rockstart/pundit/templates/lib/templates/**/*
     # Exclude rspec templates
     - lib/generators/rockstart/rspec/templates/rspec_templates/**/*
 
@@ -20,6 +18,8 @@ Layout/LineLength:
     - lib/generators/rockstart/devise/templates/**/*_spec.rb
     # Exclude content security policy initializer
     - lib/generators/rockstart/security/templates/content_security_policy_initializer.rb
+    # Exclude rspec tests
+    - lib/generators/rockstart/**/templates/**/*_spec.rb
 
 Metrics/BlockLength:
   Exclude:
@@ -33,7 +33,7 @@ Style/ClassAndModuleChildren:
   Exclude:
     - lib/generators/**/*_generator.rb
     # Exclude devise templates
-    - lib/generators/rockstart/devise/templates/controllers/*
+    - lib/generators/rockstart/authorization/devise/templates/controllers/*
     # Exclude rack_attack initializer
     - lib/generators/rockstart/security/templates/rack_attack.rb
 

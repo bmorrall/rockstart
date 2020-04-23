@@ -1,0 +1,9 @@
+Description:
+    Controls who can Rock and Roll
+
+Example:
+    rails generate rockstart:authorization
+
+    This will create:
+        Installs Devise for auth authentication
+        Installs Pundit for access authorization

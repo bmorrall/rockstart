@@ -35,16 +35,8 @@ class RockstartGenerator < Rails::Generators::Base
     generate "rockstart:frontend_helpers"
   end
 
-  def generate_devise
-    return unless devise?
-
-    generate "rockstart:devise", pundit_option
-  end
-
-  def generate_pundit
-    return unless pundit?
-
-    generate "rockstart:pundit"
+  def generate_authorization
+    generate "rockstart:authorization", devise_option, pundit_option
   end
 
   def generate_security

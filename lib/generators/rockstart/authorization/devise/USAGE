@@ -2,8 +2,10 @@ Description:
     Installs Device for User Authentication
 
 Example:
-    rails generate rockstart:devise
+    rails generate rockstart:authorization:devise
 
     This will create:
         A basic devise Install
         A User model with a UUID primary key
+        Custom Controllers for managing a Session/Profile
+        Test Coverage of the Devise installation
