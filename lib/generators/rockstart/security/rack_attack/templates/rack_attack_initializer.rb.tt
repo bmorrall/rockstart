@@ -4,9 +4,11 @@ require "digest/md5"
 
 # Configuration for rack_attack
 class Rack::Attack # rubocop:disable Style/ClassAndModuleChildren
+<%- if devise? -%>
   LOGIN_PATH = "/users/sign_in"
   REGISTRATION_PATH = "/users"
 
+<%- end -%>
   ### Configure Cache ###
 
   # If you don't want to use Rails.cache (Rack::Attack's default), then
@@ -33,6 +35,7 @@ class Rack::Attack # rubocop:disable Style/ClassAndModuleChildren
   # Key: "rack::attack:#{Time.now.to_i/:period}:req/ip:#{req.ip}"
   throttle("req/ip", limit: 300, period: 5.minutes, &:ip)
 
+<%- if devise? -%>
   ### Prevent Brute-Force Login Attacks ###
 
   # The most common brute-force login attack is a brute-force password
@@ -82,6 +85,7 @@ class Rack::Attack # rubocop:disable Style/ClassAndModuleChildren
     req.ip if req.path == REGISTRATION_PATH && (req.post? || req.put? || req.patch?)
   end
 
+<%- end -%>
   ### Custom Throttle Response ###
 
   # By default, Rack::Attack returns an HTTP 429 for throttled responses,

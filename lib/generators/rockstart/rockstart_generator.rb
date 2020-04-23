@@ -38,7 +38,7 @@ class RockstartGenerator < Rails::Generators::Base
   end
 
   def generate_security
-    generate "rockstart:security", *content_security_options
+    generate "rockstart:security", devise_option, *content_security_options
   end
 
   def generate_testing

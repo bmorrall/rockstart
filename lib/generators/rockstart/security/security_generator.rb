@@ -1,14 +1,18 @@
 # frozen_string_literal: true
 
+require "rockstart/generators/class_option_helpers"
 require "rockstart/generators/content_security_options"
 require "rockstart/generators/template_helpers"
 
 class Rockstart::SecurityGenerator < Rails::Generators::Base
   include Rails::Generators::AppName
+  include Rockstart::Generators::ClassOptionHelpers
   include Rockstart::Generators::ContentSecurityOptions
   include Rockstart::Generators::TemplateHelpers
 
   source_root File.expand_path("templates", __dir__)
+
+  devise_class_option
 
   def add_bundler_audit
     generate "rockstart:security:bundler_audit"
@@ -19,7 +23,7 @@ class Rockstart::SecurityGenerator < Rails::Generators::Base
   end
 
   def add_rack_attack
-    generate "rockstart:security:rack_attack"
+    generate "rockstart:security:rack_attack", devise_option
   end
 
   def add_content_security_policy

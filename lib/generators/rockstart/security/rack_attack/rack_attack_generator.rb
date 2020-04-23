@@ -1,14 +1,18 @@
 # frozen_string_literal: true
 
+require "rockstart/generators/class_option_helpers"
 require "rockstart/generators/system_helpers"
 require "rockstart/generators/template_helpers"
 
 module Rockstart::Security
   class RackAttackGenerator < Rails::Generators::Base
+    include Rockstart::Generators::ClassOptionHelpers
     include Rockstart::Generators::SystemHelpers
     include Rockstart::Generators::TemplateHelpers
 
     source_root File.expand_path("templates", __dir__)
+
+    devise_class_option
 
     def install_gem
       gem "rack-attack"
@@ -17,7 +21,7 @@ module Rockstart::Security
     end
 
     def add_initializer
-      copy_initializer "rack_attack"
+      initializer_template "rack_attack"
     end
 
     def add_rspec_support
