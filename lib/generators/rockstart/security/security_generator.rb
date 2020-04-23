@@ -33,7 +33,6 @@ class Rockstart::SecurityGenerator < Rockstart::BaseGenerator
   def install_gems
     gem "bundler-audit", github: "rubysec/bundler-audit", group: %i[development test]
     gem "brakeman", group: %i[development test]
-    gem "rack-attack"
 
     bundle_install
   end
@@ -52,17 +51,8 @@ class Rockstart::SecurityGenerator < Rockstart::BaseGenerator
     copy_file "security.rake", "lib/tasks/security.rake"
   end
 
-  def configure_rack_attack
-    copy_file "rack_attack.rb", "config/initializers/rack_attack.rb"
-    copy_file "cache_support.rb", "spec/support/cache.rb"
-
-    application do
-      <<~CACHE
-        # Use memory_store cache for testing and default configurations
-        config.cache_store = :memory_store
-      CACHE
-    end
-    comment_lines "config/environments/test.rb", "config.cache_store = "
+  def add_rack_attack
+    generate "rockstart:security:rack_attack"
   end
 
   def add_session_initializer

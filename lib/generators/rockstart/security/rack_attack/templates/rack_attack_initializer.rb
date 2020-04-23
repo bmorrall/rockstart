@@ -3,7 +3,7 @@
 require "digest/md5"
 
 # Configuration for rack_attack
-class Rack::Attack
+class Rack::Attack # rubocop:disable Style/ClassAndModuleChildren
   LOGIN_PATH = "/users/sign_in"
   REGISTRATION_PATH = "/users"
 

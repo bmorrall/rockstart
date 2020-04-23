@@ -1,0 +1,8 @@
+Description:
+    Installs Rack::Attack
+
+Example:
+    rails generate rockstart:security:rack_attack
+
+    This will create:
+        Configures Rack:Attack based on your application
