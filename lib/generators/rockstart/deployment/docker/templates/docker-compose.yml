@@ -6,6 +6,9 @@ services:
 <%- if postgres? -%>
       - DATABASE_URL=postgres://<%= app_name %>:<%= example_db_password %>@db/<%= app_name %>_production
 <%- end -%>
+<%- if memcached? -%>
+      - MEMCACHE_SERVERS=memcached
+<%- end -%>
 <%- if rollbar? -%>
       - ROLLBAR_ENV=development-docker
 <%- end -%>
@@ -13,9 +16,12 @@ services:
       - SMTP_PORT=1025
     env_file:
       - ./.env.docker
-<%- if postgres? -%>
     depends_on:
+<%- if postgres? -%>
       - db
+<%- end -%>
+<%- if memcached? -%>
+      - memcached
 <%- end -%>
     volumes:
     - static-assets:/<%= @app_home %>/public
@@ -33,6 +39,8 @@ services:
     image: sj26/mailcatcher
     ports:
       - 1080:1080
+  memcached:
+    image: memcached:alpine
   web:
     build:
       context: ./docker/web/

@@ -18,7 +18,7 @@ class Rockstart::RunGenerator < Rails::Generators::Base
   end
 
   def generate_storage
-    generate "rockstart:database", postgres_option
+    generate "rockstart:database", memcached_option, postgres_option
   end
 
   def generate_mailers
@@ -42,7 +42,11 @@ class Rockstart::RunGenerator < Rails::Generators::Base
   end
 
   def generate_deployment
-    generate "rockstart:deployment", devise_option, postgres_option
+    generate "rockstart:deployment",
+             devise_option,
+             memcached_option,
+             postgres_option,
+             rollbar_option
   end
 
   def generate_quality

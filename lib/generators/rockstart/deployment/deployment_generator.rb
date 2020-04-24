@@ -9,8 +9,9 @@ class Rockstart::DeploymentGenerator < Rails::Generators::Base
 
   source_root File.expand_path("templates", __dir__)
 
-  postgres_class_option
   devise_class_option
+  memcached_class_option
+  postgres_class_option
   rollbar_class_option
 
   def create_deployment_scripts
@@ -23,10 +24,17 @@ class Rockstart::DeploymentGenerator < Rails::Generators::Base
   end
 
   def generate_heroku
-    generate "rockstart:deployment:heroku", postgres_option, rollbar_option
+    generate "rockstart:deployment:heroku",
+             memcached_option,
+             postgres_option,
+             rollbar_option
   end
 
   def generate_docker
-    generate "rockstart:deployment:docker", devise_option, postgres_option, rollbar_option
+    generate "rockstart:deployment:docker",
+             devise_option,
+             memcached_option,
+             postgres_option,
+             rollbar_option
   end
 end

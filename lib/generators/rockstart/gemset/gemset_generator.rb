@@ -21,6 +21,13 @@ class Rockstart::GemsetGenerator < Rails::Generators::Base
     gem "devise"
   end
 
+  def install_memcached_gems
+    return unless memcached?
+
+    gem "dalli"
+    gem "connection_pool"
+  end
+
   def install_pundit_gems
     return unless pundit?
 

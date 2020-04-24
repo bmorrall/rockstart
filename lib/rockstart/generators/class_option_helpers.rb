@@ -10,6 +10,7 @@ module Rockstart
       class_methods do
         def all_class_options
           devise_class_option
+          memcached_class_option
           postgres_class_option
           pundit_class_option
           rollbar_class_option
@@ -19,6 +20,12 @@ module Rockstart
           class_option :devise, type: :boolean,
                                 desc: "Include Devise support",
                                 default: true
+        end
+
+        def memcached_class_option
+          class_option :memcached, type: :boolean,
+                                   desc: "Include Memcached support",
+                                   default: true
         end
 
         def postgres_class_option
@@ -44,7 +51,13 @@ module Rockstart
       protected
 
       def all_class_options
-        [devise_option, postgres_option, pundit_option, rollbar_option]
+        [
+          devise_option,
+          memcached_option,
+          postgres_option,
+          pundit_option,
+          rollbar_option
+        ]
       end
 
       def devise?
@@ -53,6 +66,14 @@ module Rockstart
 
       def devise_option
         devise? ? "--devise" : "--no-devise"
+      end
+
+      def memcached?
+        options.fetch(:memcached)
+      end
+
+      def memcached_option
+        memcached? ? "--memcached" : "--no-memcached"
       end
 
       def postgres?

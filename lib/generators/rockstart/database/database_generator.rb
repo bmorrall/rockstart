@@ -6,10 +6,17 @@ class Rockstart::DatabaseGenerator < Rails::Generators::Base
   include Rockstart::Generators::ClassOptionHelpers
 
   postgres_class_option
+  memcached_class_option
 
   def generate_postgres
     return unless postgres?
 
     generate "rockstart:database:postgres"
+  end
+
+  def generate_memcached
+    return unless memcached?
+
+    generate "rockstart:database:memcached"
   end
 end

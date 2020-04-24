@@ -4,6 +4,9 @@
 <%- if postgres? -%>
     "heroku-postgresql:hobby-dev",
 <%- end -%>
+<%- if memcached? -%>
+    "memcachier:dev",
+<%- end -%>
 <%- if rollbar? -%>
     "rollbar:free",
 <%- end -%>
