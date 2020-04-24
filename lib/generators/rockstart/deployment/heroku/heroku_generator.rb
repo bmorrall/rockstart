@@ -22,6 +22,10 @@ module Rockstart::Deployment
       template "app.json"
     end
 
+    def add_rack_task
+      template "heroku.rake", "lib/tasks/heroku.rake"
+    end
+
     def add_deploy_script
       script_template "deploy-heroku"
     end

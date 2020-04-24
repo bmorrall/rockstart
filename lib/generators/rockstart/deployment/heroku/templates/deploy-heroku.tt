@@ -22,4 +22,11 @@ FileUtils.chdir APP_ROOT do
 
   puts "\n== Pushing to Heroku =="
   system! "git push heroku master"
+
+  puts "\n== Dumping Heroku Config =="
+  if !File.exists?(File.join(APP_ROOT, ".env"))
+    system! "bundle exec rake heroku:dump_config"
+  else
+    puts "Skipping: a .env file already exists."
+  end
 end

@@ -1,0 +1,17 @@
+# frozen_string_literal: true
+
+namespace :heroku do
+  ENV_VARIABLES = %w[
+<%- if rollbar? -%>
+    ROLLBAR_ACCESS_TOKEN
+<%- end -%>
+  ].freeze
+
+  def system!(*args)
+    system(*args) || abort("\n== Command #{args} failed ==")
+  end
+
+  task :dump_config do
+    system! "heroku config -s | grep '#{ENV_VARIABLES.join('\|')}' | tee -a .env"
+  end
+end
