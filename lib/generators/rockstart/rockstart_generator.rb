@@ -16,7 +16,7 @@ class RockstartGenerator < Rails::Generators::Base
   end
 
   def install_all_gems
-    generate "rockstart:gemset"
+    generate "rockstart:gemset", *all_class_options, *content_security_options
   end
 
   def run_rockstart_generators

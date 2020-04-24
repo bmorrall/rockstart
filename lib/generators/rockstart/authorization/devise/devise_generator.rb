@@ -22,28 +22,24 @@ module Rockstart::Authorization
     end
 
     def install_devise
-      begin
-        Dir.mktmpdir do |dir|
-          generate_devise_install(dir)
-          directory File.join(dir, "config"), "config"
-        end
-      rescue LoadError
-        abort("Please install devise gem!!!") if self.behavior == :invoke
+      Dir.mktmpdir do |dir|
+        generate_devise_install(dir)
+        directory File.join(dir, "config"), "config"
       end
+    rescue LoadError
+      abort("Please install devise gem!!!") if behavior == :invoke
     end
 
     def add_devise_controllers
-      begin
-        Dir.mktmpdir do |dir|
-          generate_devise_controllers(dir)
-          add_pundit_support(dir) if pundit?
-          devise_controllers.each do |controller|
-            copy_file File.join(dir, controller_path(controller)), controller_path(controller)
-          end
+      Dir.mktmpdir do |dir|
+        generate_devise_controllers(dir)
+        add_pundit_support(dir) if pundit?
+        devise_controllers.each do |controller|
+          copy_file File.join(dir, controller_path(controller)), controller_path(controller)
         end
-      rescue LoadError
-        abort("Please install devise gem!!!") if self.behavior == :invoke
       end
+    rescue LoadError
+      abort("Please install devise gem!!!") if behavior == :invoke
     end
 
     def generate_routes
