@@ -2,14 +2,10 @@
 
 require "rockstart/generators/class_option_helpers"
 require "rockstart/generators/content_security_options"
-require "rockstart/generators/template_helpers"
 
 class RockstartGenerator < Rails::Generators::Base
   include Rockstart::Generators::ClassOptionHelpers
   include Rockstart::Generators::ContentSecurityOptions
-  include Rockstart::Generators::TemplateHelpers
-
-  source_root File.expand_path("templates", __dir__)
 
   desc "The quickest way for getting Rails Ready to Rock!"
 
@@ -19,7 +15,8 @@ class RockstartGenerator < Rails::Generators::Base
   rollbar_class_option
 
   def add_rebuid_script
-    script_template "rockstart"
+    generate "rockstart:development:rebuild", devise_option, postgres_option, pundit_option,
+             rollbar_option, *content_security_options
   end
 
   def setup_development_environment

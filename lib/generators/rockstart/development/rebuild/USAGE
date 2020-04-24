@@ -1,0 +1,8 @@
+Description:
+    Builds a quick rockstart rebuild script based off your configuration
+
+Example:
+    rails generate rockstart:development:rebuild
+
+    This will create:
+        A script at bin/rockstart which will re-run the last invokation of rockstart
