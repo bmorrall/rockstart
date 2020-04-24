@@ -26,7 +26,7 @@ module Rockstart
 
       protected
 
-      def content_security_options
+      def content_security_flags
         {
           "--font_hosts" => font_hosts,
           "--image_hosts" => image_hosts,
@@ -34,7 +34,11 @@ module Rockstart
           "--style_hosts" => style_hosts
         }.compact.map do |k, v|
           [k, v] if v.present?
-        end.compact.flatten
+        end.compact
+      end
+
+      def content_security_options
+        content_security_flags.flatten
       end
 
       def font_hosts

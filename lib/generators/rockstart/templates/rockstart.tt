@@ -14,6 +14,20 @@ end
 
 FileUtils.chdir APP_ROOT do
   puts "== Regenerating previous rockstart build =="
-  <%- class_options = [devise_option, postgres_option, pundit_option, rollbar_option, *content_security_options] -%>
-  system! "bundle exec rails generate rockstart <%= class_options.join(" ") %>"
+  system! "bundle exec rails generate rockstart" \
+<%-
+  class_options = [
+    devise_option,
+    postgres_option,
+    pundit_option,
+    rollbar_option
+  ]
+  flags = content_security_flags
+-%>
+ <%- class_options.each_with_index do |class_option, index| -%>
+          " <%= class_option %>"<%- if (index + 1) < class_options.size || flags.any? %> \<%- end %>
+<%- end -%>
+<%- content_security_flags.each_with_index do |(flag, values), index| -%>
+          " <%= flag %> <%= values.join(" ") %>"<%- if (index + 1) < flags.size %> \<%- end %>
+<%- end -%>
 end
