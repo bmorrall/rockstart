@@ -17,9 +17,9 @@ FileUtils.chdir APP_ROOT do
   system! "which heroku && brew upgrade heroku/brew/heroku || " \
           "(brew tap heroku/brew && brew install heroku)"
 
-  puts "== Creating Development App =="
+  puts "\n== Creating Development App =="
   system! "git remote show heroku || heroku create"
 
-  puts "== Pushing to Heroku =="
+  puts "\n== Pushing to Heroku =="
   system! "git push heroku master"
 end

@@ -13,4 +13,9 @@ end
 FileUtils.chdir APP_ROOT do
   puts '== Creating Database =='
   system! 'bundle exec rake db:create'
+<%- if rollbar? -%>
+
+  puts "\n== Testing Rollbar ==
+  system "bundle exec rake rollbar:test" || puts("\n-- Rollbar test failed --")
+<%- end -%>
 end
