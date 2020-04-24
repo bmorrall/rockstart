@@ -13,7 +13,7 @@ def system!(*args)
 end
 
 FileUtils.chdir APP_ROOT do
-  puts "== Installing Heroku =="
+  puts "== Installing Heroku CLI =="
   system! "which heroku && brew upgrade heroku/brew/heroku || " \
           "(brew tap heroku/brew && brew install heroku)"
 

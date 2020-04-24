@@ -9,7 +9,10 @@
 <%- end -%>
   ],
   "env": {
-    "RAILS_ENV": "production"
+    "RAILS_ENV": "production",
+<%- if rollbar? -%>
+    "ROLLBAR_ENV": "development-heroku",
+<%- end -%>
   },
   "stack": "heroku-18",
   "scripts": {

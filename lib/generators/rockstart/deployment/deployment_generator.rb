@@ -27,6 +27,6 @@ class Rockstart::DeploymentGenerator < Rails::Generators::Base
   end
 
   def generate_docker
-    generate "rockstart:deployment:docker", devise_option, postgres_option
+    generate "rockstart:deployment:docker", devise_option, postgres_option, rollbar_option
   end
 end

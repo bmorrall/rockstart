@@ -25,6 +25,7 @@ module Rockstart::Deployment
 
     devise_class_option
     postgres_class_option
+    rollbar_class_option
 
     def create_dockerignore
       copy_file "dockerignore", ".dockerignore"

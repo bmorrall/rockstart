@@ -10,11 +10,14 @@ services:
       - mailcatcher
     environment:
       - RAILS_ENV=test
-<%- if postgres? -%>
-      - TEST_DATABASE_URL=postgres://<%= app_name %>:<%= app_name %>_test@db/<%= app_name %>_test
+<%- if rollbar? -%>
+      - ROLLBAR_ENV=test-docker
 <%- end -%>
       - SMTP_SERVER=mailcatcher
       - SMTP_PORT=1025
+<%- if postgres? -%>
+      - TEST_DATABASE_URL=postgres://<%= app_name %>:<%= app_name %>_test@db/<%= app_name %>_test
+<%- end -%>
     env_file:
       - ./.env.test
 <%- if postgres? -%>
