@@ -1,0 +1,8 @@
+Description:
+    Installs all gems requested by rockstart
+
+Example:
+    rails generate rockstart:gemset
+
+    This will create:
+        All gems requested by rockstart generators

@@ -15,10 +15,6 @@ module Rockstart::Authorization
 
     pundit_class_option
 
-    def add_namae_gem
-      gem "namae"
-    end
-
     def add_user_model
       directory "models", "app/models"
       migration_template "create_user_migration.rb.tt", "db/migrate/create_users.rb"
@@ -26,18 +22,18 @@ module Rockstart::Authorization
     end
 
     def install_devise
-      gem "devise"
-
-      bundle_install do
+      begin
         Dir.mktmpdir do |dir|
           generate_devise_install(dir)
           directory File.join(dir, "config"), "config"
         end
+      rescue LoadError
+        abort("Please install devise gem!!!") if self.behavior == :invoke
       end
     end
 
     def add_devise_controllers
-      Bundler.with_clean_env do
+      begin
         Dir.mktmpdir do |dir|
           generate_devise_controllers(dir)
           add_pundit_support(dir) if pundit?
@@ -45,6 +41,8 @@ module Rockstart::Authorization
             copy_file File.join(dir, controller_path(controller)), controller_path(controller)
           end
         end
+      rescue LoadError
+        abort("Please install devise gem!!!") if self.behavior == :invoke
       end
     end
 

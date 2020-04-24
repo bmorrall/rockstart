@@ -1,18 +1,8 @@
 # frozen_string_literal: true
 
-require "rockstart/generators/system_helpers"
-
 module Rockstart::FrontendApp
   class TitlesGenerator < Rails::Generators::Base
-    include Rockstart::Generators::SystemHelpers
-
     source_root File.expand_path("templates", __dir__)
-
-    def add_titles_gem
-      gem "title", github: "calebthompson/title"
-
-      bundle_install
-    end
 
     def add_titles_locale
       template "titles.en.yml.tt", "config/locales/titles.en.yml"

@@ -6,22 +6,11 @@ module Rockstart::Testing
   class RspecGenerator < Rockstart::BaseGenerator
     source_root File.expand_path("templates", __dir__)
 
-    def add_gems
-      gem "capybara", ">= 2.15", group: :test
-      gem "dotenv-rails", groups: %i[development test]
-      gem "factory_bot_rails", group: %i[development test]
-      gem "faker", group: %i[development test]
-      gem "rspec-rails", "~> 4.0.0", group: %i[development test]
-      gem "shoulda-matchers", group: :test
-    end
-
     def install_rspec_rails
-      bundle_install do
-        Dir.mktmpdir do |dir|
-          generate_rspec_install(dir)
-          template File.join(dir, ".rspec"), ".rspec"
-          directory File.join(dir, "spec"), "spec"
-        end
+      Dir.mktmpdir do |dir|
+        generate_rspec_install(dir)
+        template File.join(dir, ".rspec"), ".rspec"
+        directory File.join(dir, "spec"), "spec"
       end
     end
 

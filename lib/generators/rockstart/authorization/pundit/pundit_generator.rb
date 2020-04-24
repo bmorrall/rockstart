@@ -4,13 +4,6 @@ module Rockstart::Authorization
   class PunditGenerator < Rails::Generators::Base
     source_root File.expand_path("templates", __dir__)
 
-    def install_pundit
-      gem "pundit"
-      gem "pundit-matchers", group: :test
-
-      Bundler.clean_system("bundle install --quiet")
-    end
-
     def add_pundit_exception_handling
       application <<~PUNDIT
         # Treat Pundit authentication failures as forbidden

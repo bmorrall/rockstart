@@ -1,0 +1,17 @@
+Description:
+    Runs all rockstart generators without installing gems
+
+Example:
+    rails generate rockstart:run
+
+    This will run the core rockstart generators:
+        rockstart:development
+        rockstart:testing
+        rockstart:storage
+        rockstart:mailers
+        rockstart:frontend_app
+        rockstart:authorization
+        rockstart:monitoring
+        rockstart:security
+        rockstart:deployment
+        rockstart:quality

@@ -6,7 +6,15 @@ module Rockstart
     module ClassOptionHelpers
       extend ActiveSupport::Concern
 
+      # rubocop:disable Metrics/BlockLength
       class_methods do
+        def all_class_options
+          devise_class_option
+          postgres_class_option
+          pundit_class_option
+          rollbar_class_option
+        end
+
         def devise_class_option
           class_option :devise, type: :boolean,
                                 desc: "Include Devise support",
@@ -31,8 +39,13 @@ module Rockstart
                                  default: true
         end
       end
+      # rubocop:enable Metrics/BlockLength
 
       protected
+
+      def all_class_options
+        [devise_option, postgres_option, pundit_option, rollbar_option]
+      end
 
       def devise?
         options.fetch(:devise)

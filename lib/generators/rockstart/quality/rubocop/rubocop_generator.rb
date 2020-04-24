@@ -1,16 +1,14 @@
 # frozen_string_literal: true
 
-require "rockstart/base_generator"
+require "rockstart/generators/system_helpers"
 module Rockstart::Quality
-  class RubocopGenerator < Rockstart::BaseGenerator
+  class RubocopGenerator < Rails::Generators::Base
+    include Rockstart::Generators::SystemHelpers
+
     source_root File.expand_path("templates", __dir__)
 
     def add_default_configuration
       copy_file "rubocop.yml", ".rubocop.yml"
-    end
-
-    def add_rubocop_gem
-      gem "rubocop-rails", require: false, group: %i[development test]
     end
 
     def add_rake_task
@@ -19,7 +17,6 @@ module Rockstart::Quality
 
     # Rebuild .rubocop_todo.yml, ensuring only existing code is excluded
     def build_rubocop_todo
-      bundle_install
       system! "bundle exec rake rubocop:auto_gen_config"
     end
   end

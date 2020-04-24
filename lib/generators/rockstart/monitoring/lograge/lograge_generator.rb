@@ -9,9 +9,6 @@ module Rockstart::Monitoring
     source_root File.expand_path("templates", __dir__)
 
     def install_lograge
-      gem "lograge"
-      gem "logstash-event"
-
       copy_initializer "lograge"
     end
   end

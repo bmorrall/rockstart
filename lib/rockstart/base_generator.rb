@@ -1,13 +1,11 @@
 # frozen_string_literal: true
 
 require "rockstart/generators/class_option_helpers"
-require "rockstart/generators/system_helpers"
 
 module Rockstart
   # Base class for defining rockstart generators
   class BaseGenerator < Rails::Generators::Base
     include Generators::ClassOptionHelpers
-    include Generators::SystemHelpers
 
     protected
 

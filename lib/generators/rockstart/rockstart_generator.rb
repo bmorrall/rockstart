@@ -9,53 +9,17 @@ class RockstartGenerator < Rails::Generators::Base
 
   desc "The quickest way for getting Rails Ready to Rock!"
 
-  devise_class_option
-  postgres_class_option
-  pundit_class_option
-  rollbar_class_option
+  all_class_options
 
   def add_rebuid_script
-    generate "rockstart:development:rebuild", devise_option, postgres_option, pundit_option,
-             rollbar_option, *content_security_options
+    generate "rockstart:development:rebuild", *all_class_options, *content_security_options
   end
 
-  def setup_development_environment
-    generate "rockstart:development", devise_option, pundit_option, rollbar_option
+  def install_all_gems
+    generate "rockstart:gemset"
   end
 
-  def generate_storage
-    generate "rockstart:database", postgres_option
-  end
-
-  def generate_mailers
-    generate "rockstart:mailers"
-  end
-
-  def generate_frontend_app
-    generate "rockstart:frontend_app"
-  end
-
-  def generate_authorization
-    generate "rockstart:authorization", devise_option, pundit_option
-  end
-
-  def generate_monitoring
-    generate "rockstart:monitoring", rollbar_option
-  end
-
-  def generate_security
-    generate "rockstart:security", devise_option, *content_security_options
-  end
-
-  def generate_testing
-    generate "rockstart:testing", devise_option
-  end
-
-  def generate_deployment
-    generate "rockstart:deployment", devise_option, postgres_option
-  end
-
-  def generate_quality
-    generate "rockstart:quality"
+  def run_rockstart_generators
+    generate "rockstart:run", *all_class_options, *content_security_options
   end
 end

@@ -12,10 +12,7 @@ module Rockstart::Development
 
     source_root File.expand_path("templates", __dir__)
 
-    devise_class_option
-    postgres_class_option
-    pundit_class_option
-    rollbar_class_option
+    all_class_options
 
     def add_rocstart_script
       script_template "rockstart"
