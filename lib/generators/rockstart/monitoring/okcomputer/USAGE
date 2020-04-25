@@ -1,0 +1,8 @@
+Description:
+    Adds a health check using OkComputer
+
+Example:
+    rails generate rockstart:monitoring:okcomputer
+
+    This will create:
+        A /health route for monitoring health

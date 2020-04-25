@@ -12,6 +12,14 @@
 <%- end -%>
   ],
   "env": {
+    "OKCOMPUTER_USERNAME": {
+      "description": "The username for accessing the /health endpoint.",
+      "value": "okcomputer"
+    },
+    "OKCOMPUTER_PASSWORD": {
+      "description": "The password for accessing the /health endpoint.",
+      "generator": "secret"
+    },
     "RAILS_ENV": "production",
 <%- if rollbar? -%>
     "ROLLBAR_ENV": "development-heroku",

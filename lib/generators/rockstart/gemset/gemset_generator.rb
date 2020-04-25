@@ -54,6 +54,10 @@ class Rockstart::GemsetGenerator < Rails::Generators::Base
     gem "rollbar"
   end
 
+  def install_okcomputer_gems
+    gem "okcomputer"
+  end
+
   def install_rubocop_gems
     gem "rubocop-rails", require: false, group: %i[development test]
   end

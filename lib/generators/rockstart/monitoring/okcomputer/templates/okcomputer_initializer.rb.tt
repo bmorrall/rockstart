@@ -1,0 +1,21 @@
+# frozen_string_literal: true
+
+# Require authentication
+username = ENV.fetch("OKCOMPUTER_USERNAME", "okcomputer")
+password = ENV.fetch("OKCOMPUTER_PASSWORD") { SecureRandom.hex }
+OkComputer.require_authentication(username, password, except: %w[default])
+
+# Cache
+OkComputer::Registry.register "cache", OkComputer::GenericCacheCheck.new
+
+<%- if memcached? -%>
+# Cache (Memcached)
+memcached_servers = ENV.fetch("MEMCACHE_SERVERS") { ENV.fetch("MEMCACHIER_SERVERS", "") }
+memcached_servers.split(",").each_with_index do |cache_server, index|
+  memcached_check = index.zero? ? "memcached" : "memcached_#{index}"
+  OkComputer::Registry.register memcached_check, OkComputer::CacheCheck.new(cache_server)
+end
+
+<%- end -%>
+# mount at /health
+OkComputer.mount_at = "health"

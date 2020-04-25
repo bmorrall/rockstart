@@ -1,0 +1,5 @@
+en:
+  okcomputer:
+    check:
+      passed: "%{registrant_name}: [success] %{message}"
+      failed: "%{registrant_name}: [failure] %{message}"
