@@ -13,7 +13,7 @@ Rollbar.configure do |config|
   # to fetch the logged-in user object, and then call that object's `id`
   # method to fetch this property. To customize:
   # config.person_method = "my_current_user"
-  config.person_id_method = "uid"
+  config.person_id_method = "id"
 
   # Additionally, you may specify the following:
   config.person_username_method = "nickname"

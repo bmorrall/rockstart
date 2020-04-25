@@ -23,7 +23,7 @@ Rails.application.configure do
       request_id: controller.request.request_id
     }.tap do |payload|
       if controller.respond_to?(:current_user)
-        payload[:user_id] = controller.current_user&.uid || :guest
+        payload[:user_id] = controller.current_user&.id || :guest
       end
     end
   end

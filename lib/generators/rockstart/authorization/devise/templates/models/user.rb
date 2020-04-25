@@ -12,11 +12,6 @@ class User < ApplicationRecord
   # admin:boolean
   # deleted_at:datetime
 
-  # Unique user identifier
-  def uid
-    id
-  end
-
   # Short display name for user
   def first_name
     namae.given

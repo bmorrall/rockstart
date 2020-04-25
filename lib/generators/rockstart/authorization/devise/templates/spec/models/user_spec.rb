@@ -15,14 +15,6 @@ RSpec.describe User, type: :model do
   # deleted_at:datetime
   it { is_expected.to have_db_column(:deleted_at).of_type(:datetime) }
 
-  describe "#uid" do
-    it "returns the id of the User" do
-      user = build_stubbed(:user, name: nil)
-      allow(user).to receive(:id).and_return("1234")
-      expect(user.uid).to eq "1234"
-    end
-  end
-
   describe "#first_name" do
     it "returns the given name from the name" do
       user = User.new(name: "John Smith")
