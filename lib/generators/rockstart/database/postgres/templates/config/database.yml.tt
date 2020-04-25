@@ -4,6 +4,10 @@ default: &default
   # For details on connection pooling, see Rails configuration guide
   # https://guides.rubyonrails.org/configuring.html#database-pooling
   pool: <%%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+  variables:
+    # Prevent single queries from taking up all of your database’s resources
+    # https://github.com/ankane/the-ultimate-guide-to-ruby-timeouts#postgresql
+    statement_timeout: <%%= ENV.fetch("STATEMENT_TIMEOUT") { "5s" } %>
 
 development:
   <<: *default
