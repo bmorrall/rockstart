@@ -94,6 +94,8 @@ class Rockstart::GemsetGenerator < Rails::Generators::Base
   end
 
   def bundle_install
-    system! "bundle install"
+    Bundler.with_clean_env do
+      system! "bundle install"
+    end
   end
 end
