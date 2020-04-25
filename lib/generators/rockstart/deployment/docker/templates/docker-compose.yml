@@ -50,6 +50,7 @@ services:
     ports:
       - 80:80
       - 443:443
+      - 8000:443 # for development
     volumes:
       - ./certs/localhost:/<%= @app_home %>/certs
       - static-assets:/<%= @app_home %>/public
