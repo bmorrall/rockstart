@@ -10,7 +10,7 @@ end
 RSpec.configure do |config|
   config.include CacheSupport
 
-  config.around(cache_testing: true) do |example|
+  config.around(type: :request) do |example|
     clear_rails_cache
     example.run
     clear_rails_cache

@@ -1,0 +1,71 @@
+# frozen_string_literal: true
+
+require "rails_helper"
+
+RSpec.describe "Rack::Attack", type: :request do
+  describe "req/ip throttle" do
+    it "rate limits requests from spammy clients" do
+      300.times do
+        get root_url
+        expect(response).not_to have_http_status(:too_many_requests)
+      end
+
+      get root_url
+      expect(response).to have_http_status(:too_many_requests)
+    end
+  end
+<%- if devise? -%>
+
+  describe "logins/ip throttle" do
+    it "rate limits login requests based off ip address" do
+      5.times do
+        post new_user_session_path, params: {
+          user: {
+            email: Faker::Internet.email,
+            password: Faker::Internet.password
+          }
+        }
+      end
+
+      post new_user_session_path, params: {
+        user: {
+          email: Faker::Internet.email,
+          password: Faker::Internet.password
+        }
+      }
+      expect(response).to have_http_status(:too_many_requests)
+    end
+  end
+
+  describe "logins/email throttle" do
+    it "rate limits login requests based off email address" do
+      valid_email_parameters = {
+        user: {
+          email: Faker::Internet.email,
+          password: Faker::Internet.password
+        }
+      }
+
+      5.times do |n|
+        post new_user_session_path, params: valid_email_parameters, headers: {
+          "REMOTE_ADDR" => format("120.0.1.%<n>d", n: n)
+        }
+      end
+
+      post new_user_session_path, params: valid_email_parameters
+      expect(response).to have_http_status(:too_many_requests)
+    end
+  end
+
+  describe "registrations/ip throttle" do
+    it "rate limits regstration requests based off ip address" do
+      5.times do
+        put user_registration_path, params: update_user_email_params
+      end
+
+      put user_registration_path, params: update_user_email_params
+      expect(response).to have_http_status(:too_many_requests)
+    end
+  end
+<%- end -%>
+end

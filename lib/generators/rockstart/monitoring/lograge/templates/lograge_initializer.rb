@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
-# rubocop:disable Layout/LineLength
+require "lograge_util"
+
 Rails.application.configure do
   config.lograge.enabled = true
   config.lograge.formatter = Lograge::Formatters::Logstash.new
@@ -28,28 +29,11 @@ Rails.application.configure do
   end
 end
 
+# rubocop:disable Layout/LineLength
 # Report for rack_attack throttle responses in lograge
-ActiveSupport::Notifications.subscribe("throttle.rack_attack") do |_name, start, finish, request_id, payload|
-  req = payload[:request]
-
-  filter_parameters = Rails.application.config.filter_parameters
-  params = ActiveSupport::ParameterFilter.new(filter_parameters).filter(req.params)
-
-  message_payload = {
-    method: req.request_method,
-    path: req.path,
-    format: params[:format] || "html",
-    controller: Rack::Attack.name,
-    action: "throttle",
-    status: 429,
-    duration: (finish - start).to_f.round(2),
-    params: params.except("controller", "action", "format", "id"),
-    host: req.host,
-    remote_ip: req.ip,
-    request_id: request_id
-  }
-  formatted_message = Lograge.lograge_config.formatter.call(message_payload)
+ActiveSupport::Notifications.subscribe("throttle.rack_attack") do |name, start, finish, request_id, payload|
   logger = Lograge.logger.presence || Rails.logger
+  formatted_message = LogrageUtil.format_rack_attack_throttle(name, start, finish, request_id, payload)
   logger.public_send(Lograge.log_level, formatted_message)
 end
 # rubocop:enable Layout/LineLength

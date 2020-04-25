@@ -8,6 +8,10 @@ module Rockstart::Monitoring
 
     source_root File.expand_path("templates", __dir__)
 
+    def add_lograge_util
+      copy_file "lograge_util.rb", "lib/lograge_util.rb"
+    end
+
     def install_lograge
       copy_initializer "lograge"
     end

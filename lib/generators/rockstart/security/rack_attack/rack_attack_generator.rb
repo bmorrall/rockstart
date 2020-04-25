@@ -16,6 +16,10 @@ module Rockstart::Security
       initializer_template "rack_attack"
     end
 
+    def add_request_spec
+      template "rack_attack_spec.rb", "spec/requests/rack_attack_spec.rb"
+    end
+
     def add_rspec_support
       copy_file "cache_support.rb", "spec/support/cache.rb"
     end
