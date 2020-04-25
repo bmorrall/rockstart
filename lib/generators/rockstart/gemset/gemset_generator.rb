@@ -28,6 +28,12 @@ class Rockstart::GemsetGenerator < Rails::Generators::Base
     gem "connection_pool"
   end
 
+  def install_postgres_gems
+    return unless postgres?
+
+    gem "zero_downtime_migrations"
+  end
+
   def install_pundit_gems
     return unless pundit?
 
