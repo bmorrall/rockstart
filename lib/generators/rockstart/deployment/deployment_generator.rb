@@ -10,6 +10,7 @@ class Rockstart::DeploymentGenerator < Rails::Generators::Base
   source_root File.expand_path("templates", __dir__)
 
   devise_class_option
+  frontend_class_option
   memcached_class_option
   postgres_class_option
   rollbar_class_option
@@ -33,6 +34,7 @@ class Rockstart::DeploymentGenerator < Rails::Generators::Base
   def generate_docker
     generate "rockstart:deployment:docker",
              devise_option,
+             frontend_option,
              memcached_option,
              postgres_option,
              rollbar_option

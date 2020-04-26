@@ -10,6 +10,7 @@ module Rockstart
       class_methods do
         def all_class_options
           devise_class_option
+          frontend_class_option
           memcached_class_option
           postgres_class_option
           pundit_class_option
@@ -20,6 +21,12 @@ module Rockstart
           class_option :devise, type: :boolean,
                                 desc: "Include Devise support",
                                 default: true
+        end
+
+        def frontend_class_option
+          class_option :frontend, type: :boolean,
+                                  desc: "Include frontend support",
+                                  default: true
         end
 
         def memcached_class_option
@@ -53,6 +60,7 @@ module Rockstart
       def all_class_options
         [
           devise_option,
+          frontend_option,
           memcached_option,
           postgres_option,
           pundit_option,
@@ -66,6 +74,14 @@ module Rockstart
 
       def devise_option
         devise? ? "--devise" : "--no-devise"
+      end
+
+      def frontend?
+        options.fetch(:frontend)
+      end
+
+      def frontend_option
+        frontend? ? "--frontend" : "--no-frontend"
       end
 
       def memcached?

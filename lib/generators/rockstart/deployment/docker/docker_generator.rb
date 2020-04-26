@@ -19,11 +19,8 @@ module Rockstart::Deployment
                             desc: "Mount directory used within Docker image",
                             default: Rails.application.engine_name
 
-    class_option :assets, type: :boolean,
-                          desc: "Include frontend assets support (node|yarn)",
-                          default: true
-
     devise_class_option
+    frontend_class_option
     memcached_class_option
     postgres_class_option
     rollbar_class_option
@@ -35,7 +32,6 @@ module Rockstart::Deployment
     def create_dockerfile
       @root_image = options[:root_image]
       @app_home = options[:app_home]
-      @assets = options[:assets]
       template "app/Dockerfile-app", "Dockerfile"
     end
 

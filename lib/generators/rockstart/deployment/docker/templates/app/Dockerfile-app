@@ -7,7 +7,7 @@ RUN apt-get update -qq \
 <%- if postgres? -%>
     && apt-get install -y libpq-dev \
 <%- end -%>
-<%- if @assets -%>
+<%- if frontend? -%>
     && curl -sL https://deb.nodesource.com/setup_10.x | bash - \
     && curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - \
     && echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list \
@@ -16,7 +16,7 @@ RUN apt-get update -qq \
     && apt-get clean
 
 ENV RACK_ENV=production \
-<%- if @assets -%>
+<%- if frontend? -%>
     NODE_ENV=production \
 <%- end -%>
     RAILS_LOG_TO_STDOUT=true \
@@ -37,7 +37,7 @@ ADD . /<%= @app_home %>
 
 # Perform post-installation tasks
 RUN bundle exec rake tmp:create \
-<%- if @assets -%>
+<%- if frontend? -%>
     && bundle exec rake assets:precompile \
 <%- end -%>
     && bundle exec rake tmp:clear

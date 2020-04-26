@@ -26,6 +26,8 @@ class Rockstart::RunGenerator < Rails::Generators::Base
   end
 
   def generate_frontend_app
+    return unless frontend?
+
     generate "rockstart:frontend_app"
   end
 
@@ -44,6 +46,7 @@ class Rockstart::RunGenerator < Rails::Generators::Base
   def generate_deployment
     generate "rockstart:deployment",
              devise_option,
+             frontend_option,
              memcached_option,
              postgres_option,
              rollbar_option

@@ -41,11 +41,10 @@ class Rockstart::GemsetGenerator < Rails::Generators::Base
     gem "pundit-matchers", group: :test
   end
 
-  def install_simple_form_gems
-    gem "simple_form"
-  end
+  def install_frontend_gems
+    return unless frontend?
 
-  def install_frontend_app_gems
+    gem "simple_form"
     gem "title", github: "calebthompson/title"
   end
 
