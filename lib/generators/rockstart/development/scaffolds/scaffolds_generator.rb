@@ -10,6 +10,20 @@ module Rockstart::Development
 
     pundit_class_option
 
+    def add_generator_defaults
+      application do
+        <<~DEFAULTS
+          config.generators do |g|
+            g.assets false
+            g.helper false
+            g.javascripts false
+            g.scaffold_stylesheet false
+            g.stylesheets false
+          end
+        DEFAULTS
+      end
+    end
+
     def copy_scaffold_templates
       template "api_controller.rb.tt", "#{scaffold_controller_dir}/api_controller.rb.tt"
       template "controller.rb.tt", "#{scaffold_controller_dir}/controller.rb.tt"
