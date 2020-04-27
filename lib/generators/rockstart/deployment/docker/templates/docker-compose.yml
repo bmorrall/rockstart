@@ -1,6 +1,6 @@
 version: '2.0'
 services:
-  app:
+  web:
     build: .
     env_file:
       - ./.env
@@ -30,7 +30,7 @@ services:
   memcached:
     image: memcached:alpine
 <%- end -%>
-  web:
+  web-nginx:
     build:
       context: ./docker/web/
     depends_on:
