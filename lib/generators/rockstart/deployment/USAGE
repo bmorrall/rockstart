@@ -5,4 +5,4 @@ Example:
     rails generate rockstart:deployment
 
     This will create:
-        bin/deployment script for fresh deployments
+        bin/hooks-release script for fresh deployments

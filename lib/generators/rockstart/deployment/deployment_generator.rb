@@ -17,8 +17,8 @@ class Rockstart::DeploymentGenerator < Rails::Generators::Base
   rollbar_class_option
 
   def create_deployment_scripts
-    script_template "setup-deployment"
-    script_template "deployment"
+    script_template "hooks-postdeploy"
+    script_template "hooks-release"
   end
 
   def generate_nginx

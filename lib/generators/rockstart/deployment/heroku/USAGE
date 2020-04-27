@@ -5,5 +5,5 @@ Example:
     rails generate rockstart:deployment:heroku
 
     This will create:
-        A Procfile that runs the bin/deployment script
+        A Procfile that runs the bin/hooks-release script
         An app.json that prepares an app for a review build

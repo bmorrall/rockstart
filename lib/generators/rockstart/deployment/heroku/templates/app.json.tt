@@ -35,6 +35,6 @@
   },
   "stack": "heroku-18",
   "scripts": {
-    "postdeploy": "./bin/setup-deployment"
+    "postdeploy": "./bin/hooks-postdeploy"
   },
 }
