@@ -63,7 +63,7 @@ class Rockstart::GemsetGenerator < Rails::Generators::Base
   def install_rollbar_gems
     return unless rollbar?
 
-    gem "rollbar"
+    gem "rollbar", "~> 2.25.0"
   end
 
   def install_okcomputer_gems
