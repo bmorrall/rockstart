@@ -2,7 +2,7 @@
 
 FactoryBot.define do
   factory :user do
-    uid { SecureRandom.uuid }
+    uid { SecureRandom.hex(10) }
 
     name { [nickname, Faker::Name.last_name].join(" ") }
     nickname { Faker::Name.first_name }

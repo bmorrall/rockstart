@@ -9,7 +9,11 @@ class User
   end
 
   def id
-    @userinfo["uid"]
+    if auth0?
+      @userinfo["uid"]
+    elsif @userinfo["uid"].present?
+      "#{@userinfo['provider']}|#{@userinfo['uid']}"
+    end
   end
 
   def image
@@ -63,6 +67,10 @@ class User
   end
 
   private
+
+  def auth0?
+    @userinfo["provider"] == "auth0"
+  end
 
   def namae
     @namae ||= Namae::Name.parse(name)

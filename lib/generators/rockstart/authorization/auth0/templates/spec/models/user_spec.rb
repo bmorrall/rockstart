@@ -19,8 +19,17 @@ RSpec.describe User, type: :model do
       }
     end
 
-    it { expect(user.id).to eq "auth0|1234" }
     it { expect(user.image).to eq "https://s.gravatar.com/avatar/55502f40dc8b7c769880b10874abc9d0?s=480" }
+
+    describe "#id" do
+      it { expect(user.id).to eq "auth0|1234" }
+
+      context "with an non-auth0 provider" do
+        before { userinfo["provider"] = "test" }
+
+        it { expect(user.id).to eq "test|auth0|1234" }
+      end
+    end
 
     describe "#name" do
       it { expect(user.name).to eq "John Smith" }
