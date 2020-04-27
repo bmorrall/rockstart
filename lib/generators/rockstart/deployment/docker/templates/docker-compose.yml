@@ -17,6 +17,7 @@ services:
 <%- end -%>
     volumes:
     - static-assets:/<%= @app_home %>/public
+    - local-storage:/<%= @app_home %>/storage
 <%- if postgres? -%>
   db:
     image: postgres
@@ -65,7 +66,9 @@ services:
     volumes:
       - ./certs/localhost:/<%= @app_home %>/certs
       - static-assets:/<%= @app_home %>/public
+      - local-storage:/<%= @app_home %>/storage
       - web-logs:/<%= @app_home %>/log
 volumes:
   static-assets: {}
+  local-storage: {}
   web-logs: {}
