@@ -2,18 +2,6 @@ version: '2.0'
 services:
   app:
     build: .
-    environment:
-<%- if postgres? -%>
-      - DATABASE_URL=postgres://<%= app_name %>:<%= example_db_password %>@db/<%= app_name %>_production
-<%- end -%>
-<%- if memcached? -%>
-      - MEMCACHE_SERVERS=memcached
-<%- end -%>
-<%- if rollbar? -%>
-      - ROLLBAR_ENV=development-docker
-<%- end -%>
-      - SMTP_SERVER=mailcatcher
-      - SMTP_PORT=1025
     env_file:
       - ./.env
       - ./.env.docker
@@ -29,10 +17,8 @@ services:
 <%- if postgres? -%>
   db:
     image: postgres
-    environment:
-      - POSTGRES_DB=<%= app_name %>_production
-      - POSTGRES_USER=<%= app_name %>
-      - POSTGRES_PASSWORD=<%= example_db_password %>
+    env:
+      - ./.env.docker-db
     volumes:
       - ./tmp/db:/var/lib/postgresql/data
 <%- end -%>
@@ -40,8 +26,10 @@ services:
     image: sj26/mailcatcher
     ports:
       - 1080:1080
+<%- if memcached? -%>
   memcached:
     image: memcached:alpine
+<%- end -%>
   web:
     build:
       context: ./docker/web/

@@ -24,6 +24,7 @@ module Rockstart::Deployment
     memcached_class_option
     postgres_class_option
     rollbar_class_option
+    sidekiq_class_option
 
     def create_dockerignore
       copy_file "dockerignore", ".dockerignore"
@@ -53,8 +54,9 @@ module Rockstart::Deployment
       append_file ".gitignore", "\n# Docker Configuration\ndocker/certs\n"
     end
 
-    def create_dotenv
+    def create_dotenv_files
       template "dotenv.docker.tt", ".env.docker"
+      template "dotenv.docker-db.tt", ".env.docker-db"
     end
 
     private

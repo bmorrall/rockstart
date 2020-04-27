@@ -1,6 +1,17 @@
 APP_HOST=localhost
+<%- if postgres? -%>
+DATABASE_URL=postgres://<%= app_name %>:<%= example_db_password %>@db/<%= app_name %>_production
+<%- end -%>
 <%- if devise? -%>
 DEVISE_MAILER_SENDER=devise-mailer@<%= app_name %>
 <%- end -%>
+<%- if memcached? -%>
+MEMCACHE_SERVERS=memcached
+<%- end -%>
 OKCOMPUTER_USERNAME=okcomputer
 OKCOMPUTER_PASSWORD=okcomputer
+<%- if rollbar? -%>
+ROLLBAR_ENV=development-docker
+<%- end -%>
+SMTP_SERVER=mailcatcher
+SMTP_PORT=1025
