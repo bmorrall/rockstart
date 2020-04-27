@@ -16,6 +16,10 @@ class Rockstart::DeploymentGenerator < Rails::Generators::Base
   postgres_class_option
   rollbar_class_option
 
+  def create_run_scripts
+    script_template "web"
+  end
+
   def create_deployment_scripts
     script_template "hooks-postdeploy"
     script_template "hooks-release"
