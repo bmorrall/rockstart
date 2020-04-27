@@ -1,2 +1,2 @@
 release: ./bin/hooks-release
-web: .bin/web
+web: ./bin/web
