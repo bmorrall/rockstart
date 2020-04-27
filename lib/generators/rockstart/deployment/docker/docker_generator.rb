@@ -24,7 +24,6 @@ module Rockstart::Deployment
     memcached_class_option
     postgres_class_option
     rollbar_class_option
-    sidekiq_class_option
 
     def create_dockerignore
       copy_file "dockerignore", ".dockerignore"
