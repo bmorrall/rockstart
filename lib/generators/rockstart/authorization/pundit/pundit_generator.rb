@@ -29,6 +29,7 @@ module Rockstart::Authorization
 
     def add_prebuilt_resources
       directory "app"
+      directory "lib"
       directory "spec"
     end
 
