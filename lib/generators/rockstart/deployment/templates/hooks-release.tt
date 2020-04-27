@@ -13,5 +13,5 @@ end
 
 FileUtils.chdir APP_ROOT do
   puts "== Migrating Database =="
-  system! "STATEMENT_TIMEOUT=90s bundle exec rake db:migrate"
+  system! "DB_STATEMENT_TIMEOUT=90s bundle exec rake db:migrate"
 end
