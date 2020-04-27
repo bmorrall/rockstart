@@ -23,6 +23,15 @@ Rollbar.configure do |config|
   # provide a lambda like the following. It should return a hash.
   # config.custom_data_method = lambda { {:some_key => "some_value" } }
 
+<%- if auth0? -%>
+  # Scrub userinfo from the session
+  config.transform << proc do |options|
+    data = options[:payload]['data']
+    scrubbed_userinfo = Rollbar::Scrubbers.scrub_value(data[:request][:session][:userinfo])
+    data[:request][:session][:userinfo] = scrubbed_userinfo
+  end
+
+<%- end -%>
   # Add exception class names to the exception_level_filters hash to
   # change the level that exception is reported at. Note that if an exception
   # has already been reported and logged the level will need to be changed

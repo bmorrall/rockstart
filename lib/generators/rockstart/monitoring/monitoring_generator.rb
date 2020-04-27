@@ -5,6 +5,7 @@ require "rockstart/generators/class_option_helpers"
 class Rockstart::MonitoringGenerator < Rails::Generators::Base
   include Rockstart::Generators::ClassOptionHelpers
 
+  auth0_class_option
   memcached_class_option
   rollbar_class_option
 
@@ -15,7 +16,7 @@ class Rockstart::MonitoringGenerator < Rails::Generators::Base
   def generate_rollbar
     return unless rollbar?
 
-    generate "rockstart:monitoring:rollbar"
+    generate "rockstart:monitoring:rollbar", auth0_option
   end
 
   def generate_okcomputer

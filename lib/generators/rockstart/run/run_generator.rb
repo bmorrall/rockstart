@@ -36,7 +36,10 @@ class Rockstart::RunGenerator < Rails::Generators::Base
   end
 
   def generate_monitoring
-    generate "rockstart:monitoring", rollbar_option, memcached_option
+    generate "rockstart:monitoring",
+             auth0_option,
+             memcached_option,
+             rollbar_option
   end
 
   def generate_security
