@@ -70,76 +70,47 @@ RSpec.describe "Rack::Attack", type: :request do
 <%- end -%>
 
   describe "fail2ban/pentesters blocklist" do
-    it "globally rate limits pentesters attempting to retrieve passwords" do
-      3.times do
-        get "/etc/passwd"
-        expect(response).to have_http_status(:forbidden)
-      end
+    PENTESTING_PATHS = %w[
+      /etc/passwd
+      /bad_endpoint?secret_file=/etc/passwd
+      /wp-admin
+      /wp-login
+      /example.php
+    ].freeze
 
-      get root_url
-      expect(response).to have_http_status(:forbidden)
+    DENIAL_URL = "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+
+    PENTESTING_PATHS.each do |pentesting_path|
+      it "blocks clients after repeat visits to #{pentesting_path}" do
+        2.times do
+          get pentesting_path
+          expect(response).to have_http_status(:moved_permanently)
+          expect(response).to redirect_to(root_url)
+        end
+
+        get root_url
+        expect(response).not_to redirect_to(DENIAL_URL)
+
+        get pentesting_path
+        expect(response).to have_http_status(:moved_permanently)
+        expect(response).to redirect_to(root_url)
+
+        get root_url
+        expect(response).to have_http_status(:found)
+        expect(response).to redirect_to(DENIAL_URL)
+      end
     end
 
-    it "globally rate limits pentesters attempting to retrieve passwords from a query" do
-      3.times do
-        get "/bad_endpoint?secret_file=/etc/passwd"
-        expect(response).to have_http_status(:forbidden)
+    PENTESTING_PATHS.shuffle.combination(3).to_a.sample.tap do |url_a, url_b, url_c|
+      it "shares the visit count between pentesting routes (e.g. #{url_a}, #{url_b}, #{url_c})" do
+        get url_a
+        get url_b
+        get url_c
+
+        get root_url
+        expect(response).to have_http_status(:found)
+        expect(response).to redirect_to(DENIAL_URL)
       end
-
-      get root_url
-      expect(response).to have_http_status(:forbidden)
-    end
-
-    it "globally rate limits pentesters testing for wordpress admin pages" do
-      3.times do
-        get "/wp-admin"
-        expect(response).to have_http_status(:forbidden)
-      end
-
-      get root_url
-      expect(response).to have_http_status(:forbidden)
-    end
-
-    it "globally rate limits pentesters testing for wordpress login pages" do
-      3.times do
-        get "/wp-login"
-        expect(response).to have_http_status(:forbidden)
-      end
-
-      get root_url
-      expect(response).to have_http_status(:forbidden)
-    end
-
-    it "globally rate limits pentesters searching for php endpoints" do
-      3.times do
-        get "/example.php"
-        expect(response).to have_http_status(:forbidden)
-      end
-
-      get root_url
-      expect(response).to have_http_status(:forbidden)
-    end
-
-    it "groups all pentested routes together" do
-      get "/etc/passwd"
-      get "/bad_endpoint?secret_file=/etc/passwd"
-      get "/wp-admin"
-
-      get root_url
-      expect(response).to have_http_status(:forbidden)
-
-      Rails.cache.clear
-
-      get "/wp-login"
-      get "/example.php"
-
-      get root_url
-      expect(response).not_to have_http_status(:forbidden)
-
-      get "/example.php"
-
-      get root_url
-      expect(response).to have_http_status(:forbidden)
     end
   end
 end

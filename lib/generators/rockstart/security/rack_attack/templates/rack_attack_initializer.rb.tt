@@ -35,6 +35,14 @@ class Rack::Attack # rubocop:disable Style/ClassAndModuleChildren
   # Key: "rack::attack:#{Time.now.to_i/:period}:req/ip:#{req.ip}"
   throttle("req/ip", limit: 300, period: 5.minutes, &:ip)
 
+  def self.pentesting_request?(path, query_string)
+    CGI.unescape(query_string) =~ %r{/etc/passwd} ||
+      path.include?("/etc/passwd") ||
+      path.include?("wp-admin") ||
+      path.include?("wp-login") ||
+      /\.php$/.match?(path)
+  end
+
   # Block suspicious requests for '/etc/passwd' or wordpress specific paths.
   # After 3 blocked requests in 10 minutes, block all requests from that IP for 5 minutes.
   blocklist("fail2ban/pentesters") do |req|
@@ -42,11 +50,7 @@ class Rack::Attack # rubocop:disable Style/ClassAndModuleChildren
     # so the request is blocked
     Rack::Attack::Fail2Ban.filter("pentesters-#{req.ip}", maxretry: 3, findtime: 10.minutes, bantime: 5.minutes) do
       # The count for the IP is incremented if the return value is truthy
-      CGI.unescape(req.query_string) =~ %r{/etc/passwd} ||
-        req.path.include?("/etc/passwd") ||
-        req.path.include?("wp-admin") ||
-        req.path.include?("wp-login") ||
-        /\.php$/.match?(req.path)
+      pentesting_request?(req.path, req.query_string)
     end
   end
 
@@ -101,6 +105,16 @@ class Rack::Attack # rubocop:disable Style/ClassAndModuleChildren
   end
 
 <%- end -%>
+  ### Custom Blocklist Response ###
+
+  self.blocklisted_response = lambda do |request|
+    if pentesting_request?(request.fetch("PATH_INFO"), request.fetch("QUERY_STRING"))
+      [ 301, { "Location" => "/" }, [] ]
+    else
+      [ 302, { "Location" => "https://www.youtube.com/watch?v=dQw4w9WgXcQ" }, [] ]
+    end
+  end
+
   ### Custom Throttle Response ###
 
   # By default, Rack::Attack returns an HTTP 429 for throttled responses,
