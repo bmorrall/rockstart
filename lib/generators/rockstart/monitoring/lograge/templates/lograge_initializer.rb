@@ -30,10 +30,17 @@ Rails.application.configure do
 end
 
 # rubocop:disable Layout/LineLength
-# Report for rack_attack throttle responses in lograge
+# Report for rack-attack throttle responses in lograge
 ActiveSupport::Notifications.subscribe("throttle.rack_attack") do |name, start, finish, request_id, payload|
   logger = Lograge.logger.presence || Rails.logger
   formatted_message = LogrageUtil.format_rack_attack_throttle(name, start, finish, request_id, payload)
+  logger.public_send(Lograge.log_level, formatted_message)
+end
+
+# Report for rack-attack blocklist responses in lograge
+ActiveSupport::Notifications.subscribe("blocklist.rack_attack") do |name, start, finish, request_id, payload|
+  logger = Lograge.logger.presence || Rails.logger
+  formatted_message = LogrageUtil.format_rack_attack_blocklist(name, start, finish, request_id, payload)
   logger.public_send(Lograge.log_level, formatted_message)
 end
 # rubocop:enable Layout/LineLength

@@ -68,4 +68,78 @@ RSpec.describe "Rack::Attack", type: :request do
     end
   end
 <%- end -%>
+
+  describe "fail2ban/pentesters blocklist" do
+    it "globally rate limits pentesters attempting to retrieve passwords" do
+      3.times do
+        get "/etc/passwd"
+        expect(response).to have_http_status(:forbidden)
+      end
+
+      get root_url
+      expect(response).to have_http_status(:forbidden)
+    end
+
+    it "globally rate limits pentesters attempting to retrieve passwords from a query" do
+      3.times do
+        get "/bad_endpoint?secret_file=/etc/passwd"
+        expect(response).to have_http_status(:forbidden)
+      end
+
+      get root_url
+      expect(response).to have_http_status(:forbidden)
+    end
+
+    it "globally rate limits pentesters testing for wordpress admin pages" do
+      3.times do
+        get "/wp-admin"
+        expect(response).to have_http_status(:forbidden)
+      end
+
+      get root_url
+      expect(response).to have_http_status(:forbidden)
+    end
+
+    it "globally rate limits pentesters testing for wordpress login pages" do
+      3.times do
+        get "/wp-login"
+        expect(response).to have_http_status(:forbidden)
+      end
+
+      get root_url
+      expect(response).to have_http_status(:forbidden)
+    end
+
+    it "globally rate limits pentesters searching for php endpoints" do
+      3.times do
+        get "/example.php"
+        expect(response).to have_http_status(:forbidden)
+      end
+
+      get root_url
+      expect(response).to have_http_status(:forbidden)
+    end
+
+    it "groups all pentested routes together" do
+      get "/etc/passwd"
+      get "/bad_endpoint?secret_file=/etc/passwd"
+      get "/wp-admin"
+
+      get root_url
+      expect(response).to have_http_status(:forbidden)
+
+      Rails.cache.clear
+
+      get "/wp-login"
+      get "/example.php"
+
+      get root_url
+      expect(response).not_to have_http_status(:forbidden)
+
+      get "/example.php"
+
+      get root_url
+      expect(response).to have_http_status(:forbidden)
+    end
+  end
 end
