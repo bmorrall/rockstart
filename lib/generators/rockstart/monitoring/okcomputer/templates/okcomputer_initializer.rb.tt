@@ -1,5 +1,8 @@
 # frozen_string_literal: true
 
+# Log output to logger
+OkComputer.logger = Rails.logger
+
 # Require authentication
 username = ENV.fetch("OKCOMPUTER_USERNAME", "okcomputer")
 password = ENV.fetch("OKCOMPUTER_PASSWORD") { SecureRandom.hex }
