@@ -24,6 +24,9 @@
 <%- end -%>
   ],
   "env": {
+<% if free_tier? -%>
+    "DB_CONNECT_TIMEOUT": "5",
+<% end -%>
     "OKCOMPUTER_USERNAME": {
       "description": "The username for accessing the /health endpoint.",
       "value": "okcomputer"

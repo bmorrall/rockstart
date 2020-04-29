@@ -11,6 +11,10 @@ module Rockstart::Deployment
 
     source_root File.expand_path("templates", __dir__)
 
+    class_option :free_tier, type: :boolean,
+                 desc: "Prioritizes configratons and addons for the free tier",
+                 default: true
+
     auth0_class_option
     memcached_class_option
     postgres_class_option
@@ -31,6 +35,12 @@ module Rockstart::Deployment
 
     def add_deploy_script
       script_template "deploy-heroku"
+    end
+
+    private
+
+    def free_tier?
+      options.fetch(:free_tier)
     end
   end
 end
