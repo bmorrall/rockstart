@@ -10,19 +10,29 @@ class CspViolationsController < ApplicationController
       report = report_base["csp-report"]
       message = build_content_security_message(report)
 
-      # Post message using Lograge formatter
-      Rails.logger.error(message.to_json)
+      log_csp_report_violation(message)
+<% if rollbar? -%>
+      Rollbar.warning("csp-violation", message) unless ENV["ROLLBAR_ACCESS_TOKEN"].blank?
+<% end -%>
     end
     head :ok
   end
 
   private
 
+  def log_csp_report_violation(message)
+    # Post message using Lograge format
+    Rails.logger.warn message.merge(
+      "@timestamp" => ::Time.now.utc,
+      type: "csp-report",
+      request_id: request.request_id,
+      user_agent: request.headers["User-Agent"]
+    ).to_json
+  end
+
   # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
   def build_content_security_message(report)
     {
-      "@timestamp" => ::Time.now.utc,
-      type: "csp-report",
       blocked_uri: report["blocked-uri"].try(:downcase),
       disposition: report["disposition"].try(:downcase),
       document_uri: report["document-uri"],
@@ -30,8 +40,6 @@ class CspViolationsController < ApplicationController
       violated_directive: report["violated-directive"].try(:downcase),
       referrer: report["referrer"].try(:downcase),
       status_code: (report["status-code"].presence || 0).to_i,
-      request_id: request.request_id,
-      user_agent: request.headers["User-Agent"],
       raw_report: report
     }
   end

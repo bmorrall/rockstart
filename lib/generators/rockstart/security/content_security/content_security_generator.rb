@@ -1,10 +1,12 @@
 # frozen_string_literal: true
 
+require "rockstart/generators/class_option_helpers"
 require "rockstart/generators/content_security_options"
 require "rockstart/generators/template_helpers"
 
 module Rockstart::Security
   class ContentSecurityGenerator < Rails::Generators::Base
+    include Rockstart::Generators::ClassOptionHelpers
     include Rockstart::Generators::ContentSecurityOptions
     include Rockstart::Generators::TemplateHelpers
 
@@ -13,6 +15,8 @@ module Rockstart::Security
     class_option :session_name, type: :string,
                                 desc: "Name used for Rails Sessions",
                                 default: Rockstart::Env.default_session_name
+
+    rollbar_class_option
 
     def add_initializer
       initializer_template "content_security_policy"
@@ -23,7 +27,7 @@ module Rockstart::Security
     end
 
     def add_csp_violations_controller
-      copy_file "csp_violations_controller.rb", "app/controllers/csp_violations_controller.rb"
+      template "csp_violations_controller.rb.tt", "app/controllers/csp_violations_controller.rb"
       route "resources :csp_violations, only: [:create]"
       template "content_security_spec.rb.tt", "spec/requests/content_security_spec.rb"
     end

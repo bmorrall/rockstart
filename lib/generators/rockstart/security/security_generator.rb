@@ -13,6 +13,7 @@ class Rockstart::SecurityGenerator < Rails::Generators::Base
   source_root File.expand_path("templates", __dir__)
 
   devise_class_option
+  rollbar_class_option
 
   def add_bundler_audit
     generate "rockstart:security:bundler_audit"
@@ -27,7 +28,7 @@ class Rockstart::SecurityGenerator < Rails::Generators::Base
   end
 
   def add_content_security_policy
-    generate "rockstart:security:content_security", *content_security_options
+    generate "rockstart:security:content_security", rollbar_option, *content_security_options
   end
 
   def remove_tzinfo
