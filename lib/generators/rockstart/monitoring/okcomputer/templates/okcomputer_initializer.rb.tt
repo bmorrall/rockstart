@@ -21,6 +21,9 @@ end
 
 <%- end -%>
 <%- if sidekiq? -%>
+# Redis
+OkComputer::Registry.register "redis", OkComputer::RedisCheck.new(url: ENV["REDIS_URL"])
+
 # Sidekiq
 OkComputer::Registry.register "sidekiq-default", OkComputer::SidekiqLatencyCheck.new("default")
 <%- if rollbar? -%>

@@ -12,18 +12,18 @@ RSpec.describe "OkComputer", type: :request do
   describe "GET /health" do
     it "responds with success", :aggregate_failures do
       get "/health"
-      expect(response).to have_http_status(:success)
       expect(response.body).to have_content("success")
       expect(response.body).not_to have_content("failure")
+      expect(response).to have_http_status(:success)
     end
   end
 
   describe "GET /health/all" do
     it "responds with success", :aggregate_failures do
       get "/health/all", headers: { "HTTP_AUTHORIZATION" => http_authorization }
-      expect(response).to have_http_status(:success)
       expect(response.body).to have_content("success")
       expect(response.body).not_to have_content("failure")
+      expect(response).to have_http_status(:success)
     end
 
     it "requires http authorization" do
@@ -35,9 +35,9 @@ RSpec.describe "OkComputer", type: :request do
   describe "GET /health/cache" do
     it "responds with success", :aggregate_failures do
       get "/health/cache", headers: { "HTTP_AUTHORIZATION" => http_authorization }
-      expect(response).to have_http_status(:success)
       expect(response.body).to have_content("success")
       expect(response.body).not_to have_content("failure")
+      expect(response).to have_http_status(:success)
     end
 
     it "requires http authorization" do
@@ -49,9 +49,9 @@ RSpec.describe "OkComputer", type: :request do
   describe "GET /health/database" do
     it "responds with success", :aggregate_failures do
       get "/health/database", headers: { "HTTP_AUTHORIZATION" => http_authorization }
-      expect(response).to have_http_status(:success)
       expect(response.body).to have_content("success")
       expect(response.body).not_to have_content("failure")
+      expect(response).to have_http_status(:success)
     end
 
     it "requires http authorization" do
