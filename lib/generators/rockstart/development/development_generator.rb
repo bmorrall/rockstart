@@ -21,4 +21,8 @@ class Rockstart::DevelopmentGenerator < Rails::Generators::Base
   def generate_localhost_setup
     generate "rockstart:development:localhost_setup"
   end
+
+  def setup_friendly_id
+    generate "rockstart:development:friendly_id"
+  end
 end

@@ -31,6 +31,11 @@ module Rockstart::Development
       template "controller.rb.tt", "#{scaffold_controller_dir}/controller.rb.tt"
     end
 
+    def copy_model_template
+      copy_file "model.rb.tt", "lib/templates/active_record/model/model.rb.tt"
+      copy_file "factory_bot/factories.erb", "lib/templates/factory_bot/model/factories.erb"
+    end
+
     def copy_rspec_model_templates
       copy_file "rspec/model/model_spec.rb.tt",
                 "#{rspec_templates_dir}/model/model_spec.rb"

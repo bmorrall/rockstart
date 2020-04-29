@@ -1,0 +1,8 @@
+<%-
+filtered_factory_definition = factory_definition.rstrip
+  .gsub(/\"MyString\"/, "Faker::Lorem.sentence") # Randomly generate strings
+  .sub(/slug[^\}]+}$/, "# slug:friendly_id") # ignore friendly_id slug
+-%>
+FactoryBot.define do
+<%= filtered_factory_definition %>
+end

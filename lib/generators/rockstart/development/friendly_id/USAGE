@@ -1,0 +1,8 @@
+Description:
+    Sets up friendly_id gem
+
+Example:
+    rails generate rockstart:development:friendly_id
+
+    This will create:
+        A basic configuration file for friendly_id

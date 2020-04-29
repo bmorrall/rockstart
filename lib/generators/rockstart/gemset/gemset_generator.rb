@@ -61,6 +61,10 @@ class Rockstart::GemsetGenerator < Rails::Generators::Base
     gem "title", github: "calebthompson/title"
   end
 
+  def install_development_gems
+    gem "friendly_id"
+  end
+
   def install_lograge_gems
     gem "lograge"
     gem "logstash-event"

@@ -4,6 +4,11 @@ require_dependency "<%%= namespaced_path %>/application_controller"
 <%% end -%>
 <%% module_namespacing do -%>
 class <%%= controller_class_name %>Controller < ApplicationController
+<%%-
+  # Generate scaffold with name or title, and a `slug:uniq` field to enable friendly_id
+  using_friendly_id = attributes_names.any? { |name| %w(name title).include?(name) } &&
+    attributes_names.any? { |name| %w(slug).include?(name) }
+-%>
   before_action :authenticate_user!
   before_action :assign_<%%= singular_table_name %>, only: [:show, :update, :destroy]
 <%- if pundit? -%>
@@ -71,11 +76,16 @@ class <%%= controller_class_name %>Controller < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def assign_<%%= singular_table_name %>
-<%- if pundit? -%>
-      @<%%= singular_table_name %> = <%%= orm_class.find("policy_scope(#{class_name})", "params[:id]") %>
-<%- else -%>
-      @<%%= singular_table_name %> = <%%= orm_class.find(class_name, "params[:id]") %>
-<%- end -%>
+      <%%-
+        <%- if pundit? -%>
+        finder_class = "policy_scope(#{class_name})"
+        <%- else -%>
+        finder_class = class_name
+        <%- end -%>
+        # Use friendly_id for slug lookup
+        finder_class += ".friendly" if using_friendly_id
+      -%>
+      @<%%= singular_table_name %> = <%%= orm_class.find(finder_class, "params[:id]") %>
     end
 
     # Only allow a trusted parameter "white list" through.
