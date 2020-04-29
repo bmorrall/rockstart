@@ -109,9 +109,9 @@ class Rack::Attack # rubocop:disable Style/ClassAndModuleChildren
 
   self.blocklisted_response = lambda do |request|
     if pentesting_request?(request.fetch("PATH_INFO"), request.fetch("QUERY_STRING"))
-      [ 301, { "Location" => "/" }, [] ]
+      [301, { "Location" => "/" }, []]
     else
-      [ 302, { "Location" => "https://www.youtube.com/watch?v=dQw4w9WgXcQ" }, [] ]
+      [302, { "Location" => "https://www.youtube.com/watch?v=dQw4w9WgXcQ" }, []]
     end
   end
 
