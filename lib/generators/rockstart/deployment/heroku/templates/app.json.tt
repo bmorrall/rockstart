@@ -18,6 +18,7 @@
 <%- if memcached? -%>
     "memcachier:dev",
 <%- end -%>
+    "papertrail:choklad",
 <%- if rollbar? -%>
     "rollbar:free",
 <%- end -%>
