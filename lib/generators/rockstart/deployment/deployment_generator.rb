@@ -27,6 +27,24 @@ class Rockstart::DeploymentGenerator < Rails::Generators::Base
     script_template "hooks-release"
   end
 
+  # rubocop:disable Metrics/MethodLength
+  def add_rack_deflater
+    application do
+      <<~RACK_DEFLATER
+        if ENV["RAILS_SERVE_STATIC_FILES"].present?
+          config.middleware.insert_after ActionDispatch::Static, Rack::Deflater
+        else
+          config.middleware.insert_after Rack::Sendfile, Rack::Deflater
+        end
+      RACK_DEFLATER
+    end
+  end
+  # rubocop:enable Metrics/MethodLength
+
+  def add_rack_deflater_spec
+    copy_file "rack_deflater_spec.rb", "spec/requests/rack_deflater_spec.rb"
+  end
+
   def generate_nginx
     generate "rockstart:deployment:nginx"
   end
