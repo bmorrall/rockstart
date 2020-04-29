@@ -8,9 +8,11 @@ module Rockstart
       "_#{Rails.application.class.module_parent.name.underscore}_session"
     end
 
+    # rubocop:disable Style/DoubleNegation
     # Indicates Postgres is currently in use
     def self.postgres_db?
-      (Rails.configuration.database_configuration[Rails.env]["adapter"] =~ /postgres/) && true
+      !!(Rails.configuration.database_configuration[Rails.env]["adapter"] =~ /postgres/)
     end
+    # rubocop:enable Style/DoubleNegation
   end
 end
