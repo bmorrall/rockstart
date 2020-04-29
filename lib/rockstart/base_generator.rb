@@ -9,11 +9,6 @@ module Rockstart
 
     protected
 
-    def gem(name, *args)
-      uncomment_lines "Gemfile", /^  gem ['"]#{name}['"]/
-      super
-    end
-
     def gsub_method(file, method_name, replacement_code = null)
       existing_method_regex = /  def #{method_name}...+?end$/m.freeze
       replacement_code = yield if block_given?

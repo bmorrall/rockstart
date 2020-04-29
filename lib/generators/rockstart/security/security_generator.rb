@@ -31,10 +31,6 @@ class Rockstart::SecurityGenerator < Rails::Generators::Base
     generate "rockstart:security:content_security", rollbar_option, *content_security_options
   end
 
-  def remove_tzinfo
-    comment_lines "Gemfile", /gem ['"]tzinfo-data['"]/
-  end
-
   def add_security_rake_tasks
     copy_file "security.rake", "lib/tasks/security.rake"
   end

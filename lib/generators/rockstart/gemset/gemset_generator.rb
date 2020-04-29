@@ -109,6 +109,10 @@ class Rockstart::GemsetGenerator < Rails::Generators::Base
     gem "simplecov", group: :test
   end
 
+  def remove_unused_tzinfo
+    comment_lines "Gemfile", /gem ['"]tzinfo-data['"]/
+  end
+
   def bundle_install
     Bundler.with_clean_env do
       system! "bundle install"
