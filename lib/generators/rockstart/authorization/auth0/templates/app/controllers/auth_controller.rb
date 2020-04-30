@@ -41,6 +41,7 @@ class AuthController < ApplicationController
   def failure
     # show a failure page or redirect to an error page
     error_key = params[:message].to_s.gsub(/[^\w-]/, "").presence || "generic"
-    @error_message = t(error_key, scope: "auth0.omniauth_error", default: :generic)
+    error_message = t(error_key, scope: "auth0.omniauth_error", default: :generic)
+    redirect_to auth_sign_in_path, alert: error_message
   end
 end

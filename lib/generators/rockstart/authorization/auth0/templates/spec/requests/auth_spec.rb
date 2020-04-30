@@ -51,7 +51,7 @@ RSpec.describe "Auth", type: :request do
         OmniAuth.config.mock_auth[:auth0] = :something_went_wrong
       end
 
-      it "renders a failure page" do
+      it "redirects to the sign in page with an error message" do
         post "/auth/auth0"
         expect(response).to redirect_to("/callback")
 
@@ -59,7 +59,9 @@ RSpec.describe "Auth", type: :request do
         expect(response).to redirect_to "/auth/failure?message=something_went_wrong&strategy=auth0"
 
         follow_redirect!
-        expect(response).to have_http_status(:success)
+        expect(response).to redirect_to(auth_sign_in_url)
+
+        follow_redirect!
         expect(response.body).to have_content(t("auth0.omniauth_error.generic"))
       end
     end
