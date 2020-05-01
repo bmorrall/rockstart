@@ -38,7 +38,7 @@ class User
   end
 
   def admin?
-    false # TODO: Implement admin
+    roles.include? "admin"
   end
 
   def persisted?
@@ -74,5 +74,9 @@ class User
 
   def namae
     @namae ||= Namae::Name.parse(name)
+  end
+
+  def roles
+    @roles ||= (@userinfo.dig("info", "roles") || [])
   end
 end

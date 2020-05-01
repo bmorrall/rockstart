@@ -7,6 +7,7 @@ FactoryBot.define do
     name { [nickname, Faker::Name.last_name].join(" ") }
     nickname { Faker::Name.first_name }
     image { "https://s.gravatar.com/avatar/55502f40dc8b7c769880b10874abc9d0?s=480" }
+    roles { [] }
 
     skip_create
     initialize_with do
@@ -18,7 +19,7 @@ FactoryBot.define do
     end
 
     trait :admin do
-      # TODO: Add admin mode
+      roles { %w[admin] }
     end
   end
 end
