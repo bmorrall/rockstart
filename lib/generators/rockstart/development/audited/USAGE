@@ -1,0 +1,10 @@
+Description:
+    Configures Audited gem for history tracking
+
+Example:
+    rails generate rockstart:development:audited
+
+    This will create:
+        Installs the audited gem
+        Updates foreign keys to work for Users with polymorphic uuid
+        Configures it to function without a User model (Auth0)

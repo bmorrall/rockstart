@@ -1,0 +1,13 @@
+# frozen_string_literal: true
+
+class AddAuditIndexes < ActiveRecord::Migration<%= migration_version %>
+  def self.change
+    add_index :audits, %i[auditable_type auditable_id version],
+              name: "auditable_index", algorithm: :concurrently
+    add_index :audits, %i[associated_type associated_id],
+              name: "associated_index", algorithm: :concurrently
+    add_index :audits, :user_uid, name: "user_index", algorithm: :concurrently
+    add_index :audits, :request_uuid, algorithm: :concurrently
+    add_index :audits, :created_at, algorithm: :concurrently
+  end
+end

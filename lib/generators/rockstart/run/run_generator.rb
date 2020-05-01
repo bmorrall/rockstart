@@ -10,7 +10,11 @@ class Rockstart::RunGenerator < Rails::Generators::Base
   all_class_options
 
   def setup_development_environment
-    generate "rockstart:development", devise_option, pundit_option, rollbar_option
+    generate "rockstart:development",
+             auth0_option,
+             devise_option,
+             postgres_option,
+             pundit_option
   end
 
   def generate_testing

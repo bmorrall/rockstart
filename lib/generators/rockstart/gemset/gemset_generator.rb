@@ -62,6 +62,7 @@ class Rockstart::GemsetGenerator < Rails::Generators::Base
   end
 
   def install_development_gems
+    gem "audited", "~> 4.9"
     gem "friendly_id"
   end
 

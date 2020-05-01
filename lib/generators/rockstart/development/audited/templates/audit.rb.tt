@@ -1,0 +1,30 @@
+# frozen_string_literal: true
+
+# Custom Audit model provided by rockstart
+class Audit < Audited::Audit
+  # Anonymize IP Addresses
+  def remote_address=(unsafe_address)
+    addr = unsafe_address.presence && IPAddr.new(unsafe_address)
+    if addr&.ipv4?
+      # set last octet to 0
+      super addr.mask(24).to_s
+    elsif addr&.ipv6?
+      # set last 80 bits to zeros
+      super addr.mask(48).to_s
+    else
+      super nil
+    end
+  end
+<% if auth0? -%>
+
+  def user=(user)
+    # Handle PORO User Object for Auth0
+    self.user_uid = user.is_a?(::User) ? user.id : nil
+    self.username = user.is_a?(::User) ? nil : user
+  end
+
+  def user
+    user_uid || username
+  end
+<% end -%>
+end

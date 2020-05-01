@@ -18,6 +18,10 @@ module Rockstart
         template script_name, "bin/#{script_name}"
         File.chmod(0o755, Rails.root.join("bin", script_name))
       end
+
+      def copy_spec_support(name)
+        copy_file "#{name}_support.rb", "spec/support/#{name}.rb"
+      end
     end
   end
 end

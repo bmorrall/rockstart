@@ -1,0 +1,54 @@
+# frozen_string_literal: true
+
+require "rails_helper"
+
+RSpec.describe Audit, type: :model do
+  describe "#remote_address" do
+    it "anonymizes IPv4 Address" do
+      audit = Audit.new
+      audit.remote_address = "37.109.235.190"
+      expect(audit.remote_address).to eq "37.109.235.0"
+    end
+
+    it "anonymizes IPv6 Address" do
+      audit = Audit.new
+      audit.remote_address = "c988:1d1:96e:67ca:31bd:b29e:5ff1:c8fb"
+      expect(audit.remote_address).to eq "c988:1d1:96e::"
+    end
+
+    it "handles nil values" do
+      audit = Audit.new
+      audit.remote_address = nil
+      expect(audit.remote_address).to be_nil
+    end
+  end
+<% if auth0? -%>
+
+  describe "#user" do
+    it "handles a User model" do
+      user = build(:user)
+      audit = Audit.new
+      audit.user = user
+      expect(audit.user).to eq user.id
+      expect(audit.user_uid).to eq user.id
+      expect(audit.username).to be_nil
+    end
+
+    it "handles a String" do
+      audit = Audit.new
+      audit.user = "test-user"
+      expect(audit.user).to eq "test-user"
+      expect(audit.user_uid).to be_nil
+      expect(audit.username).to eq "test-user"
+    end
+
+    it "handles nil values" do
+      audit = Audit.new
+      audit.user = nil
+      expect(audit.user).to be_nil
+      expect(audit.user_uid).to be_nil
+      expect(audit.username).to be_nil
+    end
+  end
+<% end -%>
+end
