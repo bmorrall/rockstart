@@ -12,8 +12,8 @@ module Rockstart::Deployment
     source_root File.expand_path("templates", __dir__)
 
     class_option :free_tier, type: :boolean,
-                 desc: "Prioritizes configratons and addons for the free tier",
-                 default: true
+                             desc: "Prioritizes configratons and addons for the free tier",
+                             default: true
 
     auth0_class_option
     memcached_class_option
