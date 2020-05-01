@@ -37,15 +37,15 @@ module Rockstart::Development
     end
 
     def copy_rspec_model_templates
-      copy_file "rspec/model/model_spec.rb.tt",
+      copy_file "rspec/model_spec.rb.tt",
                 "#{rspec_templates_dir}/model/model_spec.rb"
     end
 
     def copy_rspec_scaffold_templates
-      copy_file "rspec/scaffold/api_request_spec.rb.tt",
-                "#{rspec_templates_dir}/scaffold/api_request_spec.rb"
-      copy_file "rspec/scaffold/request_spec.rb.tt",
-                "#{rspec_templates_dir}/scaffold/request_spec.rb"
+      template "rspec/api_request_spec.rb.tt",
+               "#{rspec_templates_dir}/scaffold/api_request_spec.rb"
+      template "rspec/request_spec.rb.tt",
+               "#{rspec_templates_dir}/scaffold/request_spec.rb"
     end
 
     private
