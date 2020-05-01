@@ -17,7 +17,7 @@ class Rockstart::DevelopmentGenerator < Rails::Generators::Base
   end
 
   def generate_scaffold_templates
-    generate "rockstart:development:scaffolds", pundit_option
+    generate "rockstart:development:scaffolds", auth0_option, pundit_option
   end
 
   def generate_localhost_setup

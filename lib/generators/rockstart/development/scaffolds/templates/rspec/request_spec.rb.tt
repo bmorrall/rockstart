@@ -228,6 +228,25 @@ RSpec.describe "<%%= controller_class_name %>", <%%= type_metatag(:request) %> d
           <%%- end -%>
         end
 
+        it "audits the change", :aggregate_failures do
+          expect do
+            post <%%= index_helper %>_url, params: { <%%= ns_file_name %>: valid_attributes }
+          end.to change(Audit, :count).by(1)
+
+          <%%= file_name %> = <%%= class_name %>.last!
+
+          audit = <%%= file_name %>.audits.last
+          expect(audit.action).to eq "create"
+          expect(audit.associated).to be_nil
+<% if auth0? -%>
+          expect(audit.user_uid).to eq authenticated_admin.id
+<% else -%>
+          expect(audit.user).to eq authenticated_admin
+<% end -%>
+          expect(audit.remote_address).not_to eq request.remote_ip # Anonymized
+          expect(audit.request_uuid).to eq request.request_id
+        end
+
         it "redirects to the created <%%= ns_file_name %>" do
           post <%%= index_helper %>_url, params: { <%%= ns_file_name %>: valid_attributes }
           expect(response).to redirect_to(<%%= show_helper.gsub("\@#{file_name}", class_name+".last") %>)
@@ -311,6 +330,25 @@ RSpec.describe "<%%= controller_class_name %>", <%%= type_metatag(:request) %> d
           <%%- end -%>
         end
 
+        it "audits the change", :aggregate_failures do
+          <%%= file_name %> = create(:<%%= file_name %>)
+
+          expect do
+            patch <%%= show_helper.tr('@', '') %>, params: { <%%= singular_table_name %>: new_attributes }
+          end.to change(Audit, :count).by(1)
+
+          audit = <%%= file_name %>.audits.last!
+          expect(audit.action).to eq "update"
+          expect(audit.associated).to be_nil
+<% if auth0? -%>
+          expect(audit.user_uid).to eq authenticated_admin.id
+<% else -%>
+          expect(audit.user).to eq authenticated_admin
+<% end -%>
+          expect(audit.remote_address).not_to eq request.remote_ip # Anonymized
+          expect(audit.request_uuid).to eq request.request_id
+        end
+
         it "redirects to the <%%= ns_file_name %>" do
           <%%= file_name %> = create(:<%%= file_name %>)
           patch <%%= show_helper.tr('@', '') %>, params: { <%%= singular_table_name %>: new_attributes }
@@ -375,6 +413,26 @@ RSpec.describe "<%%= controller_class_name %>", <%%= type_metatag(:request) %> d
         expect do
           delete <%%= show_helper.tr('@', '') %>
         end.to change(<%%= class_name %>, :count).by(-1)
+      end
+
+      it "audits the change", :aggregate_failures do
+        <%%= file_name %> = create(:<%%= file_name %>)
+
+        expect do
+          delete <%%= show_helper.tr('@', '') %>
+        end.to change(Audit, :count).by(1)
+
+        audit = Audit.last!
+        expect(audit.action).to eq "destroy"
+        expect(audit.auditable_id).to eq <%%= file_name %>.id
+        expect(audit.associated).to be_nil
+<% if auth0? -%>
+        expect(audit.user_uid).to eq authenticated_admin.id
+<% else -%>
+        expect(audit.user).to eq authenticated_admin
+<% end -%>
+        expect(audit.remote_address).not_to eq request.remote_ip # Anonymized
+        expect(audit.request_uuid).to eq request.request_id
       end
 
       it "redirects to the <%%= table_name %> list" do

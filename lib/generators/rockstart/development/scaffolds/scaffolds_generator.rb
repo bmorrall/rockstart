@@ -8,6 +8,7 @@ module Rockstart::Development
 
     source_root File.expand_path("templates", __dir__)
 
+    auth0_class_option
     pundit_class_option
 
     # rubocop:disable Metrics/MethodLength
