@@ -7,7 +7,8 @@ module Rockstart::Authorization
     source_root File.expand_path("templates", __dir__)
 
     def add_utils
-      copy_file "auth0_util.rb", "lib/auth0_util.rb"
+      copy_file "auth0_util.rb", "lib/utils/auth0.rb"
+      copy_file "auth0_util_spec.rb", "spec/utils/auth0_spec.rb"
     end
 
     def add_translations

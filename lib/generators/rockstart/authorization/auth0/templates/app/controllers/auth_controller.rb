@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require "auth0_util"
+require "utils/auth0"
 
 # Omniauth Controller for Auth0
 class AuthController < ApplicationController
@@ -25,7 +25,7 @@ class AuthController < ApplicationController
   # DELETE /auth/sign_out
   def destroy
     reset_session
-    redirect_to Auth0Util.logout_url(redirect_to: auth_sign_out_url).to_s
+    redirect_to Utils::Auth0.logout_url(redirect_to: auth_sign_out_url).to_s
   end
 
   # GET /callback
