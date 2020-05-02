@@ -64,6 +64,9 @@ Rollbar.configure do |config|
   #   password: 'password_if_auth_required'
   # }
 
+  # Anonymize IP Addresses
+  config.anonymize_user_ip = true
+
   # Send logger messages straight to Rollbar
   # require "rollbar/logger"
   # Rails.logger.extend(ActiveSupport::Logger.broadcast(Rollbar::Logger.new))
