@@ -9,6 +9,9 @@
       }
     },
 <%- end -%>
+<% if free_tier? -%>
+    "cloudcube:free",
+<% end -%>
 <%- if postgres? -%>
     "heroku-postgresql:hobby-dev",
 <%- end -%>

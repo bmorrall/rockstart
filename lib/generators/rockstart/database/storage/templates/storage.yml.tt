@@ -1,0 +1,15 @@
+test:
+  service: Disk
+  root: <%%= Rails.root.join("tmp/storage") %>
+
+local:
+  service: Disk
+  root: <%%= Rails.root.join("storage") %>
+
+cloudcube:
+  service: BetterS3
+  access_key_id: <%%= ENV["CLOUDCUBE_ACCESS_KEY_ID"] %>
+  secret_access_key: <%%= ENV["CLOUDCUBE_SECRET_ACCESS_KEY"] %>
+  region: <%%= Utils::Cloudcube.region ENV["CLOUDCUBE_URL"] %>
+  bucket: <%%= Utils::Cloudcube.bucket ENV["CLOUDCUBE_URL"] %>
+  root: <%%= Utils::Cloudcube.<%= public_files? ? "public_" : "" %>prefix ENV["CLOUDCUBE_URL"] %>

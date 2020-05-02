@@ -7,6 +7,9 @@ namespace :heroku do
     AUTH0_CLIENT_SECRET
     AUTH0_DOMAIN
 <%- end -%>
+    CLOUDCUBE_ACCESS_KEY_ID
+    CLOUDCUBE_SECRET_ACCESS_KEY
+    CLOUDCUBE_URL
 <%- if rollbar? -%>
     ROLLBAR_ACCESS_TOKEN
 <%- end -%>

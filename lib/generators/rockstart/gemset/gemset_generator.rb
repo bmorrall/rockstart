@@ -41,6 +41,10 @@ class Rockstart::GemsetGenerator < Rails::Generators::Base
     gem "zero_downtime_migrations"
   end
 
+  def install_active_storage_gems
+    gem "aws-sdk-s3", require: false
+  end
+
   def install_sidekiq_gems
     return unless sidekiq?
 
