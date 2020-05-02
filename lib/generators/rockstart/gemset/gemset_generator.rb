@@ -97,6 +97,10 @@ class Rockstart::GemsetGenerator < Rails::Generators::Base
     gem "rack-attack"
   end
 
+  def install_testing_gems
+    gem "climate_control", group: :test
+  end
+
   def install_rspec_gems
     gem "capybara", ">= 2.15", group: :test
     gem "dotenv-rails", groups: %i[development test]
