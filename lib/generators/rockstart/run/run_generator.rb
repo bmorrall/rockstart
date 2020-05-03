@@ -22,7 +22,7 @@ class Rockstart::RunGenerator < Rails::Generators::Base
   end
 
   def generate_storage
-    generate "rockstart:database", memcached_option, postgres_option
+    generate "rockstart:storage", memcached_option, postgres_option
   end
 
   def generate_mailers

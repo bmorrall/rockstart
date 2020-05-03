@@ -2,7 +2,7 @@ Description:
     Configures solutions for storing your Rocking
 
 Example:
-    rails generate rockstart:database
+    rails generate rockstart:storage
 
     This will create:
         Installs Postgresql

@@ -2,7 +2,7 @@ Description:
     Uses Memcached as a Rails cache
 
 Example:
-    rails generate rockstart:database:memcached
+    rails generate rockstart:storage:memcached
 
     This will create:
         Configures memcached as the default Rails.cache

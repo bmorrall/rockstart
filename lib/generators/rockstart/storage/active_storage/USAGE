@@ -2,7 +2,7 @@ Description:
     Configures Rails for Active::Storage
 
 Example:
-    rails generate rockstart:database:storage
+    rails generate rockstart:storage:storage
 
     This will create:
         Configures active storage for local file storage

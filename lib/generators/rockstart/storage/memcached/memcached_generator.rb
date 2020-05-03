@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module Rockstart::Database
+module Rockstart::Storage
   class MemcachedGenerator < Rails::Generators::Base
     # rubocop:disable Metrics/MethodLength
     def configure_production_env

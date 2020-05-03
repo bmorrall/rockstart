@@ -2,7 +2,7 @@
 
 require "rockstart/generators/migration_helpers"
 
-module Rockstart::Database
+module Rockstart::Storage
   class PostgresGenerator < Rails::Generators::Base
     include Rails::Generators::AppName
     include Rockstart::Generators::MigrationHelpers

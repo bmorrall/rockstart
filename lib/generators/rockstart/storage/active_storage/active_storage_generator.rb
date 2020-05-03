@@ -2,7 +2,7 @@
 
 require "rockstart/generators/template_helpers"
 
-module Rockstart::Database
+module Rockstart::Storage
   class ActiveStorageGenerator < Rails::Generators::Base
     include Rockstart::Generators::TemplateHelpers
 
