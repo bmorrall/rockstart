@@ -18,13 +18,18 @@ class Audit < Audited::Audit
 <% if auth0? -%>
 
   def user=(user)
-    # Handle PORO User Object for Auth0
-    self.user_uid = user.is_a?(::User) ? user.id : nil
-    self.username = user.is_a?(::User) ? nil : user
+    if user.is_a?(::User)
+      # Handle PORO User Object for Auth0
+      self.user_uid = user.id
+      super nil
+    else
+      self.user_uid = nil
+      super
+    end
   end
 
   def user
-    user_uid || username
+    super || user_uid
   end
 <% end -%>
 end

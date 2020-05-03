@@ -7,9 +7,10 @@ class InstallAudited < ActiveRecord::Migration<%= migration_version %>
       t.column :auditable_type, :string
       t.column :associated_id, :integer
       t.column :associated_type, :string
-<% if auth0? %>
+<% if auth0? -%>
       t.column :user_uid, :string
-<% elsif postgres? -%>
+<% end -%>
+<% if postgres? -%>
       t.column :user_id, :uuid
       t.column :user_type, :string
 <% else -%>
@@ -28,6 +29,13 @@ class InstallAudited < ActiveRecord::Migration<%= migration_version %>
       t.column :remote_address, :string
       t.column :request_uuid, :string
       t.column :created_at, :datetime
+
+      t.index %i[auditable_type auditable_id version], name: "auditable_index"
+      t.index %i[associated_type associated_id], name: "associated_index"
+      t.index %i[user_type user_id], name: "user_index"
+      t.index :user_uid, name: "user_uid_index"
+      t.index :request_uuid
+      t.index :created_at
     end
   end
 
