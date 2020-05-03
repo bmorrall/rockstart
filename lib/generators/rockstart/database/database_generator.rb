@@ -20,7 +20,7 @@ class Rockstart::DatabaseGenerator < Rails::Generators::Base
     generate "rockstart:database:memcached"
   end
 
-  def generate_storage
-    generate "rockstart:database:storage"
+  def generate_active_storage
+    generate "rockstart:database:active_storage"
   end
 end
