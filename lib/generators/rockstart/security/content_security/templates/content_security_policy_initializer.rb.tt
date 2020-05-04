@@ -14,7 +14,7 @@ csp_script_sources = <%= script_hosts.inspect %>
 csp_style_sources = <%= style_hosts.inspect %>
 
 # Allow the asset host to serve assets
-if (asset_host = Rails.application.config.action_controller.asset_host.presence)
+if (asset_host = ENV["ASSET_HOST"].presence)
   csp_font_sources.append(asset_host)
   csp_image_sources.append(asset_host)
   csp_script_sources.append(asset_host)

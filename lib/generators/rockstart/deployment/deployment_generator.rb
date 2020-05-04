@@ -17,6 +17,15 @@ class Rockstart::DeploymentGenerator < Rails::Generators::Base
   rollbar_class_option
   sidekiq_class_option
 
+  def configure_environment
+    application(nil, env: :production) do
+      <<~APP_HOST
+        config.action_controller.default_url_options = { host: ENV["APP_HOST"] }
+        config.action_controller.asset_host = ENV.fetch("ASSET_HOST") { ENV["APP_HOST"] }
+      APP_HOST
+    end
+  end
+
   def create_run_scripts
     script_template "web"
     script_template "worker" if sidekiq?
