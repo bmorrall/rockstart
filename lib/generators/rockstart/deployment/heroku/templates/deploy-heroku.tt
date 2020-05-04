@@ -20,6 +20,16 @@ FileUtils.chdir APP_ROOT do
   puts "\n== Creating Development App =="
   system! "git remote show heroku || heroku create"
 
+  puts "\n== Configuring APP_HOST =="
+  current_app_host = `heroku config:get APP_HOST -s`.split("=").last
+  if current_app_host.strip.empty?
+    require "json"
+    app_host = JSON.parse(`heroku domains --json`).first.fetch("hostname")
+    system! "heroku config:set APP_HOST=#{app_host}"
+  else
+    puts "Skipping: APP_HOST has already been set to #{current_app_host}"
+  end
+
   puts "\n== Pushing to Heroku =="
   system! "git push heroku master"
 
