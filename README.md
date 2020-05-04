@@ -76,6 +76,12 @@ Install it, via Webpacker, by running:
 bundle exec rails g rockstart:tailwindcss
 ```
 
+## Extra Steps
+
+A Heroku release may fail during the relase page, use the [heroku-releases-retry](https://github.com/heroku/heroku-releases-retry) allows the latest deploy to be retried.
+
+> heroku plugins:install heroku-releases-retry
+
 ## Installation
 Add this line to your application's Gemfile:
 
