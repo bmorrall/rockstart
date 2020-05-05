@@ -18,6 +18,14 @@ require "rockstart"
 
 module Dummy
   class Application < Rails::Application
+    config.generators do |g|
+      g.assets false
+      g.helper false
+      g.javascripts false
+      g.scaffold_stylesheet false
+      g.stylesheets false
+      g.resource_route :dummy_resource_route
+    end
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 6.0
 

@@ -11,22 +11,6 @@ module Rockstart::Development
     auth0_class_option
     pundit_class_option
 
-    # rubocop:disable Metrics/MethodLength
-    def add_generator_defaults
-      application do
-        <<~DEFAULTS
-          config.generators do |g|
-            g.assets false
-            g.helper false
-            g.javascripts false
-            g.scaffold_stylesheet false
-            g.stylesheets false
-          end
-        DEFAULTS
-      end
-    end
-    # rubocop:enable Metrics/MethodLength
-
     def copy_scaffold_templates
       template "api_controller.rb.tt", "#{scaffold_controller_dir}/api_controller.rb.tt"
       template "controller.rb.tt", "#{scaffold_controller_dir}/controller.rb.tt"

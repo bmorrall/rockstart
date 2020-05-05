@@ -31,4 +31,8 @@ class Rockstart::DevelopmentGenerator < Rails::Generators::Base
   def setup_friendly_id
     generate "rockstart:development:friendly_id"
   end
+
+  def setup_generator_overrides
+    generate "rockstart:development:generator_overrides"
+  end
 end
