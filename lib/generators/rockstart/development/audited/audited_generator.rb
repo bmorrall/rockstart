@@ -26,7 +26,6 @@ module Rockstart::Development
 
     def add_migrations
       migration_template "install_audited.rb", "db/migrate/install_audited.rb"
-      migration_template "add_audit_indexes.rb", "db/migrate/add_audit_indexes.rb"
     end
 
     def add_spec_support
