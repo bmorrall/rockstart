@@ -91,15 +91,10 @@ class Rockstart::GemsetGenerator < Rails::Generators::Base
     gem "rubocop-rails", require: false, group: %i[development test]
   end
 
-  def install_brakeman_gems
+  def install_security_gems
     gem "brakeman", group: %i[development test]
-  end
-
-  def install_bundler_audit_gems
     gem "bundler-audit", github: "rubysec/bundler-audit", group: %i[development test]
-  end
-
-  def install_rack_attack_gems
+    gem "ip_anonymizer"
     gem "rack-attack"
   end
 

@@ -19,7 +19,7 @@ Rails.application.configure do
   config.lograge.custom_payload do |controller|
     {
       host: controller.request.host,
-      remote_ip: controller.request.remote_ip,
+      remote_ip: IpAnonymizer.mask_ip(controller.request.remote_ip),
       request_id: controller.request.request_id
     }.tap do |payload|
       if controller.respond_to?(:current_user)

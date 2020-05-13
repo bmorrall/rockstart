@@ -20,6 +20,7 @@ module LogrageUtil
 
       filter_parameters = Rails.application.config.filter_parameters
       params = ActiveSupport::ParameterFilter.new(filter_parameters).filter(req.params)
+      remote_ip = IpAnonymizer.mask_ip(req.ip) if req.ip.present?
 
       message_payload = {
         method: req.request_method,
@@ -31,7 +32,7 @@ module LogrageUtil
         duration: (finish - start).to_f.round(2),
         params: params.except("controller", "action", "format", "id"),
         host: req.host,
-        remote_ip: req.ip,
+        remote_ip: remote_ip,
         request_id: request_id
       }
       Lograge.lograge_config.formatter.call(message_payload)
