@@ -19,9 +19,10 @@ RSpec.describe "<%%= controller_class_name %>", <%%= type_metatag(:request) %> d
       end
 
       it "renders a successful response" do
-        create(:<%%= file_name %>)
+        <%%= file_name %> = create(:<%%= file_name %>)
         get <%%= index_helper %>_url
         expect(response).to be_successful
+        expect(response.body).to have_link(href: <%%= show_helper.tr('@', '').sub(/_url/, '_path') %>)
       end
     end
 
@@ -62,6 +63,28 @@ RSpec.describe "<%%= controller_class_name %>", <%%= type_metatag(:request) %> d
       create(:<%%= file_name %>)
       get <%%= index_helper %>_url
       expect(response).to redirect_to(url_for_authentication)
+    end
+  end
+
+  describe "GET /<%%= resource_path %>/page/:page" do
+    context "with an authenticated admin" do
+      let(:authenticated_admin) { create(:user, :admin) }
+
+      before do
+        sign_in(authenticated_admin)
+      end
+
+      it "renders a successful response", :aggregate_failures do
+        <%%= file_name %> = create(:<%%= file_name %>)
+        get <%%= index_helper %>_url(page: 1)
+        expect(response).to be_successful
+        expect(response.body).to have_link(href: <%%= show_helper.tr('@', '').sub(/_url/, '_path') %>)
+
+        # Second Page
+        get <%%= index_helper %>_url(page: 2)
+        expect(response).to be_successful
+        expect(response.body).not_to have_link(href: <%%= show_helper.tr('@', '').sub(/_url/, '_path') %>)
+      end
     end
   end
 <%% end -%>

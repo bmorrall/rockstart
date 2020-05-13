@@ -1,5 +1,8 @@
 <% module_namespacing do -%>
 class <%= class_name %> < <%= parent_class_name.classify %>
+  # Allow Pagination of <%= class_name %> collections
+  paginates_per 25
+
   # Log changes made to the <%= class_name %>
   audited only: %i[<%= attributes_names.join(" ") %>]
 

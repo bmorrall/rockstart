@@ -20,6 +20,7 @@ FriendlyId.defaults do |config|
 
   config.reserved_words = %w[
     new edit index session login logout users admin
+    page
     stylesheets assets javascripts images
     wp-admin wp-login password passwd
   ]

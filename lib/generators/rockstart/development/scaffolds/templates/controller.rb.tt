@@ -21,12 +21,13 @@ class <%%= controller_class_name %>Controller < ApplicationController
 <%- end -%>
 
   # GET <%%= route_url %>
+  # GET <%%= route_url %>/page/1
   def index
 <%- if pundit? -%>
     authorize <%%= class_name %>
-    @<%%= plural_table_name %> = policy_scope(<%%= class_name %>)
+    @<%%= plural_table_name %> = policy_scope(<%%= class_name %>).page params[:page]
 <%- else -%>
-    @<%%= plural_table_name %> = <%%= orm_class.all(class_name) %>
+    @<%%= plural_table_name %> = <%%= orm_class.all(class_name) %>.page params[:page]
 <%- end -%>
   end
 

@@ -68,6 +68,7 @@ class Rockstart::GemsetGenerator < Rails::Generators::Base
   def install_development_gems
     gem "audited", "~> 4.9"
     gem "friendly_id"
+    gem "kaminari"
   end
 
   def install_lograge_gems
