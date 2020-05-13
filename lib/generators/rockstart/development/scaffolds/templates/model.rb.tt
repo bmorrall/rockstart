@@ -1,5 +1,10 @@
 <% module_namespacing do -%>
 class <%= class_name %> < <%= parent_class_name.classify %>
+<% if attributes_names.any? { |name| name == "position" } -%>
+  # Use acts_as_list to maintain position of the <%= class_name %>
+  acts_as_list column: :position, top_of_list: 0 #, scope: :parent
+
+<% end -%>
   # Allow Pagination of <%= class_name %> collections
   paginates_per 25
 
