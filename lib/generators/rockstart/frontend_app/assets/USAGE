@@ -1,0 +1,8 @@
+Description:
+    Configures Rails for handling assets
+
+Example:
+    rails generate rockstart:frontend_app:assets
+
+    This will create:
+        adds a assets:rm_node_modules rake task for removing node modules

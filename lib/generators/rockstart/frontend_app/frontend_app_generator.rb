@@ -9,6 +9,10 @@ class Rockstart::FrontendAppGenerator < Rails::Generators::Base
                                    desc: "Force creation of blank Application URL Helpers",
                                    default: false
 
+  def setup_assets
+    generate "rockstart:frontend_app:assets"
+  end
+
   def add_simple_form
     generate "rockstart:frontend_app:simple_form"
   end
