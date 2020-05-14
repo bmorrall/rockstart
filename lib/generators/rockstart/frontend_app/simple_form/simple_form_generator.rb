@@ -3,7 +3,7 @@
 module Rockstart::FrontendApp
   class SimpleFormGenerator < Rails::Generators::Base
     def install_simple_form
-      generate "simple_form:install"
+      generate "simple_form:install", "--skip"
     end
   end
 end
