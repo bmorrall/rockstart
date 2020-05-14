@@ -29,6 +29,10 @@ module Rockstart::Deployment
       template "app.json"
     end
 
+    def add_slugignore
+      copy_file "slugignore", ".slugignore"
+    end
+
     def add_rack_task
       template "heroku.rake", "lib/tasks/heroku.rake"
     end
