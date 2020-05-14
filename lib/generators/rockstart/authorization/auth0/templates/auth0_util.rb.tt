@@ -15,6 +15,17 @@ module Utils
         URI::HTTPS.build(host: domain, path: "/v2/logout", query: to_query(request_params))
       end
 
+      # Remove all unused properties provided by OmniAuth
+      def filter_userinfo(raw_userinfo)
+        raw_userinfo.slice(:provider, :uid, :info, :raw_info).tap do |userinfo|
+          # Include basic user information
+          userinfo[:info] = userinfo.fetch(:info, {}).slice(:name, :nickname, :image)
+
+          # Include custom roles array provided by auth0
+          userinfo[:raw_info] = userinfo.fetch(:raw_info, {}).slice("http://<%= app_name %>/roles")
+        end.deep_stringify_keys
+      end
+
       private
 
       def to_query(hash)

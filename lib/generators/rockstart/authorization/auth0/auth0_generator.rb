@@ -4,10 +4,12 @@ require "rockstart/base_generator"
 
 module Rockstart::Authorization
   class Auth0Generator < Rockstart::BaseGenerator
+    include Rails::Generators::AppName
+
     source_root File.expand_path("templates", __dir__)
 
     def add_utils
-      copy_file "auth0_util.rb", "lib/utils/auth0.rb"
+      template "auth0_util.rb", "lib/utils/auth0.rb"
       copy_file "auth0_util_spec.rb", "spec/utils/auth0_spec.rb"
     end
 

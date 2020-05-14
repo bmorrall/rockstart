@@ -13,8 +13,10 @@ RSpec.describe User, type: :model do
         "info" => {
           "image" => "https://s.gravatar.com/avatar/55502f40dc8b7c769880b10874abc9d0?s=480",
           "name" => "John Smith",
-          "nickname" => "jono65",
-          "email" => nil
+          "nickname" => "jono65"
+        },
+        "raw_info" => {
+          "http://<%= app_name %>/roles" => []
         }
       }
     end
@@ -46,6 +48,24 @@ RSpec.describe User, type: :model do
       it "falls back to nickname when name is an email (Auth0 Database Provider Default)" do
         userinfo.fetch("info")["name"] = "test@example.com"
         expect(user.first_name).to eq "jono65"
+      end
+    end
+
+    describe "#admin?" do
+      context "with an admin role" do
+        before do
+          userinfo["raw_info"]["http://<%= app_name %>/roles"] = ["admin"]
+        end
+
+        it { is_expected.to be_admin }
+      end
+
+      context "with no roles" do
+        before do
+          userinfo["raw_info"]["http://<%= app_name %>/roles"] = []
+        end
+
+        it { is_expected.not_to be_admin }
       end
     end
 

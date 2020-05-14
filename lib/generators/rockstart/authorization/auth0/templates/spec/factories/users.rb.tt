@@ -11,11 +11,16 @@ FactoryBot.define do
 
     skip_create
     initialize_with do
-      new(
-        "provider" => "factory_bot",
-        "uid" => attributes[:uid],
-        "info" => attributes.except(:uid).stringify_keys
+      require "utils/auth0"
+      filtered_attributes = Utils::Auth0.filter_userinfo(
+        provider: "factory_bot",
+        uid: attributes[:uid],
+        info: attributes.except(:uid, :roles).stringify_keys,
+        raw_info: {
+          "http://<%= app_name %>/roles" => roles
+        }
       )
+      new(filtered_attributes)
     end
 
     trait :admin do

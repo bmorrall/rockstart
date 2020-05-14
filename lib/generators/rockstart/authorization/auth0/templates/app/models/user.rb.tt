@@ -77,6 +77,6 @@ class User
   end
 
   def roles
-    @roles ||= (@userinfo.dig("info", "roles") || [])
+    @roles ||= (@userinfo.dig("raw_info", "http://<%= app_name %>/roles") || [])
   end
 end
