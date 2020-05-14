@@ -1,0 +1,19 @@
+# frozen_string_literal: true
+
+namespace :auth0 do
+  task :setup_user_roles do
+    require "utils/auth0"
+    user_roles_rule = <<~USER_ROLES_RULE
+      function (user, context, callback) {
+        var namespace = 'http://<%= app_name %>/';
+        var roles = (user.app_metadata && user.app_metadata.roles) || [];
+        context.idToken[namespace + 'roles'] = roles;
+        context.accessToken[namespace + 'roles'] = roles;
+        return callback(null, user, context);
+      }
+    USER_ROLES_RULE
+    Utils::Auth0.auth0_client.create_rule "add-user-roles", user_roles_rule
+  end
+end
+
+Rake::Task.define_task("auth0:setup" => "auth0:setup_user_roles")

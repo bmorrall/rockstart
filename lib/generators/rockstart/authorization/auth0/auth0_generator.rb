@@ -45,5 +45,9 @@ module Rockstart::Authorization
       ROUTE
       change_application_url("url_for_authentication", "auth_sign_in_path")
     end
+
+    def add_setup_rake_task
+      template "auth0.rake.tt", "lib/tasks/auth0.rake"
+    end
   end
 end
