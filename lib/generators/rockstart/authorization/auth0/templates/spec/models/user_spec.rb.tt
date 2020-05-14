@@ -15,8 +15,10 @@ RSpec.describe User, type: :model do
           "name" => "John Smith",
           "nickname" => "jono65"
         },
-        "raw_info" => {
-          "http://<%= app_name %>/roles" => []
+        "extra" => {
+          "raw_info" => {
+            "http://<%= app_name %>/roles" => []
+          }
         }
       }
     end
@@ -54,7 +56,7 @@ RSpec.describe User, type: :model do
     describe "#admin?" do
       context "with an admin role" do
         before do
-          userinfo["raw_info"]["http://<%= app_name %>/roles"] = ["admin"]
+          userinfo["extra"]["raw_info"]["http://<%= app_name %>/roles"] = ["admin"]
         end
 
         it { is_expected.to be_admin }
@@ -62,7 +64,7 @@ RSpec.describe User, type: :model do
 
       context "with no roles" do
         before do
-          userinfo["raw_info"]["http://<%= app_name %>/roles"] = []
+          userinfo["extra"]["raw_info"]["http://<%= app_name %>/roles"] = []
         end
 
         it { is_expected.not_to be_admin }

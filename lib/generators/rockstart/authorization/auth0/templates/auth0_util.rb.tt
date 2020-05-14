@@ -30,12 +30,14 @@ module Utils
 
       # Remove all unused properties provided by OmniAuth
       def filter_userinfo(raw_userinfo)
-        raw_userinfo.slice(:provider, :uid, :info, :raw_info).tap do |userinfo|
+        raw_userinfo.slice(:provider, :uid, :info, :extra).tap do |userinfo|
           # Include basic user information
           userinfo[:info] = userinfo.fetch(:info, {}).slice(:name, :nickname, :image)
 
           # Include custom roles array provided by auth0
-          userinfo[:raw_info] = userinfo.fetch(:raw_info, {}).slice("http://<%= app_name %>/roles")
+          userinfo[:extra] = userinfo.fetch(:extra, {}).slice(:raw_info)
+          raw_info = userinfo[:extra].fetch(:raw_info, {})
+          userinfo[:extra][:raw_info] = raw_info.slice("http://<%= app_name %>/roles")
         end.deep_stringify_keys
       end
 

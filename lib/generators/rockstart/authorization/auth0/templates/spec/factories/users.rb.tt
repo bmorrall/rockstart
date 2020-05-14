@@ -16,8 +16,10 @@ FactoryBot.define do
         provider: "factory_bot",
         uid: attributes[:uid],
         info: attributes.except(:uid, :roles).stringify_keys,
-        raw_info: {
-          "http://<%= app_name %>/roles" => roles
+        extra: {
+          raw_info: {
+            "http://<%= app_name %>/roles" => roles
+          }
         }
       )
       new(filtered_attributes)
