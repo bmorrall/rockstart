@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Adapted from https://github.com/heroku/heroku-buildpack-ruby/issues/792
 namespace :assets do
   desc "Remove 'node_modules' folder"
   task rm_node_modules: :environment do
