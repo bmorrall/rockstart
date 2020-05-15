@@ -37,6 +37,6 @@ class Rockstart::DevelopmentGenerator < Rails::Generators::Base
   end
 
   def generate_readme
-    generate "rockstart:development:readme"
+    generate "rockstart:development:readme", auth0_option
   end
 end
