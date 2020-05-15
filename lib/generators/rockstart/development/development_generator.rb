@@ -35,4 +35,8 @@ class Rockstart::DevelopmentGenerator < Rails::Generators::Base
   def setup_generator_overrides
     generate "rockstart:development:generator_overrides"
   end
+
+  def generate_readme
+    generate "rockstart:development:readme"
+  end
 end

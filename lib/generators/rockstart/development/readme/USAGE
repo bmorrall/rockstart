@@ -1,0 +1,8 @@
+Description:
+    Generates a README for your new Application
+
+Example:
+    rails generate rockstart:development:readme
+
+    This will create:
+        A README.md with all configuration instructions included.
