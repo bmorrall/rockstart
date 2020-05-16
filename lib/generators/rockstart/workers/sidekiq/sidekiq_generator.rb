@@ -13,7 +13,6 @@ module Rockstart::Workers
     source_root File.expand_path("templates", __dir__)
 
     devise_class_option
-    rollbar_class_option
 
     def add_initializer
       copy_initializer "sidekiq"

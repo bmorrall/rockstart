@@ -24,7 +24,7 @@ class Rockstart::MonitoringGenerator < Rails::Generators::Base
   end
 
   def generate_okcomputer
-    generate "rockstart:monitoring:okcomputer", memcached_option, rollbar_option, sidekiq_option
+    generate "rockstart:monitoring:okcomputer", memcached_option, sidekiq_option
   end
 
   def generate_sidekiq_ui

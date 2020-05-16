@@ -26,9 +26,7 @@ OkComputer::Registry.register "redis", OkComputer::RedisCheck.new(url: ENV["REDI
 
 # Sidekiq
 OkComputer::Registry.register "sidekiq-default", OkComputer::SidekiqLatencyCheck.new("default")
-<%- if rollbar? -%>
-OkComputer::Registry.register "sidekiq-rollbar", OkComputer::SidekiqLatencyCheck.new("rollbar")
-<%- end -%>
+OkComputer::Registry.register "sidekiq-low", OkComputer::SidekiqLatencyCheck.new("low")
 
 <%- end -%>
 # mount at /health

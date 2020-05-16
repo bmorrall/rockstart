@@ -1,6 +1,4 @@
 ---
 :queues:
-- default
-<%- if rollbar? -%>
-- rollbar
-<%- end -%>
+- [default, 2]
+- low

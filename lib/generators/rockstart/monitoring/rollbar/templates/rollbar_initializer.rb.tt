@@ -45,7 +45,7 @@ Rollbar.configure do |config|
 
 <%- if sidekiq? -%>
   # Enable delayed reporting (using Sidekiq)
-  config.use_sidekiq "queue" => "rollbar"
+  config.use_sidekiq "queue" => "low"
   config.failover_handlers = [Rollbar::Delay::Thread]
 <%- else -%>
   # Enable asynchronous reporting
