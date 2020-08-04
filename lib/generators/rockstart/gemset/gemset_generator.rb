@@ -100,6 +100,8 @@ class Rockstart::GemsetGenerator < Rails::Generators::Base
 
   def install_testing_gems
     gem "climate_control", group: :test
+    gem "webmock", group: :test
+    gem "vcr", group: :test
   end
 
   def install_rspec_gems
