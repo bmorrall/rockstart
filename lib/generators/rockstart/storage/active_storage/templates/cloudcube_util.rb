@@ -20,7 +20,7 @@ module Utils
     end
 
     def self.public_prefix(cloudcube_url)
-      prefix(cloudcube_url) + "/public" if cloudcube_url.present?
+      "#{prefix(cloudcube_url)}/public" if cloudcube_url.present?
     end
 
     def self.prefix(cloudcube_url)

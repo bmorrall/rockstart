@@ -175,7 +175,7 @@ module Rockstart::Authorization
 
     def add_pudit_authorize_current_user_method(dir)
       inject_into_file File.join(dir, controller_path("registrations")), after: "protected\n" do
-        "\n" + <<~'METHOD'.gsub(/([^\n]*)\n/, "  \\1\n")
+        "\n#{<<~'METHOD'.gsub(/([^\n]*)\n/, "  \\1\n")}"
           # Ensure the logged in user is able to update or destroy their account
           def authorize_current_user
             authorize current_user

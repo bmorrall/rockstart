@@ -154,8 +154,8 @@ PLATFORMS
 
 DEPENDENCIES
   rockstart!
-  rubocop
-  sqlite3
+  rubocop (~> 0.80.1)
+  sqlite3 (~> 1.4.2)
 
 BUNDLED WITH
    2.1.4

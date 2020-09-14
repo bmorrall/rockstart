@@ -9,7 +9,7 @@ module Rockstart::FrontendApp
     end
 
     def update_application_template
-      gsub_file "app/views/layouts/application.html.erb", %r{\<title(.+)\</title},
+      gsub_file "app/views/layouts/application.html.erb", %r{<title(.+)</title},
                 "<title><%= title %></title"
     end
 

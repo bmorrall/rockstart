@@ -16,10 +16,12 @@ Gem::Specification.new do |spec|
   spec.description = "A collection of generators to rapidly start and update ready-to-run Rails Applications."
   spec.license     = "MIT"
 
+  spec.required_ruby_version = ">= 2.4.0"
+
   spec.files = Dir["{app,config,db,lib}/**/*", "MIT-LICENSE", "Rakefile", "README.md"]
 
   spec.add_dependency "rails", "~> 6.0.2", ">= 6.0.2.2"
 
-  spec.add_development_dependency "rubocop"
-  spec.add_development_dependency "sqlite3"
+  spec.add_development_dependency "rubocop", "~> 0.80.1"
+  spec.add_development_dependency "sqlite3", "~> 1.4.2"
 end
